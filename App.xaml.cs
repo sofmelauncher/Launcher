@@ -5,6 +5,8 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using meGaton.Models;
 using meGaton.ViewModels;
 using meGaton.Views;
 
@@ -18,8 +20,12 @@ namespace meGaton {
 
             var window = new MainView();
             var view_model = new MainViewModel();
+            var panel_creater = new PanelCreater();
 
             window.DataContext = view_model;
+
+            panel_creater.Launch(window.FindName("PanelParent") as StackPanel);
+
             window.Show();
         }
     }
