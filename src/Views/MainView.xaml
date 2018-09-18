@@ -10,14 +10,13 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         WindowState="Maximized" WindowStyle="None" Topmost="True"
-        Title="meGaton" Height="1080" Width="1980">
-    <Grid HorizontalAlignment="Left" Height="1080" Margin="0,0,-8,-8" VerticalAlignment="Top" Width="1980">
+        Title="meGaton" Height="1080" Width="1920">
+    <Grid HorizontalAlignment="Left" Height="1080" Margin="0,0,0,-8" VerticalAlignment="Top" Width="1910">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="47*"/>
-            <ColumnDefinition Width="504*"/>
-            <ColumnDefinition Width="439*"/>
+            <ColumnDefinition Width="424*"/>
+            <ColumnDefinition Width="259*"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="2" Name="PanelParent" HorizontalAlignment="Left" Height="1200" VerticalAlignment="Top" Width="868" Margin="0,-62,0,-58">
+        <StackPanel Grid.Column="1" Name="PanelParent" HorizontalAlignment="Left" Height="1200" VerticalAlignment="Top" Width="868" Margin="0,-62,-350,-370">
         </StackPanel>
     </Grid>
 </Window>

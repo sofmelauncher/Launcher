@@ -20,6 +20,7 @@ namespace meGaton {
 
             var window = new MainView();
             var view_model = new MainViewModel();
+
             var panel_creater = new PanelCreater();
 
             window.DataContext = view_model;

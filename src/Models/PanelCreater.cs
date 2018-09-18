@@ -1,6 +1,8 @@
 ﻿using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using meGaton.ViewModels;
+using meGaton.Views;
 using MaterialDesignThemes.Wpf;
 
 namespace meGaton.Models
@@ -20,19 +22,10 @@ namespace meGaton.Models
         }
 
         private UIElement CreateObject(int i=0) {
-            var element = new Card();
-            element.Padding =  new Thickness(48);
-            element.Margin=new Thickness(8);
-            ShadowAssist.GetShadowDepth(element);
-            element.Content = "label" + i.ToString();
+            var element=new GamePanel(new GamePanelViewModel(i.ToString()));
+            element.DataContext = i.ToString();
             return element;
         }
-        /*
-         *             <materialDesign:Card
-                materialDesign:ShadowAssist.ShadowDepth="Depth1"
-                Padding="32">
-                DEPTH 1
-            </materialDesign:Card>
-         */
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Windows;
 
 namespace meGaton.Views
 {
@@ -10,6 +11,8 @@ namespace meGaton.Views
         public MainView()
         {
             InitializeComponent();
+            var list = new List<int>();
+
         }
     }
 }
