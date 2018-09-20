@@ -18,7 +18,7 @@ namespace meGaton.ViewModels{
         public IObservable<int> ButtonNotification => buttonNotification;
 
         //Bind Properties
-        public string GameName { get; set; }
+        public string GameName { get=>myGameInfo.GameName;}
         public PanelSizes PanelSizes { get; set;}
         
 
@@ -46,8 +46,8 @@ namespace meGaton.ViewModels{
         }
 
 
-        public GamePanelViewModel(string name) {
-            GameName = name;
+        public GamePanelViewModel(GameInfo game_info) {
+            myGameInfo=game_info;
 
         }
 

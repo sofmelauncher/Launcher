@@ -11,7 +11,7 @@ namespace meGaton.ViewModels {
     /// </summary>
     public partial class MainViewModel {
         public ReactiveCommand MyCommand { get; } = new ReactiveCommand();
-        private PanelControler panelControler;
+        private readonly PanelControler panelControler;
 
         public MainViewModel(StackPanel stack_panel) {
             panelControler = new PanelControler(stack_panel);
