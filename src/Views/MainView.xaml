@@ -11,12 +11,15 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         WindowState="Maximized" WindowStyle="None" Topmost="True"
         Title="meGaton" Height="1080" Width="1920">
-    <Grid HorizontalAlignment="Left" Height="1080" Margin="0,0,0,-8" VerticalAlignment="Top" Width="1910">
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding MyCommand}" Gesture="Ctrl+D" />
+    </Window.InputBindings>
+    <Grid HorizontalAlignment="Left" Height="1080" Margin="0,0,0,-8" VerticalAlignment="Top" Width="1920">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="424*"/>
-            <ColumnDefinition Width="259*"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="1" Name="PanelParent" HorizontalAlignment="Left" Height="1200" VerticalAlignment="Top" Width="868" Margin="0,-62,-350,-370">
+        <StackPanel Grid.Column="1" Name="PanelParent" HorizontalAlignment="Left" Height="1243" VerticalAlignment="Top" Width="758" Margin="10,-91,0,-72">
         </StackPanel>
     </Grid>
 </Window>

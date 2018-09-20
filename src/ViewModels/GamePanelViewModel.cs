@@ -3,17 +3,19 @@ using System.ComponentModel;
 using System.Reactive.Disposables;
 using System.Windows.Input;
 using meGaton.DataClass;
-using meGaton.Models;
-using Reactive.Bindings;
-using Reactive.Bindings.Extensions;
+using Reactive;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 
 namespace meGaton.ViewModels{
     public partial class GamePanelViewModel : INotifyPropertyChanged,IDisposable {
         private GameInfo myGameInfo;
-
+        
         public event PropertyChangedEventHandler PropertyChanged;//no use
         private CompositeDisposable Disposable { get; } = new CompositeDisposable();
 
+        private Subject<int> buttonNotification=new Subject<int>();
+        public IObservable<int> ButtonNotification => buttonNotification;
 
         //Bind Properties
         public string GameName { get; set; }
@@ -23,12 +25,13 @@ namespace meGaton.ViewModels{
         private bool a;
 
         private void OkCommandExecute(object parameter) {
+            //buttonNotification.OnNext(0);
+            a = !a;
             if (a) {
                 PanelSizes.Enlarge();
             } else {
                 PanelSizes.Undo();
             }
-            a = !a;
         }
 
         private ICommand okCommand;

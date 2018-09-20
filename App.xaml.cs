@@ -19,7 +19,7 @@ namespace meGaton {
             base.OnStartup(e);
 
             var window = new MainView();
-            var view_model = new MainViewModel();
+            var view_model = new MainViewModel(window.FindName("PanelParent") as StackPanel);
 
             var panel_creater = new PanelCreater();
 
