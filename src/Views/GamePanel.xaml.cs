@@ -13,7 +13,7 @@ namespace meGaton.Views
 
         public GamePanel(GamePanelViewModel game_panel_view_model) {
             InitializeComponent();
-            game_panel_view_model.SetPanelSizes(600,120,32,100,1.2f);
+            game_panel_view_model.SetPanelSizes(1.2f);
             ((FrameworkElement) this.Content).DataContext = game_panel_view_model;
 
             //game_panel_view_model.ButtonNotification.Subscribe(n =>);

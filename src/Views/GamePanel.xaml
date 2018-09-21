@@ -5,22 +5,24 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="200" d:DesignWidth="700" 
-             HorizontalAlignment="Left">
+             d:DesignHeight="300" d:DesignWidth="700" 
+             >
 
     <StackPanel Orientation="Horizontal" Margin="10">
         <materialDesign:Card
             materialDesign:ShadowAssist.ShadowDepth="Depth1" 
-            Padding="32"  MinHeight="{Binding PanelSizes.PanelHeight.Value}" MinWidth="{Binding PanelSizes.PanelWidth.Value}"
-            HorizontalAlignment="Left">
-            <Grid>
+            Padding="32" Height="140" Width="600">
+            <materialDesign:Card.LayoutTransform>
+                <ScaleTransform ScaleX="{Binding PanelSizes.MyScale.Value}" ScaleY="{Binding PanelSizes.MyScale.Value}"/>
+            </materialDesign:Card.LayoutTransform>
+            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <Image Grid.Row="0" Grid.Column="0" Height="{Binding PanelSizes.IconSize.Value}" Width="{Binding PanelSizes.IconSize.Value}" VerticalAlignment="Top" HorizontalAlignment="Left" />
-                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding GameName}" TextAlignment="Left" VerticalAlignment="Center" TextWrapping="Wrap"  FontSize="{Binding PanelSizes.FontSize.Value}"/>
+                <Image Grid.Row="0" Grid.Column="0" Height="100" Width="100" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="0,-10,0,-10" />
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding GameName}" TextAlignment="Left" VerticalAlignment="Center" TextWrapping="Wrap"  FontSize="32"/>
                 <Button Grid.Row="0" Grid.Column="2" Content="Run" Command="{Binding OkCommand}"/>
             </Grid>
         </materialDesign:Card>

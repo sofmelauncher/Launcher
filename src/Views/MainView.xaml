@@ -9,17 +9,22 @@
         TextOptions.TextRenderingMode="Auto"        
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
-        WindowState="Maximized" WindowStyle="None" Topmost="True"
+        WindowState="Maximized" WindowStyle="None" Topmost="True" 
         Title="meGaton" Height="1080" Width="1920">
     <Window.InputBindings>
         <KeyBinding Command="{Binding MyCommand}" Gesture="Ctrl+D" />
     </Window.InputBindings>
-    <Grid HorizontalAlignment="Left" Height="1080" Margin="0,0,0,-8" VerticalAlignment="Top" Width="1920">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*"/>
-            <ColumnDefinition Width="2*"/>
-        </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="1" Name="PanelParent" HorizontalAlignment="Left" Height="1243" VerticalAlignment="Top" Width="758" Margin="10,-91,0,-72">
-        </StackPanel>
-    </Grid>
+    <Viewbox>
+        <Grid HorizontalAlignment="Left"  Margin="0,0,0,0" VerticalAlignment="Top" Height="1080" Width="1920">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="1" Name="PanelParent"   VerticalAlignment="Top"  Margin="0,0,0,0">
+            </StackPanel>
+            <Button Content="Button" HorizontalAlignment="Left" Margin="0,234,0,0" VerticalAlignment="Top" Width="75"/>
+            <Button Content="Button" HorizontalAlignment="Left" Margin="683,256,0,0" VerticalAlignment="Top" Width="75" Grid.Column="1"/>
+            <Button Content="Button" HorizontalAlignment="Left" Margin="1077,245,0,0" VerticalAlignment="Top" Width="75"/>
+        </Grid>
+    </Viewbox>
 </Window>

@@ -51,8 +51,8 @@ namespace meGaton.ViewModels{
 
         }
 
-        public void SetPanelSizes(float panel_width, float panel_height, int font_size, float icon_size,float scale) {
-            PanelSizes=new PanelSizes(this.Disposable,panel_width,panel_height,font_size,icon_size,scale);
+        public void SetPanelSizes(float scale) {
+            PanelSizes=new PanelSizes(this.Disposable,scale);
         }
         
 
