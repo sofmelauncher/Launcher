@@ -10,12 +10,14 @@ namespace meGaton.ViewModels {
     /// MainViewModel.xaml の相互作用ロジック
     /// </summary>
     public partial class MainViewModel {
-        public ReactiveCommand MyCommand { get; } = new ReactiveCommand();
+        public ReactiveCommand ListUpCommand { get; } = new ReactiveCommand();
+        public ReactiveCommand ListDownCommand { get; } = new ReactiveCommand();
         private readonly PanelControler panelControler;
 
         public MainViewModel(StackPanel stack_panel) {
             panelControler = new PanelControler(stack_panel);
-            MyCommand.Subscribe(n => panelControler.SlidePanels());
+            ListUpCommand.Subscribe(n => panelControler.SlideUp());
+            ListDownCommand.Subscribe(n => panelControler.SlideDown());
         }
     }
 }

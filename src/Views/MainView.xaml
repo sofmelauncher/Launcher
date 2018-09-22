@@ -12,7 +12,8 @@
         WindowState="Maximized" WindowStyle="None" Topmost="True" 
         Title="meGaton" Height="1080" Width="1920">
     <Window.InputBindings>
-        <KeyBinding Command="{Binding MyCommand}" Gesture="Ctrl+D" />
+        <KeyBinding Command="{Binding ListUpCommand}" Gesture="UP" />
+        <KeyBinding Command="{Binding ListDownCommand}" Gesture="Down" />
     </Window.InputBindings>
     <Viewbox>
         <Grid HorizontalAlignment="Left"  Margin="0,0,0,0" VerticalAlignment="Top" Height="1080" Width="1920">

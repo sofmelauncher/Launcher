@@ -19,14 +19,15 @@ namespace meGaton {
             base.OnStartup(e);
 
             var window = new MainView();
-            var view_model = new MainViewModel(window.FindName("PanelParent") as StackPanel);
 
             var panel_creater = new PanelCreater();
+            panel_creater.Launch(window.FindName("PanelParent") as StackPanel);
+
+            var view_model = new MainViewModel(window.FindName("PanelParent") as StackPanel);
 
             window.DataContext = view_model;
 
-            panel_creater.Launch(window.FindName("PanelParent") as StackPanel);
-
+           
             window.Show();
         }
     }
