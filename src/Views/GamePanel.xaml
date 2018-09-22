@@ -10,7 +10,7 @@
 
     <StackPanel Orientation="Horizontal" Margin="10">
         <materialDesign:Card
-            materialDesign:ShadowAssist.ShadowDepth="Depth1" 
+            materialDesign:ShadowAssist.ShadowDepth="Depth3" 
             Padding="32" Height="140" Width="600">
             <materialDesign:Card.LayoutTransform>
                 <ScaleTransform ScaleX="{Binding PanelSizes.MyScale.Value}" ScaleY="{Binding PanelSizes.MyScale.Value}"/>

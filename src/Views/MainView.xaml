@@ -20,11 +20,14 @@
                 <ColumnDefinition Width="3*"/>
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="1" Name="PanelParent"   VerticalAlignment="Top"  Margin="0,0,0,0">
+            <StackPanel Grid.Column="0">
+                <materialDesign:Card  materialDesign:ShadowAssist.ShadowDepth="Depth2" 
+                Width="1000" Height="775" Margin="0,30,0,0" HorizontalAlignment="Center"/>
+                <materialDesign:Card  materialDesign:ShadowAssist.ShadowDepth="Depth2" 
+                Width="1000" Height="200" Margin="0,50,0,0" HorizontalAlignment="Center"/>
             </StackPanel>
-            <Button Content="Button" HorizontalAlignment="Left" Margin="0,234,0,0" VerticalAlignment="Top" Width="75"/>
-            <Button Content="Button" HorizontalAlignment="Left" Margin="683,256,0,0" VerticalAlignment="Top" Width="75" Grid.Column="1"/>
-            <Button Content="Button" HorizontalAlignment="Left" Margin="1077,245,0,0" VerticalAlignment="Top" Width="75"/>
-        </Grid>
+            <StackPanel Grid.Column="1" Name="PanelParent"  Height="1300" VerticalAlignment="Center"  Margin="0,0,0,0">
+            </StackPanel>
+         </Grid>
     </Viewbox>
 </Window>

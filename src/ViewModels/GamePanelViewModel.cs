@@ -21,7 +21,6 @@ namespace meGaton.ViewModels{
         public string GameName { get=>myGameInfo.GameName;}
         public PanelSizes PanelSizes { get; set;}
         
-
         private bool a;
 
         private void OkCommandExecute(object parameter) {
