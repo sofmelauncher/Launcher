@@ -127,14 +127,15 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="src\DataResources\IGamesDataConnector.cs" />
+    <Compile Include="src\Models\GameProcessControll.cs" />
     <Compile Include="src\Models\PanelControler.cs" />
     <Compile Include="src\General\DelegateCommand.cs" />
     <Compile Include="src\ViewModels\GamePanelViewModel.cs" />
-    <Compile Include="src\DataClass\PanelSizes.cs" />
+    <Compile Include="src\Models\PanelSizes.cs" />
     <Compile Include="src\Views\GamePanel.xaml.cs">
       <DependentUpon>GamePanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="src\DataClass\GameInfo.cs" />
+    <Compile Include="src\DataResources\GameInfo.cs" />
     <Compile Include="src\Models\PanelCreater.cs" />
     <Compile Include="src\ViewModels\MainViewModel.cs" />
     <Compile Include="App.xaml.cs">

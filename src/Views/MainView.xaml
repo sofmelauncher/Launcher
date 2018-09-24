@@ -9,7 +9,7 @@
         TextOptions.TextRenderingMode="Auto"        
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
-        WindowState="Maximized" WindowStyle="None" Topmost="True" 
+        WindowState="Maximized" WindowStyle="None"
         Title="meGaton" Height="1080" Width="1920">
     <Window.InputBindings>
         <KeyBinding Command="{Binding ListUpCommand}" Gesture="UP" />

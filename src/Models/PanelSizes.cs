@@ -1,10 +1,8 @@
 ﻿using System.Reactive.Disposables;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
-using System.Windows.Controls;
-using MaterialDesignThemes.Wpf;
 
-namespace meGaton.DataClass {
+namespace meGaton.Models {
     public class PanelSizes {
         public ReactiveProperty<double> MyScale { get;}
        

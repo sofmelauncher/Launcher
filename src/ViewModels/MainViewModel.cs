@@ -1,9 +1,9 @@
-﻿using meGaton.src.Models;
-using Reactive.Bindings;
+﻿using Reactive.Bindings;
 using System;
 using System.ComponentModel;
 using System.Windows.Controls;
 using System.Windows.Input;
+using meGaton.Models;
 
 namespace meGaton.ViewModels {
     /// <summary>

@@ -13,15 +13,15 @@
             materialDesign:ShadowAssist.ShadowDepth="Depth3" 
             Padding="32" Height="140" Width="600">
             <materialDesign:Card.LayoutTransform>
-                <ScaleTransform ScaleX="{Binding PanelSizes.MyScale.Value}" ScaleY="{Binding PanelSizes.MyScale.Value}"/>
+                <ScaleTransform ScaleX="{Binding MyScale.Value}" ScaleY="{Binding MyScale.Value}"/>
             </materialDesign:Card.LayoutTransform>
-            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="140">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <Image Grid.Row="0" Grid.Column="0" Height="100" Width="100" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="0,-10,0,-10" />
+                <Image Grid.Row="0" Grid.Column="0" Source="{Binding IconPath}" Stretch="None" Height="100" Width="100" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,0,0" />
                 <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding GameName}" TextAlignment="Left" VerticalAlignment="Center" TextWrapping="Wrap"  FontSize="32"/>
                 <Button Grid.Row="0" Grid.Column="2" Content="Run" Command="{Binding OkCommand}"/>
             </Grid>

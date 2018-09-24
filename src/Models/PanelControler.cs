@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using meGaton.ViewModels;
 
-namespace meGaton.src.Models {
+namespace meGaton.Models {
     public class PanelControler {
-        private StackPanel panelParent;
+        private readonly StackPanel panelParent;
 
-        private const int focusIndex=2;
+        private const int FocusIndex=2;
 
         public PanelControler(StackPanel stack_panel) {
             panelParent = stack_panel;
@@ -24,11 +19,11 @@ namespace meGaton.src.Models {
         }
 
         private void FocusPanel() {
-              GetViewModel(focusIndex).PanelSizes.Enlarge();
+              GetViewModel(FocusIndex).Enlarge();
         }
 
         private void UnFocusPanel() {
-            GetViewModel(focusIndex).PanelSizes.Undo();
+            GetViewModel(FocusIndex).Undo();
         }
 
         public void SlideUp() {

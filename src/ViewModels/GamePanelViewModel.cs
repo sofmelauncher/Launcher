@@ -2,15 +2,20 @@
 using System.ComponentModel;
 using System.Reactive.Disposables;
 using System.Windows.Input;
-using meGaton.DataClass;
 using Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using meGaton.DataResources;
+using meGaton.Models;
+using Reactive.Bindings;
 
 namespace meGaton.ViewModels{
     public partial class GamePanelViewModel : INotifyPropertyChanged,IDisposable {
         private GameInfo myGameInfo;
-        
+        private PanelSizes panelSizes;
+        private GameProcessControll gameProcessControll;
+
+
         public event PropertyChangedEventHandler PropertyChanged;//no use
         private CompositeDisposable Disposable { get; } = new CompositeDisposable();
 
@@ -19,10 +24,12 @@ namespace meGaton.ViewModels{
 
         //Bind Properties
         public string GameName { get=>myGameInfo.GameName;}
-        public PanelSizes PanelSizes { get; set;}
+        public string IconPath {get => myGameInfo.IconPath;}
+        public ReactiveProperty<double> MyScale { get; set;}
+
         
         private void OkCommandExecute(object parameter) {
-            //buttonNotification.OnNext(0);
+            gameProcessControll.GameLaunch(myGameInfo.BinPath);
         }
 
         private ICommand okCommand;
@@ -37,18 +44,28 @@ namespace meGaton.ViewModels{
         }
 
 
-        public GamePanelViewModel(GameInfo game_info) {
+        public GamePanelViewModel(GameInfo game_info,GameProcessControll game_process_controll) {
             myGameInfo=game_info;
-
+            gameProcessControll = game_process_controll;
         }
 
         public void SetPanelSizes(float scale) {
-            PanelSizes=new PanelSizes(this.Disposable,scale);
+            panelSizes=new PanelSizes(this.Disposable,scale);
+            MyScale = panelSizes.MyScale;
         }
         
 
         public void Dispose() {
             Disposable.Dispose();
         }
+
+
+        public void Enlarge() {
+            panelSizes.Enlarge();
+        }
+        public void Undo() {
+            panelSizes.Undo();
+        }
+
     }
 }
