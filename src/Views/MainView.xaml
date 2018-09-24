@@ -23,12 +23,24 @@
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0">
                 <materialDesign:Card  materialDesign:ShadowAssist.ShadowDepth="Depth2" 
-                Width="1000" Height="775" Margin="0,30,0,0" HorizontalAlignment="Center"/>
+                Width="1100" Height="700" Margin="0,30,0,0" HorizontalAlignment="Center">
+                    <Grid>
+                        <MediaElement Name="DisplayVideo" HorizontalAlignment="Left" Height="612" VerticalAlignment="Top" Width="1088" Margin="6,40,0,0"
+                                      LoadedBehavior="Manual" UnloadedBehavior="Manual"/>
+                        <Image Name="DisplayImage" HorizontalAlignment="Left" Height="612" VerticalAlignment="Top" Width="1088" Margin="6,40,0,0"/>
+                    </Grid>
+                </materialDesign:Card>
                 <materialDesign:Card  materialDesign:ShadowAssist.ShadowDepth="Depth2" 
-                Width="1000" Height="200" Margin="0,50,0,0" HorizontalAlignment="Center"/>
+                Width="1100" Height="200" Margin="0,20,0,0" HorizontalAlignment="Center">
+                    <TextBlock Text="{Binding GameDiscription.Value}" FontSize="40" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                </materialDesign:Card>
+                <materialDesign:Card  materialDesign:ShadowAssist.ShadowDepth="Depth2" 
+                                      Width="1100" Height="100" Margin="0,20,0,0" HorizontalAlignment="Center">
+                    <TextBlock Text="Controller" FontSize="40" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                </materialDesign:Card>
             </StackPanel>
             <StackPanel Grid.Column="1" Name="PanelParent"  Height="1300" VerticalAlignment="Center"  Margin="0,0,0,0">
             </StackPanel>
-         </Grid>
+        </Grid>
     </Viewbox>
 </Window>

@@ -127,6 +127,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="src\DataResources\IGamesDataConnector.cs" />
+    <Compile Include="src\Models\DisplayControll.cs" />
     <Compile Include="src\Models\GameProcessControll.cs" />
     <Compile Include="src\Models\PanelControler.cs" />
     <Compile Include="src\General\DelegateCommand.cs" />

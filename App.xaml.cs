@@ -23,7 +23,10 @@ namespace meGaton {
             var panel_creater = new PanelCreater();
             panel_creater.Launch(window.FindName("PanelParent") as StackPanel);
 
-            var view_model = new MainViewModel(window.FindName("PanelParent") as StackPanel);
+            var view_model = new MainViewModel(
+                window.FindName("PanelParent") as StackPanel
+                ,window.FindName("DisplayVideo") as MediaElement
+                ,window.FindName("DisplayImage") as Image);
 
             window.DataContext = view_model;
 

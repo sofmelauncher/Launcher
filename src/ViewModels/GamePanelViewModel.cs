@@ -11,8 +11,8 @@ using Reactive.Bindings;
 
 namespace meGaton.ViewModels{
     public partial class GamePanelViewModel : INotifyPropertyChanged,IDisposable {
-        private GameInfo myGameInfo;
-        private PanelSizes panelSizes;
+        public GameInfo MyGameInfo { get; private set; }
+        public PanelSizes PanelSizes { get; private set; }
         private GameProcessControll gameProcessControll;
 
 
@@ -23,13 +23,13 @@ namespace meGaton.ViewModels{
         public IObservable<int> ButtonNotification => buttonNotification;
 
         //Bind Properties
-        public string GameName { get=>myGameInfo.GameName;}
-        public string IconPath {get => myGameInfo.IconPath;}
+        public string GameName { get=>MyGameInfo.GameName;}
+        public string IconPath {get => MyGameInfo.IconPath;}
         public ReactiveProperty<double> MyScale { get; set;}
 
         
         private void OkCommandExecute(object parameter) {
-            gameProcessControll.GameLaunch(myGameInfo.BinPath);
+            gameProcessControll.GameLaunch(MyGameInfo.BinPath);
         }
 
         private ICommand okCommand;
@@ -45,27 +45,18 @@ namespace meGaton.ViewModels{
 
 
         public GamePanelViewModel(GameInfo game_info,GameProcessControll game_process_controll) {
-            myGameInfo=game_info;
+            MyGameInfo=game_info;
             gameProcessControll = game_process_controll;
         }
 
         public void SetPanelSizes(float scale) {
-            panelSizes=new PanelSizes(this.Disposable,scale);
-            MyScale = panelSizes.MyScale;
+            PanelSizes=new PanelSizes(this.Disposable,scale);
+            MyScale = PanelSizes.MyScale;
         }
         
 
         public void Dispose() {
             Disposable.Dispose();
         }
-
-
-        public void Enlarge() {
-            panelSizes.Enlarge();
-        }
-        public void Undo() {
-            panelSizes.Undo();
-        }
-
     }
 }

@@ -1,10 +1,17 @@
-﻿using System.Windows;
+﻿using System;
+using System.Reactive.Subjects;
+using System.Windows;
 using System.Windows.Controls;
+using meGaton.DataResources;
 using meGaton.ViewModels;
 
 namespace meGaton.Models {
     public class PanelControler {
+        public GameInfo GetCurrentPanelsInfo => GetViewModel(FocusIndex).MyGameInfo;
         private readonly StackPanel panelParent;
+
+        private readonly Subject<GameInfo> changeSelectedSubject = new Subject<GameInfo>();
+        public IObservable<GameInfo> ChangeSelectedPanel => changeSelectedSubject;
 
         private const int FocusIndex=2;
 
@@ -19,11 +26,13 @@ namespace meGaton.Models {
         }
 
         private void FocusPanel() {
-              GetViewModel(FocusIndex).Enlarge();
+            var c = GetViewModel(FocusIndex);
+            c.PanelSizes.Enlarge();
+            changeSelectedSubject.OnNext(c.MyGameInfo);
         }
 
         private void UnFocusPanel() {
-            GetViewModel(FocusIndex).Undo();
+            GetViewModel(FocusIndex).PanelSizes.Undo();
         }
 
         public void SlideUp() {
@@ -32,7 +41,6 @@ namespace meGaton.Models {
             panelParent.Children.RemoveAt(0);
             panelParent.Children.Add(el);
             FocusPanel();
-            
         }
         public void SlideDown() {
             UnFocusPanel();
