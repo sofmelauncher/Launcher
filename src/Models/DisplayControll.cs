@@ -13,8 +13,11 @@ namespace meGaton.Models {
 
         public void SetMedia(string[]panel_paths,string video_path) {
             displayMediaElement.Source = null;
-            if(video_path=="")return;
-            displayMediaElement.Source=new Uri(video_path,UriKind.Relative);
+            if (video_path == "") {
+                displayMediaElement.Source = new Uri(panel_paths[0], UriKind.Relative);
+            } else {
+                displayMediaElement.Source = new Uri(video_path, UriKind.Relative);
+            }
             displayMediaElement.Play();
         }
     }

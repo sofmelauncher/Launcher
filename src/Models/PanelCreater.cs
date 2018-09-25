@@ -26,16 +26,16 @@ namespace meGaton.Models
             var moq = new Mock<IGamesDataConnector>();
             moq.Setup(m => m.GetGamesInfo())
                 .Returns(new List<GameInfo>(){
-                    new GameInfo("TestGame1","I am the bone of my sword. ",0,root+"\\1\\game\\DOUTONBORI.exe",root+"\\1\\panel\\icon.png",new string[]{"\\1\\panel\\img1.png"},""),
-                    new GameInfo("TestGame2","Steel is my body,and fire is my blood. ",0,root+"\\2\\game\\STG.exe",root+"\\2\\panel\\icon.png",new string[]{"\\2\\panel\\img1.png"},""),
-                    new GameInfo("TestGame3","I have created over a thousand blades. ",0,root+"\\3\\game\\DOUTONBORI.exe",root+"\\3\\panel\\icon.png",new string[]{"\\3\\panel\\img1.png"},root+"\\1\\panel\\video.mp4"),
-                    new GameInfo("TestGame4","Unaware of loss. ",0,root+"\\4\\game\\STG.exe",root+"\\4\\panel\\icon.png",new string[]{"\\4\\panel\\img1.png"},""),
-                    new GameInfo("TestGame5","Nor aware of gain. ",0,root+"\\1\\game\\DOUTONBORI.exe",root+"\\1\\panel\\icon.png",new string[]{"\\1\\panel\\img1.png"},""),
-                    new GameInfo("TestGame6","Withstood pain to create weapons, ",0,root+"\\2\\game\\STG.exe",root+"\\2\\panel\\icon.png",new string[]{"\\2\\panel\\img1.png"},""),
-                    new GameInfo("TestGame7","waiting for one's arrival. ",0,root+"\\3\\game\\DOUTONBORI.exe",root+"\\3\\panel\\icon.png",new string[]{"\\3\\panel\\img1.png"},""),
-                    new GameInfo("TestGame8","I have no regrets.This is the only path. ",0,root+"\\4\\game\\STG.exe",root+"\\4\\panel\\icon.png",new string[]{"\\4\\panel\\img1.png"},""),
-                    new GameInfo("TestGame9","My whole life was",0,root+"\\1\\game\\DOUTONBORI.exe",root+"\\1\\panel\\icon.png",new string[]{"\\3\\panel\\img1.png"},""),
-                    new GameInfo("TestGame10","unlimited blade works",0,root+"\\2\\game\\STG.exe",root+"\\2\\panel\\icon.png",new string[]{"\\4\\panel\\img1.png"},""),
+                    new GameInfo("TestGame1","I am the bone of my sword. ",0,root+"\\1\\game\\DOUTONBORI.exe",root+"\\1\\panel\\icon.png",new string[]{root+"\\1\\panel\\img1.png"},""),
+                    new GameInfo("TestGame2","Steel is my body,and fire is my blood. ",0,root+"\\2\\game\\STG.exe",root+"\\2\\panel\\icon.png",new string[]{ root + "\\2\\panel\\img1.png" },""),
+                    new GameInfo("TestGame3","I have created over a thousand blades. ",0,root+"\\3\\game\\DOUTONBORI.exe",root+"\\3\\panel\\icon.png",new string[]{ root + "\\3\\panel\\img1.png" },root+"\\1\\panel\\video.mp4"),
+                    new GameInfo("TestGame4","Unaware of loss. ",0,root+"\\4\\game\\STG.exe",root+"\\4\\panel\\icon.png",new string[]{ root + "\\4\\panel\\img1.png" },""),
+                    new GameInfo("TestGame5","Nor aware of gain. ",0,root+"\\1\\game\\DOUTONBORI.exe",root+"\\1\\panel\\icon.png",new string[]{ root + "\\1\\panel\\img1.png" },""),
+                    new GameInfo("TestGame6","Withstood pain to create weapons, ",0,root+"\\2\\game\\STG.exe",root+"\\2\\panel\\icon.png",new string[]{ root + "\\2\\panel\\img1.png" },""),
+                    new GameInfo("TestGame7","waiting for one's arrival. ",0,root+"\\3\\game\\DOUTONBORI.exe",root+"\\3\\panel\\icon.png",new string[]{ root + "\\3\\panel\\img1.png" },""),
+                    new GameInfo("TestGame8","I have no regrets.This is the only path. ",0,root+"\\4\\game\\STG.exe",root+"\\4\\panel\\icon.png",new string[]{ root + "\\4\\panel\\img1.png" },""),
+                    new GameInfo("TestGame9","My whole life was",0,root+"\\1\\game\\DOUTONBORI.exe",root+"\\1\\panel\\icon.png",new string[]{ root + "\\3\\panel\\img1.png" },""),
+                    new GameInfo("TestGame10","unlimited blade works",0,root+"\\2\\game\\STG.exe",root+"\\2\\panel\\icon.png",new string[]{ root + "\\4\\panel\\img1.png" },""),
                 });
             iGamesDataConnector =moq.Object;
         }
