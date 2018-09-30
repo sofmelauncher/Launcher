@@ -131,8 +131,12 @@
     <Compile Include="src\Models\GameProcessControll.cs" />
     <Compile Include="src\Models\PanelControler.cs" />
     <Compile Include="src\General\DelegateCommand.cs" />
+    <Compile Include="src\ViewModels\CategoryTagViewModel.cs" />
     <Compile Include="src\ViewModels\GamePanelViewModel.cs" />
     <Compile Include="src\Models\PanelSizes.cs" />
+    <Compile Include="src\Views\CategoryTag.xaml.cs">
+      <DependentUpon>CategoryTag.xaml</DependentUpon>
+    </Compile>
     <Compile Include="src\Views\GamePanel.xaml.cs">
       <DependentUpon>GamePanel.xaml</DependentUpon>
     </Compile>
@@ -187,6 +191,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="src\Views\CategoryTag.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="src\Views\GamePanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

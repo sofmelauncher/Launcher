@@ -6,6 +6,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="700" 
+             HorizontalAlignment="Left"
              >
 
     <StackPanel Orientation="Horizontal" Margin="10">
@@ -15,15 +16,29 @@
             <materialDesign:Card.LayoutTransform>
                 <ScaleTransform ScaleX="{Binding MyScale.Value}" ScaleY="{Binding MyScale.Value}"/>
             </materialDesign:Card.LayoutTransform>
-            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="140">
+            <Grid HorizontalAlignment="Left" VerticalAlignment="Center" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
                 <Image Grid.Row="0" Grid.Column="0" Source="{Binding IconPath}" Stretch="None" Height="100" Width="100" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,0,0" />
                 <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding GameName}" TextAlignment="Left" VerticalAlignment="Center" TextWrapping="Wrap"  FontSize="32"/>
                 <Button Grid.Row="0" Grid.Column="2" Content="Run" Command="{Binding OkCommand}"/>
+                <Grid Name="TagParent" Grid.Row="0" Grid.Column="3" Margin="10,0,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                </Grid>
             </Grid>
         </materialDesign:Card>
     </StackPanel>
