@@ -66,7 +66,7 @@ namespace meGaton.Models
                     Console.WriteLine(@"Index Error by Correspondence Settings.");
                     continue;
                 }
-                target_color.Value = game_controllers != null&&game_controllers.Any(n => n != target_correspondence.me)
+                target_color.Value = game_controllers != null&&game_controllers.Any(n => n == target_correspondence.me)
                     ? ACTIVE_COLOR
                     : NON_ACTIVE_COLOR;
             }
