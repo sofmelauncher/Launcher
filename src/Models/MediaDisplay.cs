@@ -2,13 +2,11 @@
 using System.Windows.Controls;
 
 namespace meGaton.Models {
-    class DisplayControll {
+    class MediaDisplay {
         private MediaElement displayMediaElement;
-        private Image displayImage;
 
-        public DisplayControll(MediaElement media_element,Image image) {
+        public MediaDisplay(MediaElement media_element) {
             displayMediaElement = media_element;
-            displayImage = image;
         }
 
         public void SetMedia(string[]panel_paths,string video_path) {

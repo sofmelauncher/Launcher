@@ -22,16 +22,13 @@ namespace meGaton.src.ViewModels
         public ReactiveProperty<string> MyCategory { get; set;}
         public ReactiveProperty<Brush> MyColor{ get; set; }
 
-        public CategoryTagViewModel() {
+        public CategoryTagViewModel(string category, Color color) {
             this.MyCategory = new ReactiveProperty<string>().AddTo(Disposable);
             this.MyColor = new ReactiveProperty<Brush>().AddTo(Disposable);
-        }
 
-        public void SetTag(string category,Color color) {
             this.MyCategory.Value = category;
             this.MyColor.Value = new SolidColorBrush(color);
         }
-
         public void Dispose() {
             Disposable.Dispose();
         }

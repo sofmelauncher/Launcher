@@ -1,11 +1,16 @@
 ﻿using Reactive.Bindings;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Reactive.Disposables;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using meGaton.DataResources;
 using meGaton.Models;
+using MaterialDesignThemes.Wpf;
 using Reactive.Bindings.Extensions;
 
 namespace meGaton.ViewModels {
@@ -13,32 +18,39 @@ namespace meGaton.ViewModels {
     /// MainViewModel.xaml の相互作用ロジック
     /// </summary>
     public partial class MainViewModel : INotifyPropertyChanged, IDisposable {
+        public event PropertyChangedEventHandler PropertyChanged;//no use
+        private CompositeDisposable Disposable { get; } = new CompositeDisposable();
 
         public ReactiveProperty<string> GameDiscription { get; set; }
         public ReactiveCommand ListUpCommand { get; } = new ReactiveCommand();
         public ReactiveCommand ListDownCommand { get; } = new ReactiveCommand();
-        private readonly PanelControler panelControler;
-        private readonly DisplayControll displayControll;
+        public ReactiveProperty<Brush>[] ControllerIconColors { get; private set; }
 
 
-        public event PropertyChangedEventHandler PropertyChanged;//no use
-        private CompositeDisposable Disposable { get; } = new CompositeDisposable();
+        private readonly MediaDisplay mediaDisplay;
+        private readonly ControllerDisplay controllerDisplay;
 
-        public MainViewModel(StackPanel stack_panel, MediaElement media_element, Image image) {
+        public MainViewModel(StackPanel games_parent, MediaElement media_element, StackPanel controller_parent) {
             GameDiscription = new ReactiveProperty<string>().AddTo(this.Disposable);
-            panelControler = new PanelControler(stack_panel);
-            displayControll=new DisplayControll(media_element,image);
+            mediaDisplay=new MediaDisplay(media_element);
 
-            ListUpCommand.Subscribe(n => panelControler.SlideUp());
-            ListDownCommand.Subscribe(n => panelControler.SlideDown());
+     
+            ControllerIconColors = Enumerable.Range(0,controller_parent.Children.OfType<UIElement>().Count(n=>n is PackIcon))
+                .Select(_=>new ReactiveProperty<Brush>().AddTo(Disposable)).ToArray();
+            controllerDisplay = new ControllerDisplay(controller_parent);
 
-            panelControler.ChangeSelectedPanel.Subscribe(ChangeSeleted);
-            ChangeSeleted(panelControler.GetCurrentPanelsInfo);
+            var panel_controler = new PanelControler(games_parent);
+            ListUpCommand.Subscribe(n => panel_controler.SlideDown());
+            ListDownCommand.Subscribe(n => panel_controler.SlideUp());
+
+            panel_controler.ChangeSelectedPanel.Subscribe(ChangeSeletedDisplay);
+            ChangeSeletedDisplay(panel_controler.GetCurrentPanelsInfo);
         }
 
-        private void ChangeSeleted(GameInfo game_info) {
+        public void ChangeSeletedDisplay(GameInfo game_info) {
             GameDiscription.Value = game_info.GameDescription;
-            displayControll.SetMedia(game_info.PanelsPath,game_info.VideoPath);
+            mediaDisplay.SetMedia(game_info.PanelsPath,game_info.VideoPath);
+            controllerDisplay.ChangeIcon(game_info.UseControllers,ControllerIconColors.ToList());
         }
 
         public void Dispose() {

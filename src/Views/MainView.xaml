@@ -33,9 +33,13 @@
                 </materialDesign:Card>
                 <materialDesign:Card  materialDesign:ShadowAssist.ShadowDepth="Depth2" 
                                       Width="1100" Height="100" Margin="0,20,0,0" HorizontalAlignment="Center">
-                    <TextBlock Text="Controller" FontSize="40" HorizontalAlignment="Left" Margin="10,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                    <StackPanel Name="ControllIconParent" Orientation="Horizontal" Width="Auto">
+                        <TextBlock Text="Controller" FontSize="40" HorizontalAlignment="Left" Margin="10,0,10,0" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                        <materialDesign:PackIcon Kind="GoogleController" Foreground="{Binding ControllerIconColors[0].Value}" VerticalAlignment="Center" Margin="10,0,10,0" Width="100" Height="100" />
+                        <materialDesign:PackIcon Kind="Mouse" Foreground="{Binding ControllerIconColors[1].Value}" VerticalAlignment="Center" Margin="10,0,10,0" Width="80" Height="80"/>
+                        <materialDesign:PackIcon Kind="Keyboard" Foreground="{Binding ControllerIconColors[2].Value}" VerticalAlignment="Center" Margin="10,0,10,0" Width="100" Height="100"/>
+                    </StackPanel>
                 </materialDesign:Card>
-
             </StackPanel>
             <StackPanel Grid.Column="1" Name="PanelParent"  Height="1310" VerticalAlignment="Center"  Margin="0,0,0,0">
             </StackPanel>
