@@ -24,7 +24,7 @@ namespace meGaton.ViewModels {
         public ReactiveProperty<string> GameDiscription { get; set; }
         public ReactiveCommand ListUpCommand { get; } = new ReactiveCommand();
         public ReactiveCommand ListDownCommand { get; } = new ReactiveCommand();
-        public ReactiveProperty<Brush>[] ControllerIconColors => controllerDisplay.colorList.ToArray();
+        public ReactiveProperty<Brush>[] ControllerIconColors => controllerDisplay.ColorList.ToArray();
 
         private CustomerTimer customerTimer;
         private readonly MediaDisplay mediaDisplay;
