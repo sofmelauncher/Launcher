@@ -24,22 +24,18 @@ namespace meGaton.ViewModels {
         public ReactiveProperty<string> GameDiscription { get; set; }
         public ReactiveCommand ListUpCommand { get; } = new ReactiveCommand();
         public ReactiveCommand ListDownCommand { get; } = new ReactiveCommand();
-        public ReactiveProperty<Brush>[] ControllerIconColors { get; private set; }
+        public ReactiveProperty<Brush>[] ControllerIconColors => controllerDisplay.colorList.ToArray();
 
-
+        private CustomerTimer customerTimer;
         private readonly MediaDisplay mediaDisplay;
         private readonly ControllerDisplay controllerDisplay;
 
-        public MainViewModel(StackPanel games_parent, MediaElement media_element, StackPanel controller_parent) {
+        public MainViewModel(PanelControler panel_controler,MediaDisplay media_display, ControllerDisplay controller_display) {
             GameDiscription = new ReactiveProperty<string>().AddTo(this.Disposable);
-            mediaDisplay=new MediaDisplay(media_element);
+            mediaDisplay = media_display;
 
-     
-            ControllerIconColors = Enumerable.Range(0,controller_parent.Children.OfType<UIElement>().Count(n=>n is PackIcon))
-                .Select(_=>new ReactiveProperty<Brush>().AddTo(Disposable)).ToArray();
-            controllerDisplay = new ControllerDisplay(controller_parent);
+            controllerDisplay = controller_display;
 
-            var panel_controler = new PanelControler(games_parent);
             ListUpCommand.Subscribe(n => panel_controler.SlideDown());
             ListDownCommand.Subscribe(n => panel_controler.SlideUp());
 
@@ -50,7 +46,7 @@ namespace meGaton.ViewModels {
         public void ChangeSeletedDisplay(GameInfo game_info) {
             GameDiscription.Value = game_info.GameDescription;
             mediaDisplay.SetMedia(game_info.PanelsPath,game_info.VideoPath);
-            controllerDisplay.ChangeIcon(game_info.UseControllers,ControllerIconColors.ToList());
+            controllerDisplay.ChangeIcon(game_info.UseControllers);
         }
 
         public void Dispose() {

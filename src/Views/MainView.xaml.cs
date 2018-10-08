@@ -11,21 +11,26 @@ namespace meGaton.Views
     /// <summary>
     /// MainView.xaml の相互作用ロジック
     /// </summary>
-    public partial class MainView : Window
-    {
-        public MainView()
-        {
+    public partial class MainView : Window {
+
+        public MainView(){
             InitializeComponent();
 
             var panel_creater = new PanelCreater();
             panel_creater.Launch(FindName("PanelParent") as StackPanel);
+            new CustomerTimer(this);
+            new InstantTimer(5, a);
 
             var view_model = new MainViewModel(
-                FindName("PanelParent") as StackPanel
-                ,FindName("DisplayVideo") as MediaElement
-                ,FindName("ControllIconParent") as StackPanel);
+                new PanelControler(FindName("PanelParent") as StackPanel)
+                ,new MediaDisplay(FindName("DisplayVideo") as MediaElement)
+                ,new ControllerDisplay(FindName("ControllIconParent") as StackPanel));
 
             this.DataContext = view_model;
+        }
+
+        void a() {
+            Console.WriteLine("abgbgbdjdj");
         }
     }
 }

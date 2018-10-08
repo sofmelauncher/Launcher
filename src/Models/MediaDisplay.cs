@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 
 namespace meGaton.Models {
-    class MediaDisplay {
+    public class MediaDisplay {
         private MediaElement displayMediaElement;
 
         public MediaDisplay(MediaElement media_element) {

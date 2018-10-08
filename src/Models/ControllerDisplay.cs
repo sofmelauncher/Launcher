@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -8,10 +9,11 @@ using Castle.Core.Internal;
 using meGaton.DataResources;
 using MaterialDesignThemes.Wpf;
 using Reactive.Bindings;
+using Reactive.Bindings.Extensions;
 
 namespace meGaton.Models
 {
-    public class ControllerDisplay{
+    public class ControllerDisplay:IDisposable{
         private class IconCorrespondence {
             public GameController me;
             public string kind;
@@ -26,6 +28,9 @@ namespace meGaton.Models
 
         private IconCorrespondence[] iconCorrespondences;
         private List<UIElement> currentIcon=new List<UIElement>();
+        public List<ReactiveProperty<Brush>> colorList { get; private set; }
+
+        private CompositeDisposable Disposable { get; } = new CompositeDisposable();
 
         private readonly Brush ACTIVE_COLOR = new SolidColorBrush(Colors.Black);
         private readonly Brush NON_ACTIVE_COLOR = new SolidColorBrush(Color.FromArgb(30,0,0,0));
@@ -36,6 +41,8 @@ namespace meGaton.Models
                 new IconCorrespondence(GameController.Mouse,"Mouse"),
                 new IconCorrespondence(GameController.Keyboard,"Keyboard"),
             };
+            colorList = Enumerable.Range(0, root.Children.OfType<UIElement>().Count(n => n is PackIcon))
+                .Select(_ => new ReactiveProperty<Brush>().AddTo(Disposable)).ToList();
 
             SetIconPara(root.Children.OfType<UIElement>());
         }
@@ -53,14 +60,14 @@ namespace meGaton.Models
             }
         }
 
-        public void ChangeIcon(GameController[] game_controllers,List<ReactiveProperty<Brush>> color_list) {
-            if (color_list.Count != iconCorrespondences.Length) {
+        public void ChangeIcon(GameController[] game_controllers) {
+            if (colorList.Count != iconCorrespondences.Length) {
                 Console.WriteLine(@"The lengths of A and B do not match");
                 return;
             }
 
-            for (var i = 0; i < color_list.Count; i++) {
-                var target_color = color_list[i];
+            for (var i = 0; i < colorList.Count; i++) {
+                var target_color = colorList[i];
                 var target_correspondence = iconCorrespondences.Find(n => n.index == i);
                 if (target_correspondence == null) {
                     Console.WriteLine(@"Index Error by Correspondence Settings.");
@@ -70,6 +77,11 @@ namespace meGaton.Models
                     ? ACTIVE_COLOR
                     : NON_ACTIVE_COLOR;
             }
+        }
+
+
+        public void Dispose() {
+            Disposable.Dispose();
         }
     }
 }
