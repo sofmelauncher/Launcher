@@ -6,9 +6,16 @@ namespace meGaton.Models {
         private Process currentProcess;
 
         public void GameLaunch(string path) {
-            currentProcess=new Process();
+            if (currentProcess != null) return;
+            currentProcess = new Process();
             currentProcess.StartInfo.FileName = path;
+            currentProcess.EnableRaisingEvents = true;
+            currentProcess.Exited += ProcessExited;
             currentProcess.Start();
+        }
+
+        void ProcessExited(object sender, EventArgs e) {
+            currentProcess = null;
         }
     }
 }
