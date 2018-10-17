@@ -4,9 +4,10 @@ using System.Diagnostics;
 namespace meGaton.Models {
     public class GameProcessControll {
         private Process currentProcess;
+        public bool IsRunning => currentProcess != null;
 
         public void GameLaunch(string path) {
-            if (currentProcess != null) return;
+            if (IsRunning) return;
             currentProcess = new Process();
             currentProcess.StartInfo.FileName = path;
             currentProcess.EnableRaisingEvents = true;
