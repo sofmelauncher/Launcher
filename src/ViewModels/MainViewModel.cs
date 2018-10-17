@@ -27,15 +27,13 @@ namespace meGaton.ViewModels {
         public ReactiveCommand ListDownCommand { get; } = new ReactiveCommand();
         public ReactiveCommand TimerResetCommand { get; } = new ReactiveCommand();
         public ReactiveProperty<Brush>[] ControllerIconColors => controllerDisplay.ColorList.ToArray();
-
-        private CustomerTimer customerTimer;
         private readonly MediaDisplay mediaDisplay;
         private readonly ControllerDisplay controllerDisplay;
 
         public MainViewModel(Window main_window,StackPanel panel_parent,MediaElement media_display,StackPanel controller_icon_parent) {
             GameDiscription = new ReactiveProperty<string>().AddTo(this.Disposable);
 
-            customerTimer=new CustomerTimer(main_window);
+            var customer_timer=new CustomerTimer(main_window);
             var panel_creater = new PanelCreater();
             panel_creater.Launch(panel_parent);
             var panel_controller = new PanelController(panel_parent);
@@ -45,7 +43,10 @@ namespace meGaton.ViewModels {
 
             ListUpCommand.Subscribe(n => panel_controller.SlideDown());
             ListDownCommand.Subscribe(n => panel_controller.SlideUp());
-            TimerResetCommand.Subscribe(n => customerTimer.Stop());
+            TimerResetCommand.Subscribe(n => {
+                customer_timer.Stop();
+                panel_controller.Shuffle();
+            });
 
             GamePadObserver.GetInstance.VerticalStickStream
                 .Where(n=>!game_process_controll.IsRunning)
@@ -56,14 +57,14 @@ namespace meGaton.ViewModels {
                     }else if (n == -1) {
                         panel_controller.SlideUp();
                     }
-                    customerTimer.StartRequest();
+                    customer_timer.StartRequest();
                 });
             GamePadObserver.GetInstance.EnterKeyStream
                 .Where(n => !game_process_controll.IsRunning)
                 .Where(n=>n)
                 .Subscribe(n => {
                     game_process_controll.GameLaunch(panel_controller.GetCurrentPanelsInfo.BinPath);
-                    customerTimer.StartRequest();
+                    customer_timer.StartRequest();
                 });
 
 
