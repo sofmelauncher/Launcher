@@ -4,6 +4,7 @@ using System.Windows.Media.Animation;
 using meGaton.ViewModels;
 using System;
 using System.Windows.Media;
+using System.Windows.Input;
 
 namespace meGaton.Views
 {
@@ -18,6 +19,10 @@ namespace meGaton.Views
             ((FrameworkElement) this.Content).DataContext = game_panel_view_model;
             CreateTags();
 
+        }
+
+        private void MouseClick(object sender,MouseButtonEventArgs e) {
+            (((FrameworkElement)this.Content).DataContext as GamePanelViewModel).MouseClickSubmit();
         }
 
         private void CreateTags() {

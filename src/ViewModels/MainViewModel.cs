@@ -27,6 +27,9 @@ namespace meGaton.ViewModels {
         public ReactiveCommand ListDownCommand { get; } = new ReactiveCommand();
         public ReactiveCommand TimerResetCommand { get; } = new ReactiveCommand();
         public ReactiveProperty<Brush>[] ControllerIconColors => controllerDisplay.ColorList.ToArray();
+
+        private readonly PanelController panelController;
+        private readonly GameProcessControll gameProcessControll;
         private readonly MediaDisplay mediaDisplay;
         private readonly ControllerDisplay controllerDisplay;
 
@@ -36,40 +39,51 @@ namespace meGaton.ViewModels {
             var customer_timer=new CustomerTimer(main_window);
             var panel_creater = new PanelCreater();
             panel_creater.Launch(panel_parent);
-            var panel_controller = new PanelController(panel_parent);
+            panelController = new PanelController(panel_parent);
             mediaDisplay = new MediaDisplay(media_display);
             controllerDisplay = new ControllerDisplay(controller_icon_parent);
-            var game_process_controll = new GameProcessControll();
+            gameProcessControll = GameProcessControll.GetInstance;
 
-            ListUpCommand.Subscribe(n => panel_controller.SlideDown());
-            ListDownCommand.Subscribe(n => panel_controller.SlideUp());
+            ListUpCommand.Subscribe(n => panelController.SlideDown());
+            ListDownCommand.Subscribe(n => panelController.SlideUp());
+
             TimerResetCommand.Subscribe(n => {
                 customer_timer.Stop();
-                panel_controller.Shuffle();
+                panelController.Shuffle();
             });
 
             GamePadObserver.GetInstance.VerticalStickStream
-                .Where(n=>!game_process_controll.IsRunning)
+                .Where(n=>!gameProcessControll.IsRunning)
                 .Where(n => n != 0)
                 .Subscribe(n => {
                     if (n == 1) {
-                        panel_controller.SlideDown();
+                        panelController.SlideDown();
                     }else if (n == -1) {
-                        panel_controller.SlideUp();
+                        panelController.SlideUp();
                     }
                     customer_timer.StartRequest();
                 });
             GamePadObserver.GetInstance.EnterKeyStream
-                .Where(n => !game_process_controll.IsRunning)
+                .Where(n => !gameProcessControll.IsRunning)
                 .Where(n=>n)
                 .Subscribe(n => {
-                    game_process_controll.GameLaunch(panel_controller.GetCurrentPanelsInfo.BinPath);
+                    gameProcessControll.GameLaunch(panelController.GetCurrentPanelsInfo.BinPath);
                     customer_timer.StartRequest();
                 });
 
 
-            panel_controller.ChangeSelectedPanel.Subscribe(ChangeSeletedDisplay);
-            ChangeSeletedDisplay(panel_controller.GetCurrentPanelsInfo);
+            panelController.ChangeSelectedPanel.Subscribe(ChangeSeletedDisplay);
+            ChangeSeletedDisplay(panelController.GetCurrentPanelsInfo);
+        }
+
+
+        public void MouseWheel(int delta) {
+            if (gameProcessControll.IsRunning) return;
+            if (delta > 0) {
+                panelController.SlideDown();
+            } else if (delta < 0) {
+                panelController.SlideUp();
+            }
         }
 
         public void ChangeSeletedDisplay(GameInfo game_info) {

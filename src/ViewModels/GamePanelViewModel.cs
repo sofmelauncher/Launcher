@@ -13,11 +13,14 @@ namespace meGaton.ViewModels{
     public partial class GamePanelViewModel : INotifyPropertyChanged,IDisposable {
         public GameInfo MyGameInfo { get; private set; }
         public PanelSizes PanelSizes { get; private set; }
+        public ReactiveCommand ClickCommand { get; } = new ReactiveCommand();
+
         private GameProcessControll gameProcessControll;
 
 
         public event PropertyChangedEventHandler PropertyChanged;//no use
         private CompositeDisposable Disposable { get; } = new CompositeDisposable();
+
 
         private Subject<int> buttonNotification=new Subject<int>();
         public IObservable<int> ButtonNotification => buttonNotification;
@@ -27,33 +30,22 @@ namespace meGaton.ViewModels{
         public string IconPath {get => MyGameInfo.IconPath;}
         public ReactiveProperty<double> MyScale { get; set;}
 
-        
-        private void OkCommandExecute(object parameter) {
-            gameProcessControll.GameLaunch(MyGameInfo.BinPath);
-        }
-
-        private ICommand okCommand;
-        public ICommand OkCommand {
-            get {
-                if (okCommand == null)
-                    okCommand = new DelegateCommand {
-                        ExecuteHandler = OkCommandExecute,
-                    };
-                return okCommand;
-            }
-        }
-
-
-        public GamePanelViewModel(GameInfo game_info,GameProcessControll game_process_controll) {
+        public GamePanelViewModel(GameInfo game_info) {
             MyGameInfo=game_info;
-            gameProcessControll = game_process_controll;
+            gameProcessControll = GameProcessControll.GetInstance;
+
+            ClickCommand.Subscribe(n=>Console.WriteLine(MyGameInfo.GameName));
         }
 
         public void SetPanelSizes(float scale) {
             PanelSizes=new PanelSizes(this.Disposable,scale);
             MyScale = PanelSizes.MyScale;
         }
-        
+
+        public void MouseClickSubmit() {
+            gameProcessControll.GameLaunch(MyGameInfo.BinPath);
+        }
+
 
         public void Dispose() {
             Disposable.Dispose();

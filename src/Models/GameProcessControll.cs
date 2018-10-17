@@ -3,8 +3,12 @@ using System.Diagnostics;
 
 namespace meGaton.Models {
     public class GameProcessControll {
+        public static GameProcessControll GetInstance { get; } = new GameProcessControll();
         private Process currentProcess;
         public bool IsRunning => currentProcess != null;
+
+        private GameProcessControll() {
+        }
 
         public void GameLaunch(string path) {
             if (IsRunning) return;

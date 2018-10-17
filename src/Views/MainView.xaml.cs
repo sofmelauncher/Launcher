@@ -14,16 +14,20 @@ namespace meGaton.Views
     /// </summary>
     public partial class MainView : Window {
 
-        public MainView(){
+        public MainView() {
             InitializeComponent();
 
             var view_model = new MainViewModel(
                 this,
                 FindName("PanelParent") as StackPanel
-                ,FindName("DisplayVideo") as MediaElement
-                ,FindName("ControllIconParent") as StackPanel);
+                , FindName("DisplayVideo") as MediaElement
+                , FindName("ControllIconParent") as StackPanel);
 
             this.DataContext = view_model;
+        }
+
+        protected override void OnMouseWheel(MouseWheelEventArgs e) {
+            (this.DataContext as MainViewModel).MouseWheel(e.Delta);
         }
     }
 }

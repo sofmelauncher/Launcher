@@ -7,8 +7,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="700" 
              HorizontalAlignment="Left"
+             Background="Transparent"
+             MouseDown="MouseClick"
              >
-
     <StackPanel Orientation="Horizontal" Margin="10">
         <materialDesign:Card
             materialDesign:ShadowAssist.ShadowDepth="Depth3" 
@@ -19,7 +20,6 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" >
                 <Image Source="{Binding IconPath}" Stretch="FIll" Height="{Binding RelativeSource={RelativeSource Self}}" Width="{Binding RelativeSource={RelativeSource Self}}" VerticalAlignment="Stretch" HorizontalAlignment="Left" Margin="0,0,0,0" />
                 <TextBlock Text="{Binding GameName}" TextAlignment="Left" VerticalAlignment="Center" TextWrapping="Wrap"  FontSize="32"/>
-                <Button Content="Run" Command="{Binding OkCommand}"/>
                 <WrapPanel x:Name="TagParent" VerticalAlignment="Center" Orientation="Horizontal" Margin="10,0,0,0" Width="300"/>
             </StackPanel>
         </materialDesign:Card>

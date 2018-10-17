@@ -15,13 +15,11 @@ namespace meGaton.Models
 {
     class PanelCreater {
 
-        private GameProcessControll gameProcessControll;
         private readonly IGamesDataConnector iGamesDataConnector;
 
 
 
         public PanelCreater() {
-            gameProcessControll=new GameProcessControll();
 
             var root = System.AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\')+ "\\Games";
             var moq = new Mock<IGamesDataConnector>();
@@ -50,7 +48,7 @@ namespace meGaton.Models
         }
 
         private UIElement CreateObject(GameInfo game_info) {
-            var element=new GamePanel(new GamePanelViewModel(game_info,gameProcessControll));
+            var element=new GamePanel(new GamePanelViewModel(game_info));
             return element;
         }
 
