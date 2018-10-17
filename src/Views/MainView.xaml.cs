@@ -17,15 +17,11 @@ namespace meGaton.Views
         public MainView(){
             InitializeComponent();
 
-            var panel_creater = new PanelCreater();
-            panel_creater.Launch(FindName("PanelParent") as StackPanel);
-            new CustomerTimer(this);
-            var a = GamePadObserver.GetInstance;
-
             var view_model = new MainViewModel(
-                new PanelControler(FindName("PanelParent") as StackPanel)
-                ,new MediaDisplay(FindName("DisplayVideo") as MediaElement)
-                ,new ControllerDisplay(FindName("ControllIconParent") as StackPanel));
+                this,
+                FindName("PanelParent") as StackPanel
+                ,FindName("DisplayVideo") as MediaElement
+                ,FindName("ControllIconParent") as StackPanel);
 
             this.DataContext = view_model;
         }

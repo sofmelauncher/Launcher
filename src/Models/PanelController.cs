@@ -6,7 +6,7 @@ using meGaton.DataResources;
 using meGaton.ViewModels;
 
 namespace meGaton.Models {
-    public class PanelControler {
+    public class PanelController {
         public GameInfo GetCurrentPanelsInfo => GetViewModel(FocusIndex).MyGameInfo;
         private readonly StackPanel panelParent;
 
@@ -15,7 +15,7 @@ namespace meGaton.Models {
 
         private const int FocusIndex=2;
 
-        public PanelControler(StackPanel stack_panel) {
+        public PanelController(StackPanel stack_panel) {
             panelParent = stack_panel;
             FocusPanel();
         }

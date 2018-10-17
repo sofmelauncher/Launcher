@@ -32,30 +32,34 @@ namespace meGaton.ViewModels {
         private readonly ControllerDisplay controllerDisplay;
         private readonly GameProcessControll gameProcessControll=new GameProcessControll();
 
-        public MainViewModel(PanelControler panel_controler,MediaDisplay media_display, ControllerDisplay controller_display) {
+        public MainViewModel(Window main_window,StackPanel panel_parent,MediaElement media_display,StackPanel controller_icon_parent) {
             GameDiscription = new ReactiveProperty<string>().AddTo(this.Disposable);
-            mediaDisplay = media_display;
 
-            controllerDisplay = controller_display;
+            customerTimer=new CustomerTimer(main_window);
+            var panel_creater = new PanelCreater();
+            panel_creater.Launch(panel_parent);
+            var panel_controller = new PanelController(panel_parent);
+            mediaDisplay = new MediaDisplay(media_display);
+            controllerDisplay = new ControllerDisplay(controller_icon_parent);
 
-            ListUpCommand.Subscribe(n => panel_controler.SlideDown());
-            ListDownCommand.Subscribe(n => panel_controler.SlideUp());
+            ListUpCommand.Subscribe(n => panel_controller.SlideDown());
+            ListDownCommand.Subscribe(n => panel_controller.SlideUp());
             GamePadObserver.GetInstance.VerticalStickStream
                 .Where(n => n != 0)
                 .Subscribe(n => {
                     if (n == 1) {
-                        panel_controler.SlideDown();
+                        panel_controller.SlideDown();
                     }else if (n == -1) {
-                        panel_controler.SlideUp();
+                        panel_controller.SlideUp();
                     }
                 });
             GamePadObserver.GetInstance.EnterKeyStream
                 .Where(n=>n)
-                .Subscribe(n =>gameProcessControll.GameLaunch(panel_controler.GetCurrentPanelsInfo.BinPath));
+                .Subscribe(n =>gameProcessControll.GameLaunch(panel_controller.GetCurrentPanelsInfo.BinPath));
 
 
-            panel_controler.ChangeSelectedPanel.Subscribe(ChangeSeletedDisplay);
-            ChangeSeletedDisplay(panel_controler.GetCurrentPanelsInfo);
+            panel_controller.ChangeSelectedPanel.Subscribe(ChangeSeletedDisplay);
+            ChangeSeletedDisplay(panel_controller.GetCurrentPanelsInfo);
         }
 
         public void ChangeSeletedDisplay(GameInfo game_info) {
