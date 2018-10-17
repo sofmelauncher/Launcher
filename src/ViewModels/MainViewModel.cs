@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -29,6 +30,7 @@ namespace meGaton.ViewModels {
         private CustomerTimer customerTimer;
         private readonly MediaDisplay mediaDisplay;
         private readonly ControllerDisplay controllerDisplay;
+        private readonly GameProcessControll gameProcessControll=new GameProcessControll();
 
         public MainViewModel(PanelControler panel_controler,MediaDisplay media_display, ControllerDisplay controller_display) {
             GameDiscription = new ReactiveProperty<string>().AddTo(this.Disposable);
@@ -38,6 +40,19 @@ namespace meGaton.ViewModels {
 
             ListUpCommand.Subscribe(n => panel_controler.SlideDown());
             ListDownCommand.Subscribe(n => panel_controler.SlideUp());
+            GamePadObserver.GetInstance.VerticalStickStream
+                .Where(n => n != 0)
+                .Subscribe(n => {
+                    if (n == 1) {
+                        panel_controler.SlideDown();
+                    }else if (n == -1) {
+                        panel_controler.SlideUp();
+                    }
+                });
+            GamePadObserver.GetInstance.EnterKeyStream
+                .Where(n=>n)
+                .Subscribe(n =>gameProcessControll.GameLaunch(panel_controler.GetCurrentPanelsInfo.BinPath));
+
 
             panel_controler.ChangeSelectedPanel.Subscribe(ChangeSeletedDisplay);
             ChangeSeletedDisplay(panel_controler.GetCurrentPanelsInfo);

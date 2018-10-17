@@ -20,9 +20,6 @@ namespace meGaton {
 
             var window = new MainView();
 
-
-
-           
             window.Show();
         }
     }

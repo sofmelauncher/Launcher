@@ -4,6 +4,7 @@ using System.Windows.Markup;
 using System.Windows.Threading;
 using meGaton.ViewModels;
 using meGaton.Views;
+using Tao.Platform.Windows;
 
 namespace meGaton.Models {
     class CustomerTimer {

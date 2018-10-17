@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Threading;
 using meGaton.Models;
 
 namespace meGaton.Views
@@ -19,7 +20,7 @@ namespace meGaton.Views
             var panel_creater = new PanelCreater();
             panel_creater.Launch(FindName("PanelParent") as StackPanel);
             new CustomerTimer(this);
-            new InstantTimer(5, a);
+            var a = GamePadObserver.GetInstance;
 
             var view_model = new MainViewModel(
                 new PanelControler(FindName("PanelParent") as StackPanel)
@@ -27,10 +28,6 @@ namespace meGaton.Views
                 ,new ControllerDisplay(FindName("ControllIconParent") as StackPanel));
 
             this.DataContext = view_model;
-        }
-
-        void a() {
-            Console.WriteLine("abgbgbdjdj");
         }
     }
 }

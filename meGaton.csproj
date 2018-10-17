@@ -91,6 +91,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Reactive, Version=4.1.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
       <HintPath>packages\System.Reactive.4.1.0\lib\net46\System.Reactive.dll</HintPath>
     </Reference>
@@ -117,6 +118,9 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="Tao.Platform.Windows">
+      <HintPath>lib\Tao.Platform.Windows.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -128,6 +132,9 @@
     </ApplicationDefinition>
     <Compile Include="src\DataResources\IGamesDataConnector.cs" />
     <Compile Include="src\Models\ControllerDisplay.cs" />
+    <Compile Include="src\Models\CustomerTimer.cs" />
+    <Compile Include="src\Models\GamePadObserver.cs" />
+    <Compile Include="src\Models\InstantTimer.cs" />
     <Compile Include="src\Models\MediaDisplay.cs" />
     <Compile Include="src\Models\GameProcessControll.cs" />
     <Compile Include="src\Models\PanelControler.cs" />
@@ -135,6 +142,7 @@
     <Compile Include="src\ViewModels\CategoryTagViewModel.cs" />
     <Compile Include="src\ViewModels\GamePanelViewModel.cs" />
     <Compile Include="src\Models\PanelSizes.cs" />
+    <Compile Include="src\ViewModels\TimerWindowViewModel.cs" />
     <Compile Include="src\Views\CategoryTag.xaml.cs">
       <DependentUpon>CategoryTag.xaml</DependentUpon>
     </Compile>
@@ -150,6 +158,9 @@
     </Compile>
     <Compile Include="src\Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="src\Views\TimerWindow.xaml.cs">
+      <DependentUpon>TimerWindow.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -204,6 +215,13 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="src\Views\TimerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
