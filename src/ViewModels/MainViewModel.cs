@@ -25,6 +25,7 @@ namespace meGaton.ViewModels {
         public ReactiveProperty<string> GameDiscription { get; set; }
         public ReactiveCommand ListUpCommand { get; } = new ReactiveCommand();
         public ReactiveCommand ListDownCommand { get; } = new ReactiveCommand();
+        public ReactiveCommand TimerResetCommand { get; } = new ReactiveCommand();
         public ReactiveProperty<Brush>[] ControllerIconColors => controllerDisplay.ColorList.ToArray();
 
         private CustomerTimer customerTimer;
@@ -44,6 +45,8 @@ namespace meGaton.ViewModels {
 
             ListUpCommand.Subscribe(n => panel_controller.SlideDown());
             ListDownCommand.Subscribe(n => panel_controller.SlideUp());
+            TimerResetCommand.Subscribe(n => customerTimer.Stop());
+
             GamePadObserver.GetInstance.VerticalStickStream
                 .Where(n=>!game_process_controll.IsRunning)
                 .Where(n => n != 0)
@@ -53,11 +56,15 @@ namespace meGaton.ViewModels {
                     }else if (n == -1) {
                         panel_controller.SlideUp();
                     }
+                    customerTimer.StartRequest();
                 });
             GamePadObserver.GetInstance.EnterKeyStream
                 .Where(n => !game_process_controll.IsRunning)
                 .Where(n=>n)
-                .Subscribe(n =>game_process_controll.GameLaunch(panel_controller.GetCurrentPanelsInfo.BinPath));
+                .Subscribe(n => {
+                    game_process_controll.GameLaunch(panel_controller.GetCurrentPanelsInfo.BinPath);
+                    customerTimer.StartRequest();
+                });
 
 
             panel_controller.ChangeSelectedPanel.Subscribe(ChangeSeletedDisplay);

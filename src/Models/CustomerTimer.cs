@@ -11,6 +11,7 @@ namespace meGaton.Models {
         private DateTime startTime;
         private TimeSpan nowtimespan;
 
+        private bool isRunning;
         private int counter=1;
 
         private const int TIME_LIMIT_SECOND = 300;
@@ -24,20 +25,21 @@ namespace meGaton.Models {
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
             dispatcherTimer.Tick += DispatcherTimerTick;
             
-            Start();
-
             mainWindow = main_window;
         }
 
-        public void Start() {
+        public void StartRequest() {
+            if(isRunning)return;
             counter = 1;
             startTime = DateTime.Now;
             nowtimespan=new TimeSpan();
             dispatcherTimer.Start();
+            isRunning = true;
         }
 
         public void Stop() {
             dispatcherTimer.Stop();
+            isRunning = false;
         }
 
         void DispatcherTimerTick(object sender, EventArgs e) {
