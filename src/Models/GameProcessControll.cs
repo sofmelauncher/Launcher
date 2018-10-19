@@ -12,15 +12,32 @@ namespace meGaton.Models {
 
         public void GameLaunch(string path) {
             if (IsRunning) return;
-            currentProcess = new Process();
-            currentProcess.StartInfo.FileName = path;
-            currentProcess.EnableRaisingEvents = true;
-            currentProcess.Exited += ProcessExited;
-            currentProcess.Start();
-        }
 
-        void ProcessExited(object sender, EventArgs e) {
-            currentProcess = null;
+            try{
+                System.IO.Directory.SetCurrentDirectory(path.Substring(0, path.LastIndexOf("\\", StringComparison.Ordinal)));
+
+            } catch (Exception e){
+                System.IO.Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\'));
+
+                Console.WriteLine(e);
+                throw;
+            }
+
+            try{
+                currentProcess = new Process();
+                currentProcess.StartInfo.FileName = path;
+                currentProcess.EnableRaisingEvents = true;
+                currentProcess.Exited += (sender, e) =>{
+                    currentProcess = null;
+                    System.IO.Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\'));
+                };
+                    currentProcess.Start();
+            }catch (Exception e){
+                currentProcess = null;
+
+                Console.WriteLine(e);
+                throw;
+            }
         }
-    }
+     }
 }

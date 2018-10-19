@@ -25,5 +25,14 @@ namespace UnitTest {
             var db=new SQLiteConnector();
 
         }
+
+        [TestMethod]
+        public void PathSplitTest(){
+            var root = System.AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\');
+            var path = root + "\\1\\game\\DOUTONBORI.exe";
+            var directory_index = path.LastIndexOf("\\");
+            var final_path = path.Substring(0, directory_index);
+            Console.WriteLine(final_path);
+        }
     }
 }
