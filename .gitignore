@@ -1,5 +1,5 @@
 bin/
-/obj/
+obj/
 /.vs/
 /packages/
 /meGaton.csproj.user
