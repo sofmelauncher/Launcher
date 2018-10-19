@@ -20,7 +20,7 @@ namespace meGaton.Models
 
 
         public PanelCreater() {
-
+            var a=new SQLiteConnector();
             var root = System.AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\')+ "\\Games";
             var moq = new Mock<IGamesDataConnector>();
             moq.Setup(m => m.GetGamesInfo())

@@ -20,5 +20,10 @@ namespace UnitTest {
             Console.WriteLine(System.AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\'));
         }
 
+        [TestMethod]
+        public void DBTest(){
+            var db=new SQLiteConnector();
+
+        }
     }
 }
