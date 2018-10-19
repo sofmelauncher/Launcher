@@ -13,14 +13,14 @@
     <StackPanel Orientation="Horizontal" Margin="10">
         <materialDesign:Card
             materialDesign:ShadowAssist.ShadowDepth="Depth3" 
-            Padding="32" Height="140" Width="600">
+            Padding="5" Height="140" Width="600">
             <materialDesign:Card.LayoutTransform>
                 <ScaleTransform ScaleX="{Binding MyScale.Value}" ScaleY="{Binding MyScale.Value}"/>
             </materialDesign:Card.LayoutTransform>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" >
-                <TextBlock Text="{Binding GameID}" TextAlignment="Left" VerticalAlignment="Center" TextWrapping="Wrap"  FontSize="32"/>
+                <TextBlock Text="{Binding GameID}" TextAlignment="Left" VerticalAlignment="Center" TextWrapping="Wrap"  FontSize="32" Margin="0,0,5,0"/>
                 <Image Source="{Binding IconPath}" Stretch="FIll" Height="{Binding RelativeSource={RelativeSource Self}}" Width="{Binding RelativeSource={RelativeSource Self}}" VerticalAlignment="Stretch" HorizontalAlignment="Left" Margin="0,0,0,0" />
-                <TextBlock Text="{Binding GameName}" TextAlignment="Left" VerticalAlignment="Center" TextWrapping="Wrap"  FontSize="32"/>
+                <TextBlock Text="{Binding GameName}" TextAlignment="Left" VerticalAlignment="Center" TextWrapping="Wrap"  FontSize="32" Margin="5,0,0,0"/>
                 <WrapPanel x:Name="TagParent" VerticalAlignment="Center" Orientation="Horizontal" Margin="10,0,0,0" Width="300"/>
             </StackPanel>
         </materialDesign:Card>
