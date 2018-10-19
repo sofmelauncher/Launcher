@@ -28,10 +28,12 @@ namespace meGaton.ViewModels{
         //Bind Properties
         public string GameName { get=>MyGameInfo.GameName;}
         public string IconPath {get => MyGameInfo.IconPath;}
+        public string GameID{get; set;}
         public ReactiveProperty<double> MyScale { get; set;}
 
-        public GamePanelViewModel(GameInfo game_info) {
+        public GamePanelViewModel(GameInfo game_info,int index_number) {
             MyGameInfo=game_info;
+            GameID = (index_number.ToString()).PadLeft(2,'0');
             gameProcessControll = GameProcessControll.GetInstance;
 
             ClickCommand.Subscribe(n=>Console.WriteLine(MyGameInfo.GameName));

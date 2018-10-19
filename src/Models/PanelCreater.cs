@@ -41,16 +41,12 @@ namespace meGaton.Models
         }
 
 
-        public void Launch(StackPanel parent_panel) {
+        public void Launch(StackPanel parent_panel){
+            var counter = 1;
             foreach (var item in iGamesDataConnector.GetGamesInfo()){
-                parent_panel.Children.Add(CreateObject(item));
+                parent_panel.Children.Add(new GamePanel(new GamePanelViewModel(item,counter)));
+                counter++;
             }
         }
-
-        private UIElement CreateObject(GameInfo game_info) {
-            var element=new GamePanel(new GamePanelViewModel(game_info));
-            return element;
-        }
-
     }
 }
