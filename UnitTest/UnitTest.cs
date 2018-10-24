@@ -28,11 +28,17 @@ namespace UnitTest {
 
         [TestMethod]
         public void PathSplitTest(){
-            var root = System.AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\');
-            var path = root + "\\1\\game\\DOUTONBORI.exe";
+            var bin_path = System.AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\');
+            var path = bin_path + "\\1\\game\\DOUTONBORI.exe";
             var directory_index = path.LastIndexOf("\\");
             var final_path = path.Substring(0, directory_index);
             Console.WriteLine(final_path);
+        }
+
+        [TestMethod]
+        public void LoggerTest()
+        {
+            Logger.Inst.Log("test");
         }
     }
 }

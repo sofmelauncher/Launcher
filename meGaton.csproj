@@ -149,10 +149,10 @@
     <Compile Include="src\Models\CustomerTimer.cs" />
     <Compile Include="src\Models\GamePadObserver.cs" />
     <Compile Include="src\Models\InstantTimer.cs" />
+    <Compile Include="src\Models\Logger.cs" />
     <Compile Include="src\Models\MediaDisplay.cs" />
     <Compile Include="src\Models\GameProcessControll.cs" />
     <Compile Include="src\Models\PanelController.cs" />
-    <Compile Include="src\General\DelegateCommand.cs" />
     <Compile Include="src\ViewModels\CategoryTagViewModel.cs" />
     <Compile Include="src\ViewModels\GamePanelViewModel.cs" />
     <Compile Include="src\Models\PanelSizes.cs" />
