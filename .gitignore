@@ -3,3 +3,4 @@ obj/
 /.vs/
 /packages/
 /meGaton.csproj.user
+/.log/

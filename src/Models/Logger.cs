@@ -20,7 +20,9 @@ namespace meGaton.Models{
             using (streamWriter = new StreamWriter(bin_path + "\\meGaton.log", true, Encoding.UTF8))
             {
                 var date = DateTime.Now;
-                streamWriter.WriteLine("["+(logLevel.ToString()).ToUpper()+"] "+date+" "+str);
+                var mess = "[" + (logLevel.ToString()).ToUpper() + "]:" + date + ":" + str;
+                streamWriter.WriteLine(mess);
+                Console.WriteLine(mess);
             }
         }
     }

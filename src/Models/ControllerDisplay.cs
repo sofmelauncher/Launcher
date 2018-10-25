@@ -19,7 +19,8 @@ namespace meGaton.Models
         public event PropertyChangedEventHandler PropertyChanged;//no use
         private CompositeDisposable Disposable { get; } = new CompositeDisposable();
 
-        private readonly IconCorrespondence[] iconCorrespondences;
+        private readonly IconInfo[] _iconInfos;
+
         public List<ReactiveProperty<Brush>> ColorList { get; private set; }
 
         
@@ -27,13 +28,19 @@ namespace meGaton.Models
         private readonly Brush NON_ACTIVE_COLOR = new SolidColorBrush(Color.FromArgb(30,0,0,0));
 
         public ControllerDisplay(StackPanel root) {
-            iconCorrespondences = new IconCorrespondence[] {
-                new IconCorrespondence(GameController.Xbox,"GoogleController"),
-                new IconCorrespondence(GameController.Mouse,"Mouse"),
-                new IconCorrespondence(GameController.Keyboard,"Keyboard"),
+            _iconInfos = new IconInfo[] {
+                new IconInfo(GameController.Xbox,"GoogleController"),
+                new IconInfo(GameController.Mouse,"Mouse"),
+                new IconInfo(GameController.Keyboard,"Keyboard"),
             };
-            ColorList = Enumerable.Range(0, root.Children.OfType<UIElement>().Count(n => n is PackIcon))
-                .Select(_ => new ReactiveProperty<Brush>().AddTo(Disposable)).ToList();
+
+            ColorList = Enumerable
+                .Range(0, root.Children.OfType<UIElement>().Count(n => n is PackIcon))
+                .Select(_ => new ReactiveProperty<Brush>().AddTo(Disposable))
+                .ToList();
+            foreach (var item in ColorList){
+                item.Value = NON_ACTIVE_COLOR;
+            }
 
             SetIconPara(root.Children.OfType<UIElement>());
         }
@@ -42,9 +49,12 @@ namespace meGaton.Models
             var counter = 0;
             foreach (var item in icons) {
                 var temp = item as PackIcon;
-                if(temp==null)continue;
+                if (temp == null){
+                    Logger.Inst.Log(item+ "isn't PackIcon.Plz don't include anything other than PackIcon",LogLevel.Warning);
+                    continue;
+                }
 
-                var icon_p = iconCorrespondences.Find(n => n.kind == temp.Kind.ToString());
+                var icon_p = _iconInfos.Find(n => n.kind == temp.Kind.ToString());
 
                 icon_p.index = counter;
                 counter++;
@@ -52,16 +62,17 @@ namespace meGaton.Models
         }
 
         public void ChangeIcon(GameController[] game_controllers) {
-            if (ColorList.Count != iconCorrespondences.Length) {
-                Console.WriteLine(@"The lengths of A and B do not match");
+            if (ColorList.Count != _iconInfos.Length) {
+                Logger.Inst.Log(@"The lengths of ColorList and Icon do not match");
                 return;
             }
 
+            
             for (var i = 0; i < ColorList.Count; i++) {
                 var target_color = ColorList[i];
-                var target_correspondence = iconCorrespondences.Find(n => n.index == i);
+                var target_correspondence = _iconInfos.Find(n => n.index == i);
                 if (target_correspondence == null) {
-                    Console.WriteLine(@"Index Error by Correspondence Settings.");
+                    Logger.Inst.Log(@"Index Error by Correspondence Settings.");
                     continue;
                 }
                 target_color.Value = game_controllers != null&&game_controllers.Any(n => n == target_correspondence.me)
@@ -75,12 +86,12 @@ namespace meGaton.Models
         }
 
 
-        private class IconCorrespondence {
+        private class IconInfo {
             public GameController me;
             public string kind;
             public int index;
 
-            public IconCorrespondence(GameController me, string type_name, int index = -1) {
+            public IconInfo(GameController me, string type_name, int index = -1) {
                 this.me = me;
                 this.kind = type_name;
                 this.index = index;

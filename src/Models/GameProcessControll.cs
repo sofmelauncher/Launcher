@@ -7,6 +7,8 @@ namespace meGaton.Models {
         private Process currentProcess;
         public bool IsRunning => currentProcess != null;
 
+        private DateTime startTime=new DateTime();
+
         private GameProcessControll() {
         }
 
@@ -18,8 +20,7 @@ namespace meGaton.Models {
 
             } catch (Exception e){
                 System.IO.Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\'));
-
-                Console.WriteLine(e);
+                Logger.Inst.Log(e+". I didn't change currentDirectory.",LogLevel.Error);
                 throw;
             }
 
@@ -28,14 +29,16 @@ namespace meGaton.Models {
                 currentProcess.StartInfo.FileName = path;
                 currentProcess.EnableRaisingEvents = true;
                 currentProcess.Exited += (sender, e) =>{
+                    Logger.Inst.Log("-Finish- " + currentProcess.ProcessName +" -Running Time- "+ (DateTime.Now - startTime).TotalSeconds+"seconds");
                     currentProcess = null;
                     System.IO.Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\'));
                 };
-                    currentProcess.Start();
+                currentProcess.Start();
+                startTime = DateTime.Now;
+                Logger.Inst.Log("-Launch- "+currentProcess.ProcessName);
             }catch (Exception e){
                 currentProcess = null;
-
-                Console.WriteLine(e);
+                Logger.Inst.Log(e+".I didn't launch game that is "+path,LogLevel.Error);
                 throw;
             }
         }

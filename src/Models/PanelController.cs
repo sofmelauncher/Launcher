@@ -8,19 +8,22 @@ using meGaton.ViewModels;
 
 namespace meGaton.Models {
     public class PanelController {
-        public GameInfo GetCurrentPanelsInfo => GetViewModel(FocusIndex).MyGameInfo;
+        public GameInfo GetCurrentPanelsInfo => GetViewModel(FOCUS_INDEX).MyGameInfo;
         private readonly StackPanel panelParent;
 
         private readonly Subject<GameInfo> changeSelectedSubject = new Subject<GameInfo>();
         public IObservable<GameInfo> ChangeSelectedPanel => changeSelectedSubject;
 
         private Random randomer;
-        private const int FocusIndex=2;
+        private readonly int FOCUS_INDEX;
 
         public PanelController(StackPanel stack_panel) {
             panelParent = stack_panel;
+            FOCUS_INDEX = stack_panel.Children.Count > 2 ? 2 : 0;
+
             FocusPanel();
 
+            
             randomer = new Random((int)DateTime.Now.Ticks & 0x0000FFFF);
         }
 
@@ -56,18 +59,33 @@ namespace meGaton.Models {
         }
 
         private GamePanelViewModel GetViewModel(int index) {
-            var fe = (FrameworkElement)((UserControl)panelParent.Children[index]).Content;
-           return (GamePanelViewModel)fe.DataContext;
+            try{
+                var fe = (FrameworkElement)((UserControl)panelParent.Children[index]).Content;
+                return (GamePanelViewModel)fe.DataContext;
+            } catch (Exception e){
+                Logger.Inst.Log("Get GamePanel Error",LogLevel.Error);
+                throw;
+            }
         }
 
         private void FocusPanel() {
-            var c = GetViewModel(FocusIndex);
-            c.PanelSizes.Enlarge();
-            changeSelectedSubject.OnNext(c.MyGameInfo);
-        }
+            try{
+                var c = GetViewModel(FOCUS_INDEX);
+                c.PanelSizes.Enlarge();
+                changeSelectedSubject.OnNext(c.MyGameInfo);
+            } catch (Exception e){
+                Logger.Inst.Log(e+"I didnt focus panel");
+            }
+            }
 
         private void UnFocusPanel() {
-            GetViewModel(FocusIndex).PanelSizes.Undo();
+            try{
+                GetViewModel(FOCUS_INDEX).PanelSizes.Undo();
+            }
+            catch (Exception e){
+                Logger.Inst.Log(e+"I didnt unfocus panel");
+                throw;
+            }
         }
 
         

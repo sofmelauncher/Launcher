@@ -16,11 +16,17 @@ namespace meGaton {
     /// </summary>
     public partial class App : Application {
         protected override void OnStartup(StartupEventArgs e) {
+            Logger.Inst.Log("------------meGaton launch------------");
             base.OnStartup(e);
 
             var window = new MainView();
 
             window.Show();
+        }
+
+        ~App()
+        {
+            Logger.Inst.Log("------------meGaton Finish------------");
         }
     }
 }

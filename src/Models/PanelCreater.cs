@@ -25,7 +25,7 @@ namespace meGaton.Models
             var moq = new Mock<IGamesDataConnector>();
             moq.Setup(m => m.GetGamesInfo())
                 .Returns(new List<GameInfo>(){
-                    new GameInfo("TestGame1","I am the bone of my sword. ",0,root+"\\1\\game\\DOUTONBORI.exe",root+"\\1\\panel\\icon.png",new string[]{root+"\\1\\panel\\img1.png"},"",null,null),
+                    /*new GameInfo("TestGame1","I am the bone of my sword. ",0,root+"\\1\\game\\DOUTONBORI.exe",root+"\\1\\panel\\icon.png",new string[]{root+"\\1\\panel\\img1.png"},"",null,null),
                     new GameInfo("TestGame2","Steel is my body,and fire is my blood. ",0,root+"\\2\\game\\STG.exe",root+"\\2\\panel\\icon.png",new string[]{ root + "\\2\\panel\\img1.png" },"",null,null),
                     new GameInfo("TestGame3","I have created over a thousand blades. ",0,root+"\\3\\game\\DOUTONBORI.exe",root+"\\3\\panel\\icon.png",new string[]{ root + "\\3\\panel\\img1.png" }
                         ,root+"\\1\\panel\\video.mp4",new GameController[]{GameController.Mouse,GameController.Xbox}, new Tag[]{new Tag("RPG",Colors.Aqua),new Tag("Solo",Colors.Red),new Tag("Eazy",Colors.Green) }),
@@ -36,14 +36,19 @@ namespace meGaton.Models
                     new GameInfo("TestGame8","I have no regrets.This is the only path. ",0,root+"\\4\\game\\STG.exe",root+"\\4\\panel\\icon.png",new string[]{ root + "\\4\\panel\\img1.png" },"",null,null),
                     new GameInfo("TestGame9","My whole life was",0,root+"\\1\\game\\DOUTONBORI.exe",root+"\\1\\panel\\icon.png",new string[]{ root + "\\3\\panel\\img1.png" },"",null,null),
                     new GameInfo("TestGame10","unlimited blade works",0,root+"\\2\\game\\STG.exe",root+"\\2\\panel\\icon.png",new string[]{ root + "\\4\\panel\\img1.png" },"",null,null),
-                });
+                */});
             iGamesDataConnector =moq.Object;
         }
 
 
         public void Launch(StackPanel parent_panel){
             var counter = 1;
-            foreach (var item in iGamesDataConnector.GetGamesInfo()){
+            var games_info = iGamesDataConnector.GetGamesInfo();
+            if (games_info.Count == 0){
+                Logger.Inst.Log("GamesList is Empty.I wanna dont create panels.");
+                throw new Exception();
+            }
+            foreach (var item in games_info){
                 parent_panel.Children.Add(new GamePanel(new GamePanelViewModel(item,counter)));
                 counter++;
             }

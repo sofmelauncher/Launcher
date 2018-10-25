@@ -13,11 +13,7 @@ namespace meGaton.ViewModels{
     public partial class GamePanelViewModel : INotifyPropertyChanged,IDisposable {
         public GameInfo MyGameInfo { get; private set; }
         public PanelSizes PanelSizes { get; private set; }
-        public ReactiveCommand ClickCommand { get; } = new ReactiveCommand();
-
-        private GameProcessControll gameProcessControll;
-
-
+      
         public event PropertyChangedEventHandler PropertyChanged;//no use
         private CompositeDisposable Disposable { get; } = new CompositeDisposable();
 
@@ -34,9 +30,6 @@ namespace meGaton.ViewModels{
         public GamePanelViewModel(GameInfo game_info,int index_number) {
             MyGameInfo=game_info;
             GameID = (index_number.ToString()).PadLeft(2,'0');
-            gameProcessControll = GameProcessControll.GetInstance;
-
-            ClickCommand.Subscribe(n=>Console.WriteLine(MyGameInfo.GameName));
         }
 
         public void SetPanelSizes(float scale) {
@@ -45,7 +38,11 @@ namespace meGaton.ViewModels{
         }
 
         public void MouseClickSubmit() {
-            gameProcessControll.GameLaunch(MyGameInfo.BinPath);
+            try{
+                GameProcessControll.GetInstance.GameLaunch(MyGameInfo.BinPath);
+            } catch (Exception e){
+                //plz use dialog to messeage that didnt run game 
+            }
         }
 
 

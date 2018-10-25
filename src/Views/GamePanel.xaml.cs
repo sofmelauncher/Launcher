@@ -18,7 +18,6 @@ namespace meGaton.Views
             game_panel_view_model.SetPanelSizes(1.2f);
             ((FrameworkElement) this.Content).DataContext = game_panel_view_model;
             CreateTags();
-
         }
 
         private void MouseClick(object sender,MouseButtonEventArgs e) {

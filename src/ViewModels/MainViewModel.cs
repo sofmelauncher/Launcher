@@ -36,13 +36,19 @@ namespace meGaton.ViewModels {
         public MainViewModel(Window main_window,StackPanel panel_parent,MediaElement media_display,StackPanel controller_icon_parent) {
             GameDiscription = new ReactiveProperty<string>().AddTo(this.Disposable);
 
-            var customer_timer=new CustomerTimer(main_window);
-            var panel_creater = new PanelCreater();
-            panel_creater.Launch(panel_parent);
-            panelController = new PanelController(panel_parent);
             mediaDisplay = new MediaDisplay(media_display);
             controllerDisplay = new ControllerDisplay(controller_icon_parent);
             gameProcessControll = GameProcessControll.GetInstance;
+
+            try {
+                new PanelCreater().Launch(panel_parent);
+
+            } catch (Exception e){
+               return;
+            }
+
+            panelController = new PanelController(panel_parent);
+            var customer_timer = new CustomerTimer(main_window);
 
             ListUpCommand.Subscribe(n => panelController.SlideDown());
             ListDownCommand.Subscribe(n => panelController.SlideUp());
@@ -78,6 +84,7 @@ namespace meGaton.ViewModels {
 
 
         public void MouseWheel(int delta) {
+            if(panelController==null)return;
             if (gameProcessControll.IsRunning) return;
             if (delta > 0) {
                 panelController.SlideDown();
