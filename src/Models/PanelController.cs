@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Linq;
 using System.Reactive.Subjects;
 using System.Windows;
@@ -59,35 +60,52 @@ namespace meGaton.Models {
         }
 
         private GamePanelViewModel GetViewModel(int index) {
-            try{
-                var fe = (FrameworkElement)((UserControl)panelParent.Children[index]).Content;
-                return (GamePanelViewModel)fe.DataContext;
-            } catch (Exception e){
-                Logger.Inst.Log("Get GamePanel Error",LogLevel.Error);
-                throw;
+            if (index > panelParent.Children.Count){
+                Logger.Inst.Log("Argument is more than GamePanels number",LogLevel.Error);
+                throw new ArgumentException();
             }
+            var fe = (FrameworkElement)((UserControl)panelParent.Children[index]).Content;
+            var res = fe.DataContext as GamePanelViewModel;
+            if (res == null){
+                Logger.Inst.Log("Plz don't include anything other than GamePanel in PanelParent",LogLevel.Error);
+                throw new DataException();
+            }
+            return res;
         }
 
-        private void FocusPanel() {
-            try{
-                var c = GetViewModel(FOCUS_INDEX);
-                c.PanelSizes.Enlarge();
-                changeSelectedSubject.OnNext(c.MyGameInfo);
+        private void FocusPanel(){
+            GamePanelViewModel c=null;
+            try {
+                c = GetViewModel(FOCUS_INDEX);
             } catch (Exception e){
-                Logger.Inst.Log(e+"I didnt focus panel");
+                try{
+                    c = GetViewModel(0);
+                }
+                catch (Exception exception){
+                    Logger.Inst.Log("I didn't focus panel bc PanelParent don't has GamePanel");
+                    return;
+                }
             }
-            }
+            c.PanelSizes.Enlarge();
+            changeSelectedSubject.OnNext(c.MyGameInfo);
+
+        }
 
         private void UnFocusPanel() {
-            try{
-                GetViewModel(FOCUS_INDEX).PanelSizes.Undo();
+            GamePanelViewModel c = null;
+            try {
+                c = GetViewModel(FOCUS_INDEX);
+            } catch (Exception e) {
+                try {
+                    c = GetViewModel(0);
+                } catch (Exception exception) {
+                    Logger.Inst.Log("I didn't un focus panel bc PanelParent don't has GamePanel");
+                    return;
+                }
             }
-            catch (Exception e){
-                Logger.Inst.Log(e+"I didnt unfocus panel");
-                throw;
-            }
+            c.PanelSizes.Undo();
         }
 
-        
+
     }
 }

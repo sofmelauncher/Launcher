@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 
 namespace meGaton.Models {
     public class GameProcessControll {
@@ -24,7 +25,12 @@ namespace meGaton.Models {
                 throw;
             }
 
-            try{
+            if (!System.IO.File.Exists(path)){
+                Logger.Inst.Log("I didn't found binary file." + path, LogLevel.Error);
+                throw new FileNotFoundException();
+            }
+
+            try {
                 currentProcess = new Process();
                 currentProcess.StartInfo.FileName = path;
                 currentProcess.EnableRaisingEvents = true;
@@ -38,7 +44,6 @@ namespace meGaton.Models {
                 Logger.Inst.Log("-Launch- "+currentProcess.ProcessName);
             }catch (Exception e){
                 currentProcess = null;
-                Logger.Inst.Log(e+".I didn't launch game that is "+path,LogLevel.Error);
                 throw;
             }
         }

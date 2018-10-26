@@ -44,7 +44,8 @@ namespace meGaton.ViewModels {
                 new PanelCreater().Launch(panel_parent);
 
             } catch (Exception e){
-               return;
+                Logger.Inst.Log("I wanna stop my process bc GamePanels was didn't create.",LogLevel.Warning);
+                return;
             }
 
             panelController = new PanelController(panel_parent);
@@ -84,7 +85,10 @@ namespace meGaton.ViewModels {
 
 
         public void MouseWheel(int delta) {
-            if(panelController==null)return;
+            if (panelController == null){
+                Logger.Inst.Log("My process don't running bc I didn't create Panel",LogLevel.Warning);
+                return;
+            }
             if (gameProcessControll.IsRunning) return;
             if (delta > 0) {
                 panelController.SlideDown();
@@ -94,9 +98,14 @@ namespace meGaton.ViewModels {
         }
 
         public void ChangeSeletedDisplay(GameInfo game_info) {
-            GameDiscription.Value = game_info.GameDescription;
-            mediaDisplay.SetMedia(game_info.PanelsPath,game_info.VideoPath);
-            controllerDisplay.ChangeIcon(game_info.UseControllers);
+            try{
+                GameDiscription.Value = game_info.GameDescription;
+                mediaDisplay.SetMedia(game_info.PanelsPath, game_info.VideoPath);
+                controllerDisplay.ChangeIcon(game_info.UseControllers);
+
+            } catch (NullReferenceException e){
+                Logger.Inst.Log(e+"My process don't running bc I didn't create Panel",LogLevel.Warning);
+            }
         }
 
         public void Dispose() {

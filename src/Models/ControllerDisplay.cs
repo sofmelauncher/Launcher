@@ -50,7 +50,6 @@ namespace meGaton.Models
             foreach (var item in icons) {
                 var temp = item as PackIcon;
                 if (temp == null){
-                    Logger.Inst.Log(item+ "isn't PackIcon.Plz don't include anything other than PackIcon",LogLevel.Warning);
                     continue;
                 }
 
@@ -62,6 +61,9 @@ namespace meGaton.Models
         }
 
         public void ChangeIcon(GameController[] game_controllers) {
+            if (game_controllers == null){
+                throw new ArgumentException();
+            }
             if (ColorList.Count != _iconInfos.Length) {
                 Logger.Inst.Log(@"The lengths of ColorList and Icon do not match");
                 return;
@@ -75,7 +77,7 @@ namespace meGaton.Models
                     Logger.Inst.Log(@"Index Error by Correspondence Settings.");
                     continue;
                 }
-                target_color.Value = game_controllers != null&&game_controllers.Any(n => n == target_correspondence.me)
+                target_color.Value = game_controllers.Any(n => n == target_correspondence.me)
                     ? ACTIVE_COLOR
                     : NON_ACTIVE_COLOR;
             }
