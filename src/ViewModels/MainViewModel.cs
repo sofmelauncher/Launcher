@@ -17,29 +17,35 @@ using Reactive.Bindings.Extensions;
 namespace meGaton.ViewModels {
     /// <summary>
     /// MainViewModel.xaml の相互作用ロジック
+    /// UI要素を必要とするModel全ての生成責任を持つ
+    ///　ウィンドウ1枚のアプリなのもあって肥大化しがち
     /// </summary>
     public partial class MainViewModel : INotifyPropertyChanged, IDisposable {
         public event PropertyChangedEventHandler PropertyChanged;//no use
         private CompositeDisposable Disposable { get; } = new CompositeDisposable();
 
+
+        //バインド用プロパティ
         public ReactiveProperty<string> GameDiscription { get; set; }
         public ReactiveCommand ListUpCommand { get; } = new ReactiveCommand();
         public ReactiveCommand ListDownCommand { get; } = new ReactiveCommand();
         public ReactiveCommand TimerResetCommand { get; } = new ReactiveCommand();
         public ReactiveProperty<Brush>[] ControllerIconColors => controllerDisplay.ColorList.ToArray();
 
+
+        //Model
         private readonly PanelController panelController;
-        private readonly GameProcessControll gameProcessControll;
         private readonly MediaDisplay mediaDisplay;
         private readonly ControllerDisplay controllerDisplay;
 
         public MainViewModel(Window main_window,StackPanel panel_parent,MediaElement media_display,StackPanel controller_icon_parent) {
+
             GameDiscription = new ReactiveProperty<string>().AddTo(this.Disposable);
 
             mediaDisplay = new MediaDisplay(media_display);
             controllerDisplay = new ControllerDisplay(controller_icon_parent);
-            gameProcessControll = GameProcessControll.GetInstance;
 
+            //ここでパネル生成できなかった場合各種プロセスは動作させない
             try {
                 new PanelCreater().Launch(panel_parent);
 
@@ -51,6 +57,8 @@ namespace meGaton.ViewModels {
             panelController = new PanelController(panel_parent);
             var customer_timer = new CustomerTimer(main_window);
 
+
+            //キー入力はViewModelでバインドされている
             ListUpCommand.Subscribe(n => panelController.SlideDown());
             ListDownCommand.Subscribe(n => panelController.SlideUp());
 
@@ -59,8 +67,9 @@ namespace meGaton.ViewModels {
                 panelController.Shuffle();
             });
 
+            //GamePadObserberの垂直入力をPanelControllerに流す
             GamePadObserver.GetInstance.VerticalStickStream
-                .Where(n=>!gameProcessControll.IsRunning)
+                .Where(n=>!GameProcessControll.GetInstance.IsRunning)
                 .Where(n => n != 0)
                 .Subscribe(n => {
                     if (n == 1) {
@@ -68,28 +77,27 @@ namespace meGaton.ViewModels {
                     }else if (n == -1) {
                         panelController.SlideUp();
                     }
-                    customer_timer.StartRequest();
                 });
+            //GamePadObserberの決定入力をGameProcessControllに流す
             GamePadObserver.GetInstance.EnterKeyStream
-                .Where(n => !gameProcessControll.IsRunning)
                 .Where(n=>n)
                 .Subscribe(n => {
-                    gameProcessControll.GameLaunch(panelController.GetCurrentPanelsInfo.BinPath);
+                    GameProcessControll.GetInstance.GameLaunch(panelController.GetCurrentPanelsInfo.MyGameInfo.BinPath);
                     customer_timer.StartRequest();
                 });
 
-
+            //PanelControllerの選択切り替えイベントを受け取る
+            //最初の選択処理だけは実行する必要がある
             panelController.ChangeSelectedPanel.Subscribe(ChangeSeletedDisplay);
             ChangeSeletedDisplay(panelController.GetCurrentPanelsInfo);
         }
 
-
+        //Viewから流れてくるマウスホイールイベントの処理
         public void MouseWheel(int delta) {
             if (panelController == null){
-                Logger.Inst.Log("My process don't running bc I didn't create Panel",LogLevel.Warning);
-                return;
+                return;//パネルなし時のプロセス停止時でもメソッドは止まらないのでPanelControllerの有無で実行可否を判定する
             }
-            if (gameProcessControll.IsRunning) return;
+            if (GameProcessControll.GetInstance.IsRunning) return;
             if (delta > 0) {
                 panelController.SlideDown();
             } else if (delta < 0) {
@@ -97,14 +105,20 @@ namespace meGaton.ViewModels {
             }
         }
 
-        public void ChangeSeletedDisplay(GameInfo game_info) {
-            try{
+        //選択中のパネルからGameInfoを取り出して各UIに表示する
+        public void ChangeSeletedDisplay(GamePanelViewModel game_panel_view_model){
+            var game_info = game_panel_view_model.MyGameInfo;
+            if (game_info == null){
+                Logger.Inst.Log(new ArgumentException()+"Can't select bc GameInfo is empty.");
+                return;
+            }
+
+            try {
                 GameDiscription.Value = game_info.GameDescription;
                 mediaDisplay.SetMedia(game_info.PanelsPath, game_info.VideoPath);
                 controllerDisplay.ChangeIcon(game_info.UseControllers);
-
             } catch (NullReferenceException e){
-                Logger.Inst.Log(e+"My process don't running bc I didn't create Panel",LogLevel.Warning);
+                Logger.Inst.Log(e+"GameInfo include null property.");
             }
         }
 

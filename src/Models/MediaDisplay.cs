@@ -2,6 +2,9 @@
 using System.Windows.Controls;
 
 namespace meGaton.Models {
+    /// <summary>
+    /// 紹介動画/画像を再生する
+    /// </summary>
     public class MediaDisplay {
         private MediaElement displayMediaElement;
 

@@ -9,11 +9,11 @@ using meGaton.ViewModels;
 
 namespace meGaton.Models {
     public class PanelController {
-        public GameInfo GetCurrentPanelsInfo => GetViewModel(FOCUS_INDEX).MyGameInfo;
+        public GamePanelViewModel GetCurrentPanelsInfo => GetViewModel(FOCUS_INDEX);
         private readonly StackPanel panelParent;
 
-        private readonly Subject<GameInfo> changeSelectedSubject = new Subject<GameInfo>();
-        public IObservable<GameInfo> ChangeSelectedPanel => changeSelectedSubject;
+        private readonly Subject<GamePanelViewModel> changeSelectedSubject = new Subject<GamePanelViewModel>();
+        public IObservable<GamePanelViewModel> ChangeSelectedPanel => changeSelectedSubject;
 
         private Random randomer;
         private readonly int FOCUS_INDEX;
@@ -87,7 +87,7 @@ namespace meGaton.Models {
                 }
             }
             c.PanelSizes.Enlarge();
-            changeSelectedSubject.OnNext(c.MyGameInfo);
+            changeSelectedSubject.OnNext(c);
 
         }
 

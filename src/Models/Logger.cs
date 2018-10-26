@@ -6,6 +6,10 @@ namespace meGaton.Models{
     public enum LogLevel{
         Log,Warning,Error
     }
+    /// <summary>
+    /// シンプルなロガー。
+    /// 超絶適当に作ったので色々とよろしくないと思う、毎回ストリーム開くのとか。インタフェースはそのままでいいから中身あとで直したい
+    /// </summary>
     public class Logger{
         public static Logger Inst { get; }=new Logger();
 

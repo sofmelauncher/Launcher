@@ -7,6 +7,9 @@ using meGaton.Views;
 using Tao.Platform.Windows;
 
 namespace meGaton.Models {
+    /// <summary>
+    /// プレイ時間を計測する。
+    /// </summary>
     class CustomerTimer {
         private DateTime startTime;
         private TimeSpan nowtimespan;
@@ -14,20 +17,29 @@ namespace meGaton.Models {
         private bool isRunning;
         private int counter=1;
 
+        
         private const int TIME_LIMIT_SECOND = 300;
-        private const int NOTIFICATION_WINDOW_DISPLAY_MARGIN = 50;
-
+        
         private Window mainWindow;
         private DispatcherTimer dispatcherTimer;
 
         public CustomerTimer(Window main_window) {
             dispatcherTimer = new DispatcherTimer(DispatcherPriority.Normal);
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
-            dispatcherTimer.Tick += DispatcherTimerTick;
+            dispatcherTimer.Tick += (sender, e) =>{
+                nowtimespan = DateTime.Now.Subtract(startTime);
+                if (TimeSpan.Compare(nowtimespan, new TimeSpan(0, 0, TIME_LIMIT_SECOND)) >= 0) {
+                    CreateWindow();
+                    nowtimespan = new TimeSpan();
+                    startTime = DateTime.Now;
+                }
+            };
             
             mainWindow = main_window;
+            StartRequest();
         }
 
+        //リクエスト自体は何度も送られてくる想定
         public void StartRequest() {
             if(isRunning)return;
             counter = 1;
@@ -41,22 +53,11 @@ namespace meGaton.Models {
             dispatcherTimer.Stop();
             isRunning = false;
         }
-
-        void DispatcherTimerTick(object sender, EventArgs e) {
-            nowtimespan = DateTime.Now.Subtract(startTime);
-            if (TimeSpan.Compare(nowtimespan, new TimeSpan(0, 0, TIME_LIMIT_SECOND)) >= 0) {
-                CreateWindow();
-                nowtimespan=new TimeSpan();
-                startTime = DateTime.Now;
-            }
-        }
-
+        
+        
         private void CreateWindow() {
             var temp = new TimerWindow {DataContext = new TimerWindowViewModel((TIME_LIMIT_SECOND / 60) * counter)};
-            var desktop = System.Windows.Forms.Screen.PrimaryScreen.Bounds;
-            temp.Top = desktop.Height - (temp.Height + NOTIFICATION_WINDOW_DISPLAY_MARGIN);
-            temp.Left = desktop.Width - (temp.Width + NOTIFICATION_WINDOW_DISPLAY_MARGIN);
-            temp.Owner = mainWindow;
+            temp.Owner = mainWindow;//タイマーウィンドウの親にメインウィンドウを指定しておかないと本体終了しても残り続ける
             temp.Show();
 
             counter++;
