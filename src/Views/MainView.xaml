@@ -7,14 +7,15 @@
         TextElement.FontSize="13"
         TextOptions.TextFormattingMode="Ideal" 
         TextOptions.TextRenderingMode="Auto"        
-        Background="{DynamicResource MaterialDesignPaper}"
+        Background="LightGray"
         FontFamily="{DynamicResource MaterialDesignFont}"
         WindowState="Maximized" WindowStyle="None"
-        Title="meGaton" Height="1080" Width="1920">
+        Title="meGaton" Height="1080" Width="1920"
+        >
     <Window.InputBindings>
         <KeyBinding Command="{Binding ListUpCommand}" Gesture="UP" />
         <KeyBinding Command="{Binding ListDownCommand}" Gesture="Down" />
-        <KeyBinding Command="{Binding TimerResetCommand}" Gesture="Ctrl+A" />
+        <KeyBinding Command="{Binding TimerResetCommand}" Gesture="Ctrl+R" />
     </Window.InputBindings>
     <Viewbox>
         <Grid HorizontalAlignment="Left"  Margin="0,0,0,0" VerticalAlignment="Top" Height="1080" Width="1920">
@@ -42,14 +43,18 @@
                             <materialDesign:PackIcon Kind="Keyboard" Foreground="{Binding ControllerIconColors[2].Value}" VerticalAlignment="Center" Margin="10,0,10,0" Width="100" Height="100"/>
                         </StackPanel>
                     </materialDesign:Card>
-                    <materialDesign:Card  materialDesign:ShadowAssist.ShadowDepth="Depth2" 
-                                          Width="440" Height="100" Margin="10,0,0,0" HorizontalAlignment="Center">
-                        <StackPanel Orientation="Horizontal" Width="Auto">
-                            <TextBlock Text="description" FontSize="40" HorizontalAlignment="Left" Margin="10,0,10,0" TextWrapping="Wrap" VerticalAlignment="Center"/>
-                        </StackPanel>
+                    <materialDesign:Card  materialDesign:ShadowAssist.ShadowDepth="Depth2" Width="440" Height="100" Margin="10,0,0,0" HorizontalAlignment="Center">
+                        <Canvas>
+                            <materialDesign:PackIcon Kind="MenuUp" Width="150" Height="150" Canvas.Left="-26" Canvas.Top="-50" />
+                            <materialDesign:PackIcon Kind="MenuDown" Width="150" Height="150" Canvas.Left="-26" Canvas.Top="-13" />
+                            <TextBlock Text="移動" FontSize="30" Canvas.Left="98" Canvas.Top="33"/>
+                            <materialDesign:PackIcon Kind="Brightness1" Foreground="GreenYellow" Width="80" Height="80" Canvas.Left="197" Canvas.Top="10" />
+                            <TextBlock Text="A" FontSize="50" TextAlignment="Center" Canvas.Left="197" Canvas.Top="20" Height="80" Width="80"/>
+                            <TextBlock Text="選択" FontSize="30" Canvas.Left="299" Canvas.Top="33"/>
+                        </Canvas>
                     </materialDesign:Card>
                 </StackPanel>
-                 </StackPanel>
+            </StackPanel>
             <StackPanel Grid.Column="1" Name="PanelParent"  Height="1310" VerticalAlignment="Center"  Margin="0,0,0,0">
             </StackPanel>
         </Grid>
