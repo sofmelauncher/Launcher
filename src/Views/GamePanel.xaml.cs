@@ -32,7 +32,7 @@ namespace meGaton.Views
         //子要素のViewを作るためViewのメソッドで行っているがなんか違う気がするので下の層に移したい
         private void CreateTags() {
             var tags = (((FrameworkElement)this.Content).DataContext as GamePanelViewModel)?.MyGameInfo.Tags;//DataContextへのアクセスが美しくない
-            var root = this.FindName("TagParent") as WrapPanel;
+            var root = this.FindName("TagParent") as Panel;
             if (tags==null||root == null) return;
             foreach (var item in tags) {
                 var temp = new CategoryTag(new CategoryTagViewModel(item.category, item.bgColor));//ViewModelは抽入する

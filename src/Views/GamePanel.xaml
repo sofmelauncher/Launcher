@@ -19,9 +19,11 @@
             </materialDesign:Card.LayoutTransform>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" >
                 <TextBlock Text="{Binding GameID}" TextAlignment="Left" VerticalAlignment="Center" TextWrapping="Wrap"  FontSize="32" Margin="0,0,5,0"/>
-                <Image Source="{Binding IconPath}" Stretch="FIll" Height="{Binding RelativeSource={RelativeSource Self}}" Width="{Binding RelativeSource={RelativeSource Self}}" VerticalAlignment="Stretch" HorizontalAlignment="Left" Margin="0,0,0,0" />
-                <TextBlock Text="{Binding GameName}" TextAlignment="Left" VerticalAlignment="Center" TextWrapping="Wrap"  FontSize="32" Margin="5,0,0,0"/>
-                <WrapPanel x:Name="TagParent" VerticalAlignment="Center" Orientation="Horizontal" Margin="10,0,0,0" Width="300"/>
+                <Image Source="{Binding IconPath}" Stretch="FIll" Height="120" Width="120" VerticalAlignment="Stretch" HorizontalAlignment="Left" Margin="0,0,0,0" />
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="{Binding GameName}" TextAlignment="Left" VerticalAlignment="Top" TextWrapping="WrapWithOverflow" Width="400" FontSize="30" LineHeight="30" LineStackingStrategy="BlockLineHeight"  Margin="5,3,0,0"/>
+                    <StackPanel x:Name="TagParent" HorizontalAlignment="Left" VerticalAlignment="Bottom" Orientation="Horizontal" Margin="10,0,0,5" Width="Auto"/>
+                </StackPanel>
             </StackPanel>
         </materialDesign:Card>
     </StackPanel>
