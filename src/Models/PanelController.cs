@@ -10,7 +10,7 @@ using meGaton.ViewModels;
 namespace meGaton.Models {
     public class PanelController {
         public GamePanelViewModel GetCurrentPanelsInfo => GetViewModel(FOCUS_INDEX);
-        private readonly StackPanel panelParent;
+        private readonly Panel panelParent;
 
         private readonly Subject<GamePanelViewModel> changeSelectedSubject = new Subject<GamePanelViewModel>();
         public IObservable<GamePanelViewModel> ChangeSelectedPanel => changeSelectedSubject;
@@ -18,7 +18,7 @@ namespace meGaton.Models {
         private Random randomer;
         private readonly int FOCUS_INDEX;
 
-        public PanelController(StackPanel stack_panel) {
+        public PanelController(Panel stack_panel) {
             panelParent = stack_panel;
             FOCUS_INDEX = stack_panel.Children.Count > 2 ? 2 : 0;
 

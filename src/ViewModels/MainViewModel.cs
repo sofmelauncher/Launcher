@@ -38,7 +38,7 @@ namespace meGaton.ViewModels {
         private readonly MediaDisplay mediaDisplay;
         private readonly ControllerDisplay controllerDisplay;
 
-        public MainViewModel(Window main_window,StackPanel panel_parent,MediaElement media_display,StackPanel controller_icon_parent) {
+        public MainViewModel(Window main_window,Panel panel_parent,MediaElement media_display,Panel controller_icon_parent) {
 
             GameDiscription = new ReactiveProperty<string>().AddTo(this.Disposable);
 

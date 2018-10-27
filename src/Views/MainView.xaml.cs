@@ -20,9 +20,9 @@ namespace meGaton.Views
             //MainnViewModelを経由して各Modelに各部品への参照を持たせる
             var view_model = new MainViewModel(
                 this,
-                FindName("PanelParent") as StackPanel
+                FindName("PanelParent") as Panel
                 , FindName("DisplayVideo") as MediaElement
-                , FindName("ControllIconParent") as StackPanel);
+                , FindName("ControllIconParent") as Panel);
             this.DataContext = view_model;
         }
 

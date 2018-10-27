@@ -42,7 +42,7 @@ namespace meGaton.Models{
         }
 
         //パネルの作成。ViewModelもここで抽入する
-        public void Launch(StackPanel parent_panel){
+        public void Launch(Panel parent_panel){
             var counter = 1;
             var games_info = iGamesDataConnector.GetGamesInfo();
             if (games_info.Count == 0){

@@ -30,7 +30,7 @@ namespace meGaton.Models{
         private readonly Brush NON_ACTIVE_COLOR = new SolidColorBrush(Color.FromArgb(30,0,0,0));
 
 
-        public ControllerDisplay(StackPanel root) {
+        public ControllerDisplay(Panel root) {
             //IconInfoを作成
             iconInfos = new IconInfo[] {
                 new IconInfo(GameController.Xbox,"GoogleController"),
