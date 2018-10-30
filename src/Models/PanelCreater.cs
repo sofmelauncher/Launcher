@@ -9,6 +9,7 @@ using System.Windows.Media;
 using meGaton.DataResources;
 using meGaton.ViewModels;
 using meGaton.Views;
+using meGatonDR;
 using MaterialDesignThemes.Wpf;
 using Moq;
 
@@ -22,7 +23,7 @@ namespace meGaton.Models{
 
         public PanelCreater() {
             //テスト用モックデータベースの作成
-            var root = System.AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\')+ "\\Games";
+            /*var root = System.AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\')+ "\\Games";
             var moq = new Mock<IGamesDataConnector>();
             moq.Setup(m => m.GetGamesInfo())
                 .Returns(new List<GameInfo>(){
@@ -38,7 +39,8 @@ namespace meGaton.Models{
                     new GameInfo("TestGame9","My whole life was",0,root+"\\1\\game\\DOUTONBORI.exe",root+"\\1\\panel\\icon.png",new string[]{ root + "\\3\\panel\\img1.png" },"",new GameController[0], new Tag[0]),
                     new GameInfo("TestGame10","unlimited blade works",0,root+"\\2\\game\\STG.exe",root+"\\2\\panel\\icon.png",new string[]{ root + "\\4\\panel\\img1.png" },"",new GameController[0], new Tag[0]),
                 });
-            iGamesDataConnector =moq.Object;
+            iGamesDataConnector =moq.Object;*/
+            iGamesDataConnector=new meGatonDatabaseConnector();
         }
 
         //パネルの作成。ViewModelもここで抽入する
