@@ -62,12 +62,8 @@ namespace meGaton.ViewModels {
 
 
             //キー入力はViewModelでバインドされている
-            ListUpCommand
-                .Where(n => !GameProcessControll.GetInstance.IsRunning)
-                .Subscribe(n => panelController.SlideDown());
-            ListDownCommand
-                .Where(n => !GameProcessControll.GetInstance.IsRunning)
-                .Subscribe(n => panelController.SlideUp());
+            ListUpCommand.Subscribe(n => panelSlideStream.OnNext(1));
+            ListDownCommand.Subscribe(n => panelSlideStream.OnNext(-1));
 
             TimerResetCommand.Subscribe(n => {
                 customer_timer.Stop();
@@ -97,6 +93,9 @@ namespace meGaton.ViewModels {
                     GameProcessControll.GetInstance.GameLaunch(panelController.GetCurrentPanelsInfo.MyGameInfo.BinPath);
                     customer_timer.StartRequest();
                 });
+
+            //一応起動時もシャッフル
+            panelController.Shuffle();
 
             //PanelControllerの選択切り替えイベントを受け取る
             //最初の選択処理だけは実行する必要がある
