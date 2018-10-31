@@ -70,13 +70,23 @@ namespace meGaton.ViewModels {
                 panelController.Shuffle();
             });
 
-            //GamePadObserberの垂直入力をマージ
-            panelSlideStream.Merge(GamePadObserver.GetInstance.VerticalStickStream);
-
+            
+            GamePadObserver.GetInstance.VerticalStickStream
+                .Merge(GamePadObserver.GetInstance.VerticalStickStream)
+                .Where(n => !GameProcessControll.GetInstance.IsRunning)
+                .Sample(TimeSpan.FromMilliseconds(300))
+                .Where(n => n != 0)
+                .Subscribe(n => {
+                    if (n == 1) {
+                        panelController.SlideDown();
+                    } else if (n == -1) {
+                        panelController.SlideUp();
+                    }
+                });
             //リスト移動入力の定義
             panelSlideStream
                 .Where(n=>!GameProcessControll.GetInstance.IsRunning)
-                .Sample(TimeSpan.FromMilliseconds(1))
+                .Sample(TimeSpan.FromMilliseconds(300))
                 .Where(n => n != 0)
                 .Subscribe(n => {
                     if (n == 1) {
