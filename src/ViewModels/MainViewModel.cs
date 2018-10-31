@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using meGaton.DataResources;
 using meGaton.Models;
+using meGaton.src.Models;
 using MaterialDesignThemes.Wpf;
 using Reactive.Bindings.Extensions;
 
@@ -114,7 +115,7 @@ namespace meGaton.ViewModels {
             }
 
             try {
-                GameDiscription.Value = game_info.GameDescription;
+                GameDiscription.Value = game_info.GameDescription.ReplaceNewLineCode();
                 mediaDisplay.SetMedia(game_info.PanelsPath, game_info.VideoPath);
                 controllerDisplay.ChangeIcon(game_info.UseControllers);
             } catch (NullReferenceException e){
