@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -33,6 +34,7 @@ namespace meGaton.ViewModels {
         public ReactiveCommand TimerResetCommand { get; } = new ReactiveCommand();
         public ReactiveProperty<Brush>[] ControllerIconColors => controllerDisplay.ColorList.ToArray();
 
+        private Subject<int> panelSlideStream=new Subject<int>();
 
         //Model
         private readonly PanelController panelController;
@@ -60,17 +62,25 @@ namespace meGaton.ViewModels {
 
 
             //キー入力はViewModelでバインドされている
-            ListUpCommand.Subscribe(n => panelController.SlideDown());
-            ListDownCommand.Subscribe(n => panelController.SlideUp());
+            ListUpCommand
+                .Where(n => !GameProcessControll.GetInstance.IsRunning)
+                .Subscribe(n => panelController.SlideDown());
+            ListDownCommand
+                .Where(n => !GameProcessControll.GetInstance.IsRunning)
+                .Subscribe(n => panelController.SlideUp());
 
             TimerResetCommand.Subscribe(n => {
                 customer_timer.Stop();
                 panelController.Shuffle();
             });
 
-            //GamePadObserberの垂直入力をPanelControllerに流す
-            GamePadObserver.GetInstance.VerticalStickStream
+            //GamePadObserberの垂直入力をマージ
+            panelSlideStream.Merge(GamePadObserver.GetInstance.VerticalStickStream);
+
+            //リスト移動入力の定義
+            panelSlideStream
                 .Where(n=>!GameProcessControll.GetInstance.IsRunning)
+                .Sample(TimeSpan.FromMilliseconds(1))
                 .Where(n => n != 0)
                 .Subscribe(n => {
                     if (n == 1) {
@@ -79,6 +89,7 @@ namespace meGaton.ViewModels {
                         panelController.SlideUp();
                     }
                 });
+
             //GamePadObserberの決定入力をGameProcessControllに流す
             GamePadObserver.GetInstance.EnterKeyStream
                 .Where(n=>n)
@@ -95,14 +106,10 @@ namespace meGaton.ViewModels {
 
         //Viewから流れてくるマウスホイールイベントの処理
         public void MouseWheel(int delta) {
-            if (panelController == null){
-                return;//パネルなし時のプロセス停止時でもメソッドは止まらないのでPanelControllerの有無で実行可否を判定する
-            }
-            if (GameProcessControll.GetInstance.IsRunning) return;
             if (delta > 0) {
-                panelController.SlideDown();
+                panelSlideStream.OnNext(1);
             } else if (delta < 0) {
-                panelController.SlideUp();
+                panelSlideStream.OnNext(-1);
             }
         }
 

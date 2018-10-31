@@ -29,20 +29,27 @@ namespace meGaton.Models {
         }
 
         public void SlideUp() {
-            UnFocusPanel();
-            var el = panelParent.Children[0];
-            panelParent.Children.RemoveAt(0);
-            panelParent.Children.Add(el);
-            FocusPanel();
+            panelParent.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                UnFocusPanel();
+                var el = panelParent.Children[0];
+                panelParent.Children.RemoveAt(0);
+                panelParent.Children.Add(el);
+                FocusPanel();
+            }));
         }
 
-        public void SlideDown() {
-            UnFocusPanel();
-            var end_point = panelParent.Children.Count - 1;
-            var el = panelParent.Children[end_point];
-            panelParent.Children.RemoveAt(end_point);
-            panelParent.Children.Insert(0, el);
-            FocusPanel();
+        public void SlideDown()
+        {
+            panelParent.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                UnFocusPanel();
+                var end_point = panelParent.Children.Count - 1;
+                var el = panelParent.Children[end_point];
+                panelParent.Children.RemoveAt(end_point);
+                panelParent.Children.Insert(0, el);
+                FocusPanel();
+            }));
         }
 
         public void Shuffle() {
