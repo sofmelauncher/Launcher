@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using meGaton.src.Models;
 
 namespace meGaton.Models {
     /// <summary>
@@ -24,9 +25,9 @@ namespace meGaton.Models {
             if (IsRunning) return;
 
             //ファイルがあるかチェック
-            if (!System.IO.File.Exists(path)) {
+            if (path==""||!System.IO.File.Exists(PathManage.GAMES_ROOT_PATH+"\\"+path)) {
                 Logger.Inst.Log("I didn't found binary file." + path, LogLevel.Error);
-                throw new FileNotFoundException();
+                Logger.Inst.Log(new FileNotFoundException()+"bin not found",LogLevel.Error);
             }
 
             //カレントディレクトリを実行ファイルのディレクトリまで移動する
@@ -60,7 +61,7 @@ namespace meGaton.Models {
 
         //DRYに則り
         private void ReturnCurrentDirectory(){
-            System.IO.Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\'));
+            System.IO.Directory.SetCurrentDirectory(PathManage.MY_BIN_PATH);
         }
     }
 }

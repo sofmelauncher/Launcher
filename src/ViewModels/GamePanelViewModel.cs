@@ -7,6 +7,7 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using meGaton.DataResources;
 using meGaton.Models;
+using meGaton.src.Models;
 using Reactive.Bindings;
 
 namespace meGaton.ViewModels{
@@ -24,7 +25,7 @@ namespace meGaton.ViewModels{
         
         //バインド用プロパティ
         public string GameName { get=>MyGameInfo.GameName;}
-        public string IconPath {get => MyGameInfo.IconPath;}
+        public string IconPath {get => PathManage.GAMES_ROOT_PATH+"\\" + MyGameInfo.IconPath;}
         public string GameID{get; set;}
         public ReactiveProperty<double> MyScale => PanelSizes.MyScale;
 

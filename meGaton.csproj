@@ -162,6 +162,7 @@
     <Compile Include="src\Models\MediaDisplay.cs" />
     <Compile Include="src\Models\GameProcessControll.cs" />
     <Compile Include="src\Models\PanelController.cs" />
+    <Compile Include="src\Models\PathManage.cs" />
     <Compile Include="src\Models\StringExpander.cs" />
     <Compile Include="src\ViewModels\CategoryTagViewModel.cs" />
     <Compile Include="src\ViewModels\GamePanelViewModel.cs" />

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using meGaton.src.Models;
 
 namespace meGaton.Models{
     public enum LogLevel{
@@ -20,8 +21,7 @@ namespace meGaton.Models{
         }
 
         public void Log(string str,LogLevel logLevel=LogLevel.Log){
-            var bin_path = System.AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\');
-            using (streamWriter = new StreamWriter(bin_path + "\\meGaton.log", true, Encoding.UTF8))
+            using (streamWriter = new StreamWriter(PathManage.MY_BIN_PATH + "\\meGaton.log", true, Encoding.UTF8))
             {
                 var date = DateTime.Now;
                 var mess = "[" + (logLevel.ToString()).ToUpper() + "]:" + date + ":" + str;
