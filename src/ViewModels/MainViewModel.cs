@@ -32,6 +32,7 @@ namespace meGaton.ViewModels {
         public ReactiveCommand ListUpCommand { get; } = new ReactiveCommand();
         public ReactiveCommand ListDownCommand { get; } = new ReactiveCommand();
         public ReactiveCommand TimerResetCommand { get; } = new ReactiveCommand();
+        public ReactiveCommand EnterKeyCommand { get; }=new ReactiveCommand();
         public ReactiveProperty<Brush>[] ControllerIconColors => controllerDisplay.ColorList.ToArray();
 
         private Subject<int> panelSlideStream=new Subject<int>();
@@ -60,7 +61,7 @@ namespace meGaton.ViewModels {
             panelController = new PanelController(panel_parent);
             var customer_timer = new CustomerTimer(main_window);
 
-
+            EnterKeyCommand.Subscribe(n =>{});
             //キー入力はViewModelでバインドされている
             ListUpCommand.Subscribe(n => panelSlideStream.OnNext(1));
             ListDownCommand.Subscribe(n => panelSlideStream.OnNext(-1));

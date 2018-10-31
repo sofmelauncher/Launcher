@@ -16,6 +16,7 @@
         <KeyBinding Command="{Binding ListUpCommand}" Gesture="UP" />
         <KeyBinding Command="{Binding ListDownCommand}" Gesture="Down" />
         <KeyBinding Command="{Binding TimerResetCommand}" Gesture="Ctrl+R" />
+        <KeyBinding Command="{Binding EnterKeyCommand}" Gesture="Enter"/>
     </Window.InputBindings>
     <Viewbox>
         <Grid HorizontalAlignment="Left"  Margin="0,0,0,0" VerticalAlignment="Top" Height="1080" Width="1920">
