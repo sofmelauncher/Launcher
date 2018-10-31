@@ -146,6 +146,7 @@
     <Compile Include="src\DataResources\BinarySercher.cs" />
     <Compile Include="src\DataResources\ControllerDataFactory.cs" />
     <Compile Include="src\DataResources\GameInfoRecorder.cs" />
+    <Compile Include="src\DataResources\ICalamFilter.cs" />
     <Compile Include="src\DataResources\IDataRecorder.cs" />
     <Compile Include="src\DataResources\IGamesDataConnector.cs" />
     <Compile Include="src\DataResources\Loader.cs" />
@@ -154,6 +155,7 @@
     <Compile Include="src\DataResources\TagDataRecorder.cs" />
     <Compile Include="src\DataResources\TagFactory.cs" />
     <Compile Include="src\DataResources\TagRecorder.cs" />
+    <Compile Include="src\DataResources\WindowsFilter.cs" />
     <Compile Include="src\Models\ControllerDisplay.cs" />
     <Compile Include="src\Models\CustomerTimer.cs" />
     <Compile Include="src\Models\GamePadObserver.cs" />
