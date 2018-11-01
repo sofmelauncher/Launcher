@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
 using meGaton.Models;
+using meGaton.src.Views;
 
 namespace meGaton.Views
 {
@@ -22,8 +23,10 @@ namespace meGaton.Views
                 this,
                 FindName("PanelParent") as Panel
                 , FindName("DisplayVideo") as MediaElement
-                , FindName("ControllIconParent") as Panel);
+                , FindName("ControllIconParent") as Panel
+                , this.FindName("RootGrid") as Grid);
             this.DataContext = view_model;
+
         }
 
         //マウスホイールイベントがView層でしか拾えないためここにイベントがあるが処理はViewModelに委譲する

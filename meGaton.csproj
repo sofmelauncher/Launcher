@@ -161,6 +161,7 @@
     <Compile Include="src\Models\GamePadObserver.cs" />
     <Compile Include="src\Models\InstantTimer.cs" />
     <Compile Include="src\Models\Logger.cs" />
+    <Compile Include="src\Models\MaskControll.cs" />
     <Compile Include="src\Models\MediaDisplay.cs" />
     <Compile Include="src\Models\GameProcessControll.cs" />
     <Compile Include="src\Models\PanelController.cs" />
@@ -185,6 +186,9 @@
     </Compile>
     <Compile Include="src\Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="src\Views\RunningMask.xaml.cs">
+      <DependentUpon>RunningMask.xaml</DependentUpon>
     </Compile>
     <Compile Include="src\Views\TimerWindow.xaml.cs">
       <DependentUpon>TimerWindow.xaml</DependentUpon>
@@ -239,6 +243,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="src\Views\MainView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="src\Views\RunningMask.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

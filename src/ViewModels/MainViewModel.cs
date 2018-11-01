@@ -42,7 +42,7 @@ namespace meGaton.ViewModels {
         private readonly MediaDisplay mediaDisplay;
         private readonly ControllerDisplay controllerDisplay;
 
-        public MainViewModel(Window main_window,Panel panel_parent,MediaElement media_display,Panel controller_icon_parent) {
+        public MainViewModel(Window main_window,Panel panel_parent,MediaElement media_display,Panel controller_icon_parent,Panel root_grid) {
 
             GameDiscription = new ReactiveProperty<string>().AddTo(this.Disposable);
 
@@ -60,6 +60,7 @@ namespace meGaton.ViewModels {
 
             panelController = new PanelController(panel_parent);
             var customer_timer = new CustomerTimer(main_window);
+            var mask_controll = new MaskControll(root_grid);
 
             EnterKeyCommand.Subscribe(n =>{});
             //キー入力はViewModelでバインドされている
@@ -93,9 +94,15 @@ namespace meGaton.ViewModels {
                     GameProcessControll.GetInstance.GameLaunch(panelController.GetCurrentPanelsInfo.MyGameInfo.BinPath);
                 });
 
-            //
+            //ゲーム起動時
             GameProcessControll.GetInstance.OnGameStart.Subscribe(n => {
                 customer_timer.StartRequest();
+                mask_controll.Run();
+            });
+
+            //ゲーム終了時
+            GameProcessControll.GetInstance.OnGameEnd.Subscribe(n => {
+                mask_controll.Remove();
             });
 
             //一応起動時もシャッフル
