@@ -23,6 +23,7 @@ namespace meGaton.Models {
         private MediaElement displayMediaElement;
 
         private readonly List<Content> currentContents=new List<Content>();
+        private Content current;
         private int contentCoumter;
 
         private InstantTimer timer;
@@ -32,7 +33,7 @@ namespace meGaton.Models {
         public MediaDisplay(MediaElement media_element) {
             displayMediaElement = media_element;
 
-            displayMediaElement.MediaEnded += (e, sender) => { PlayContent();};
+            displayMediaElement.MediaEnded += (e, sender) => { if(current.contentType==ContentType.video)PlayContent();};
         }
 
         public void SetMedia(string[]panel_paths,string video_path) {
@@ -40,7 +41,7 @@ namespace meGaton.Models {
                 throw new ArgumentException();
             }
             displayMediaElement.Source = null;
-            timer?.Stop();
+            timer?.Close();
             timer = null;
 
             currentContents.Clear();
@@ -64,14 +65,32 @@ namespace meGaton.Models {
             PlayContent();
         }
 
-        private void PlayContent() {
-            if(currentContents.Count==0)return;
-            var content = currentContents[contentCoumter];
-            contentCoumter = contentCoumter == currentContents.Count - 1 ? 0 : contentCoumter + 1;
-            displayMediaElement.Source = content.uri;
-            displayMediaElement.Play();
+        public void Pause() {
+            if (current.contentType == ContentType.video) {
+                displayMediaElement.Pause();
+            } else {
+                timer?.Close();
+            }
+        }
 
-            if (content.contentType == ContentType.image) {
+        public void ReStart() {
+            if (current.contentType == ContentType.video) {
+                displayMediaElement.Dispatcher.BeginInvoke(new Action(() => { displayMediaElement.Play(); }));
+            } else {
+                PlayContent();
+            }
+        }
+
+        private void PlayContent() {
+            if (currentContents.Count==0)return;
+            current = currentContents[contentCoumter];
+            contentCoumter = contentCoumter == currentContents.Count - 1 ? 0 : contentCoumter + 1;
+            displayMediaElement.Dispatcher.BeginInvoke(new Action(() => {
+                displayMediaElement.Source = current.uri;
+                displayMediaElement.Play();
+            }));
+            
+            if (current.contentType == ContentType.image) {
                 timer=new InstantTimer(NEXT_IMAGE_TIME,PlayContent);
             }
         }

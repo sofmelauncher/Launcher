@@ -25,8 +25,8 @@ namespace meGaton.Models {
             }
         }
 
-        public void Stop() {
-            dispatcherTimer?.Stop();
+        public void Close() {
+            dispatcherTimer.Stop();
         }
     }
 }

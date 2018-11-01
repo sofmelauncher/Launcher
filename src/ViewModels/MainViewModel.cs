@@ -98,11 +98,13 @@ namespace meGaton.ViewModels {
             GameProcessControll.GetInstance.OnGameStart.Subscribe(n => {
                 customer_timer.StartRequest();
                 mask_controll.Run();
+                mediaDisplay.Pause();
             });
 
             //ゲーム終了時
             GameProcessControll.GetInstance.OnGameEnd.Subscribe(n => {
                 mask_controll.Remove();
+                mediaDisplay.ReStart();
             });
 
             //一応起動時もシャッフル
