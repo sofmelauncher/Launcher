@@ -71,23 +71,12 @@ namespace meGaton.ViewModels {
                 panelController.Shuffle();
             });
 
-            
-            GamePadObserver.GetInstance.VerticalStickStream
-                .Merge(GamePadObserver.GetInstance.VerticalStickStream)
-                .Where(n => !GameProcessControll.GetInstance.IsRunning)
-                .Sample(TimeSpan.FromMilliseconds(300))
-                .Where(n => n != 0)
-                .Subscribe(n => {
-                    if (n == 1) {
-                        panelController.SlideDown();
-                    } else if (n == -1) {
-                        panelController.SlideUp();
-                    }
-                });
+
             //リスト移動入力の定義
             panelSlideStream
+                .Merge(GamePadObserver.GetInstance.VerticalStickStream)
                 .Where(n=>!GameProcessControll.GetInstance.IsRunning)
-                .Sample(TimeSpan.FromMilliseconds(300))
+                .Sample(TimeSpan.FromMilliseconds(200))
                 .Where(n => n != 0)
                 .Subscribe(n => {
                     if (n == 1) {
@@ -102,8 +91,12 @@ namespace meGaton.ViewModels {
                 .Where(n=>n)
                 .Subscribe(n => {
                     GameProcessControll.GetInstance.GameLaunch(panelController.GetCurrentPanelsInfo.MyGameInfo.BinPath);
-                    customer_timer.StartRequest();
                 });
+
+            //
+            GameProcessControll.GetInstance.OnGameStart.Subscribe(n => {
+                customer_timer.StartRequest();
+            });
 
             //一応起動時もシャッフル
             panelController.Shuffle();

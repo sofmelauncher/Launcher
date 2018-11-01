@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Reactive;
+using System.Reactive.Subjects;
 using meGaton.src.Models;
 
 namespace meGaton.Models {
@@ -16,6 +18,11 @@ namespace meGaton.Models {
         public bool IsRunning => currentProcess != null;//実行中かどうか以外のプロセスの情報は公開しない
 
         private DateTime startTime=new DateTime();//起動時間計測用
+
+        private Subject<Unit> gameStartStream=new Subject<Unit>();
+        public IObservable<Unit> OnGameStart=>gameStartStream;
+        private Subject<Unit> gameEndStream = new Subject<Unit>();
+        public IObservable<Unit> OnGameEnd => gameEndStream;
 
 
         private GameProcessControll() {
@@ -45,11 +52,13 @@ namespace meGaton.Models {
                 currentProcess.StartInfo.FileName = path;
                 currentProcess.EnableRaisingEvents = true;
                 currentProcess.Exited += (sender, e) =>{//プロセス終了イベントに終了処理登録
+                    gameEndStream.OnNext(Unit.Default);
                     Logger.Inst.Log("-Finish- " + currentProcess.ProcessName +" -Running Time- "+ (DateTime.Now - startTime).TotalSeconds+"seconds");
                     currentProcess = null;
                     ReturnCurrentDirectory();
                 };
                 currentProcess.Start();
+                gameStartStream.OnNext(Unit.Default);
                 startTime = DateTime.Now;
                 Logger.Inst.Log("-Launch- "+currentProcess.ProcessName);
             }catch (Exception e){
