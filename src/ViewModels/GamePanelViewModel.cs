@@ -25,7 +25,7 @@ namespace meGaton.ViewModels{
         
         //バインド用プロパティ
         public string GameName { get=>MyGameInfo.GameName.ReplaceNewLineCodeAndIndent();}
-        public string IconPath {get => PathManage.GAMES_ROOT_PATH+"\\" + MyGameInfo.IconPath;}
+        public string IconPath {get => MyGameInfo.IconPath!=""?PathManage.GAMES_ROOT_PATH+"\\" + MyGameInfo.IconPath:"";}
         public string GameID{get; set;}
         public ReactiveProperty<double> MyScale => PanelSizes.MyScale;
 

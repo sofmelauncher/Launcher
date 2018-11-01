@@ -8,20 +8,25 @@ namespace meGaton.Models {
     /// InstantTimerが共通で１つのDispatcherTimer持つようにしたりとか要改善
     /// </summary>
     public class InstantTimer {
+        private DispatcherTimer dispatcherTimer;
         //second秒後に引数なしの関数Actionを実行
         public InstantTimer(int second,Action action) {
             try{
-                var dispatcher_timer = new DispatcherTimer(DispatcherPriority.Normal) { Interval = new TimeSpan(0, 0, second) };
-                dispatcher_timer.Tick += (sender, e) => {
+                dispatcherTimer = new DispatcherTimer(DispatcherPriority.Normal) { Interval = new TimeSpan(0, 0, second) };
+                dispatcherTimer.Tick += (sender, e) => {
                     action.Invoke();
-                    dispatcher_timer.Stop();
-                    dispatcher_timer = null;
+                    dispatcherTimer.Stop();
+                    dispatcherTimer = null;
                 };
-                dispatcher_timer.Start();
+                dispatcherTimer.Start();
             }catch (Exception e){
                 Logger.Inst.Log("InstantTimer Clashed");
                 throw;
             }
+        }
+
+        public void Stop() {
+            dispatcherTimer?.Stop();
         }
     }
 }
