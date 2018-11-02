@@ -1,63 +1,89 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Reactive.Subjects;
 using System.Windows;
 using System.Windows.Controls;
+using Systems.Systems;
 using meGaton.DataResources;
 using meGaton.ViewModels;
+using Console = System.Console;
 
 namespace meGaton.Models {
     public class PanelController {
-        public GamePanelViewModel GetCurrentPanelsInfo => GetViewModel(FOCUS_INDEX);
+        public GamePanelViewModel GetCurrentPanelsInfo => GetViewModel(focusIndex);
         private readonly Panel panelParent;
 
+        private List<GamePanelViewModel> gameViewModels=new List<GamePanelViewModel>();
         private readonly Subject<GamePanelViewModel> changeSelectedSubject = new Subject<GamePanelViewModel>();
         public IObservable<GamePanelViewModel> ChangeSelectedPanel => changeSelectedSubject;
 
         private Random randomer;
-        private readonly int FOCUS_INDEX;
+
+        private int focusIndex;
+        private readonly int START_POINT;
+        private readonly int END_POINT;
 
         public PanelController(Panel stack_panel) {
             panelParent = stack_panel;
-            FOCUS_INDEX = stack_panel.Children.Count > 2 ? 2 : 0;
+            focusIndex = stack_panel.Children.Count > 2 ? 2 : 0;
+            START_POINT = stack_panel.Children.Count > 1 ? 1 : 0;
+            END_POINT = START_POINT + 5;
 
-            FocusPanel();
-
-            
             randomer = new Random((int)DateTime.Now.Ticks & 0x0000FFFF);
+
+            foreach (var item in stack_panel.Children){
+                try{
+                    var temp = ((FrameworkElement)((UserControl)item).Content).DataContext as GamePanelViewModel;
+                    gameViewModels.Add(temp);
+                } catch (Exception e){
+                    Logger.Inst.Log(e.ToString());
+                    gameViewModels.Add(null);
+                }
+            }          
+            FocusPanel();
         }
 
-        public void SlideUp() {
+        public void MoveUp() {
             panelParent.Dispatcher.BeginInvoke(new Action(() =>
             {
                 UnFocusPanel();
-                var el = panelParent.Children[0];
-                panelParent.Children.RemoveAt(0);
-                panelParent.Children.Add(el);
+                focusIndex--;
+                if (focusIndex < START_POINT){
+                    var end_point = panelParent.Children.Count - 1;
+                    var el = panelParent.Children[end_point];
+                    panelParent.Children.RemoveAt(end_point);
+                    panelParent.Children.Insert(0, el);
+                    gameViewModels.Slide(1);
+                    focusIndex = START_POINT;
+                }
                 FocusPanel();
             }));
         }
 
-        public void SlideDown()
-        {
-            panelParent.Dispatcher.BeginInvoke(new Action(() =>
-            {
+        public void MoveDown(){
+            panelParent.Dispatcher.BeginInvoke(new Action(() =>{
                 UnFocusPanel();
-                var end_point = panelParent.Children.Count - 1;
-                var el = panelParent.Children[end_point];
-                panelParent.Children.RemoveAt(end_point);
-                panelParent.Children.Insert(0, el);
+                focusIndex++;
+                if (focusIndex > END_POINT){
+                    var el = panelParent.Children[0];
+                    panelParent.Children.RemoveAt(0);
+                    panelParent.Children.Add(el);
+                    gameViewModels.Slide(-1);
+                    focusIndex = END_POINT;
+                }
                 FocusPanel();
+
             }));
         }
 
         public void Shuffle() {
             Action func;
             if (randomer.Next(0, 2) == 0) {
-                func = SlideDown;
+                func = MoveDown;
             } else {
-                func = SlideUp;
+                func = MoveUp;
             }
 
             foreach (var nouse in Enumerable.Range(0, randomer.Next(panelParent.Children.Count)+1)) {
@@ -71,8 +97,7 @@ namespace meGaton.Models {
                 Logger.Inst.Log("Argument is more than GamePanels number",LogLevel.Error);
                 throw new ArgumentException();
             }
-            var fe = (FrameworkElement)((UserControl)panelParent.Children[index]).Content;
-            var res = fe.DataContext as GamePanelViewModel;
+            var res = gameViewModels[index];
             if (res == null){
                 Logger.Inst.Log("Plz don't include anything other than GamePanel in PanelParent",LogLevel.Error);
                 throw new DataException();
@@ -83,13 +108,13 @@ namespace meGaton.Models {
         private void FocusPanel(){
             GamePanelViewModel c=null;
             try {
-                c = GetViewModel(FOCUS_INDEX);
+                c = GetViewModel(focusIndex);
             } catch (Exception e){
                 try{
                     c = GetViewModel(0);
                 }
                 catch (Exception exception){
-                    Logger.Inst.Log("I didn't focus panel bc PanelParent don't has GamePanel");
+                    Logger.Inst.Log(exception+"I didn't focus panel bc PanelParent don't has GamePanel");
                     return;
                 }
             }
@@ -101,7 +126,7 @@ namespace meGaton.Models {
         private void UnFocusPanel() {
             GamePanelViewModel c = null;
             try {
-                c = GetViewModel(FOCUS_INDEX);
+                c = GetViewModel(focusIndex);
             } catch (Exception e) {
                 try {
                     c = GetViewModel(0);

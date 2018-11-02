@@ -160,6 +160,7 @@
     <Compile Include="src\Models\CustomerTimer.cs" />
     <Compile Include="src\Models\GamePadObserver.cs" />
     <Compile Include="src\Models\InstantTimer.cs" />
+    <Compile Include="src\Models\ListExtensions.cs" />
     <Compile Include="src\Models\Logger.cs" />
     <Compile Include="src\Models\MaskControll.cs" />
     <Compile Include="src\Models\MediaDisplay.cs" />

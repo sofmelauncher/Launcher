@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Reactive;
 using System.Reactive.Disposables;
 using System.Windows.Input;
 using Reactive;
@@ -22,7 +23,9 @@ namespace meGaton.ViewModels{
         public GameInfo MyGameInfo { get; private set; }
         public PanelSizes PanelSizes { get; private set; }
 
-        
+        private readonly Subject<GamePanelViewModel> onClickStream=new Subject<GamePanelViewModel>();
+        public IObservable<GamePanelViewModel> OnClickEvent=>onClickStream; 
+
         //バインド用プロパティ
         public string GameName { get=>MyGameInfo.GameName.ReplaceNewLineCodeAndIndent();}
         public string IconPath {get => MyGameInfo.IconPath!=""?PathManage.GAMES_ROOT_PATH+"\\" + MyGameInfo.IconPath:"";}
@@ -43,11 +46,7 @@ namespace meGaton.ViewModels{
 
         //Viewで受け取ったパネルクリックイベントの処理
         public void MouseClickSubmit() {
-            try{
-                GameProcessControll.GetInstance.GameLaunch(MyGameInfo.BinPath);
-            } catch (Exception e){
-                //plz use dialog to messeage that didnt run game 
-            }
+            onClickStream.OnNext(this);
         }
 
         public void Dispose() {

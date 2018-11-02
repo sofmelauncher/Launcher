@@ -38,7 +38,6 @@ namespace meGaton.ViewModels {
         private Subject<int> panelSlideStream=new Subject<int>();
 
         //Model
-        private readonly PanelController panelController;
         private readonly MediaDisplay mediaDisplay;
         private readonly ControllerDisplay controllerDisplay;
 
@@ -58,7 +57,7 @@ namespace meGaton.ViewModels {
                 return;
             }
 
-            panelController = new PanelController(panel_parent);
+            var panel_controller = new PanelController(panel_parent);
             var customer_timer = new CustomerTimer(main_window);
             var mask_controll = new MaskControll(root_grid);
 
@@ -69,7 +68,7 @@ namespace meGaton.ViewModels {
 
             TimerResetCommand.Subscribe(n => {
                 customer_timer.Stop();
-                panelController.Shuffle();
+                panel_controller.Shuffle();
             });
 
 
@@ -81,9 +80,9 @@ namespace meGaton.ViewModels {
                 .Where(n => n != 0)
                 .Subscribe(n => {
                     if (n == 1) {
-                        panelController.SlideDown();
+                        panel_controller.MoveUp();
                     }else if (n == -1) {
-                        panelController.SlideUp();
+                        panel_controller.MoveDown();
                     }
                 });
 
@@ -91,7 +90,7 @@ namespace meGaton.ViewModels {
             GamePadObserver.GetInstance.EnterKeyStream
                 .Where(n=>n)
                 .Subscribe(n => {
-                    GameProcessControll.GetInstance.GameLaunch(panelController.GetCurrentPanelsInfo.MyGameInfo.BinPath);
+                    GameProcessControll.GetInstance.GameLaunch(panel_controller.GetCurrentPanelsInfo.MyGameInfo.BinPath);
                 });
 
             //ゲーム起動時
@@ -108,12 +107,12 @@ namespace meGaton.ViewModels {
             });
 
             //一応起動時もシャッフル
-            panelController.Shuffle();
+            //panel_controller.Shuffle();
 
             //PanelControllerの選択切り替えイベントを受け取る
             //最初の選択処理だけは実行する必要がある
-            panelController.ChangeSelectedPanel.Subscribe(ChangeSeletedDisplay);
-            ChangeSeletedDisplay(panelController.GetCurrentPanelsInfo);
+            panel_controller.ChangeSelectedPanel.Subscribe(ChangeSeletedDisplay);
+            //ChangeSeletedDisplay(panel_controller.GetCurrentPanelsInfo);
         }
 
         //Viewから流れてくるマウスホイールイベントの処理
