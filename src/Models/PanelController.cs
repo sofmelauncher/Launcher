@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Reactive;
+using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,6 +20,8 @@ namespace meGaton.Models {
         private List<GamePanelViewModel> gameViewModels=new List<GamePanelViewModel>();
         private readonly Subject<GamePanelViewModel> changeSelectedSubject = new Subject<GamePanelViewModel>();
         public IObservable<GamePanelViewModel> ChangeSelectedPanel => changeSelectedSubject;
+        private readonly Subject<Unit> panelClickStream=new Subject<Unit>();
+        public IObservable<Unit> PanelClickEvent => panelClickStream;
 
         private Random randomer;
 
@@ -41,7 +45,19 @@ namespace meGaton.Models {
                     Logger.Inst.Log(e.ToString());
                     gameViewModels.Add(null);
                 }
-            }          
+            }
+
+            gameViewModels
+                .Select(n => n.OnClickEvent)
+                .Merge()
+                .Where(n => gameViewModels.Skip(START_POINT).Take(END_POINT - START_POINT).Contains(n))
+                .Subscribe(n =>{
+                    UnFocusPanel();
+                    focusIndex = gameViewModels.FindIndex(x=>x==n);
+                    FocusPanel();
+                    panelClickStream.OnNext(Unit.Default);
+                });
+
             FocusPanel();
         }
 
@@ -74,7 +90,6 @@ namespace meGaton.Models {
                     focusIndex = END_POINT;
                 }
                 FocusPanel();
-
             }));
         }
 

@@ -1,19 +1,15 @@
 ﻿using Reactive.Bindings;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
+using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Media;
-using meGaton.DataResources;
 using meGaton.Models;
 using meGaton.src.Models;
-using MaterialDesignThemes.Wpf;
 using Reactive.Bindings.Extensions;
 
 namespace meGaton.ViewModels {
@@ -35,6 +31,7 @@ namespace meGaton.ViewModels {
         public ReactiveCommand EnterKeyCommand { get; }=new ReactiveCommand();
         public ReactiveProperty<Brush>[] ControllerIconColors => controllerDisplay.ColorList.ToArray();
 
+        private Subject<Unit> gameLaunchStream=new Subject<Unit>();
         private Subject<int> panelSlideStream=new Subject<int>();
 
         //Model
@@ -51,7 +48,6 @@ namespace meGaton.ViewModels {
             //ここでパネル生成できなかった場合各種プロセスは動作させない
             try {
                 new PanelCreater().Launch(panel_parent);
-
             } catch (Exception e){
                 Logger.Inst.Log("I wanna stop my process bc GamePanels was didn't create.",LogLevel.Warning);
                 return;
@@ -61,8 +57,8 @@ namespace meGaton.ViewModels {
             var customer_timer = new CustomerTimer(main_window);
             var mask_controll = new MaskControll(root_grid);
 
-            EnterKeyCommand.Subscribe(n =>{});
             //キー入力はViewModelでバインドされている
+            EnterKeyCommand.Subscribe(n => gameLaunchStream.OnNext(Unit.Default));
             ListUpCommand.Subscribe(n => panelSlideStream.OnNext(1));
             ListDownCommand.Subscribe(n => panelSlideStream.OnNext(-1));
 
@@ -86,9 +82,10 @@ namespace meGaton.ViewModels {
                     }
                 });
 
-            //GamePadObserberの決定入力をGameProcessControllに流す
-            GamePadObserver.GetInstance.EnterKeyStream
-                .Where(n=>n)
+            //ゲーム起動ストリーム
+            gameLaunchStream
+                .Merge(GamePadObserver.GetInstance.EnterKeyStream.Where(n => n).Select(n=>Unit.Default))
+                .Merge(panel_controller.PanelClickEvent)
                 .Subscribe(n => {
                     GameProcessControll.GetInstance.GameLaunch(panel_controller.GetCurrentPanelsInfo.MyGameInfo.BinPath);
                 });
@@ -107,12 +104,12 @@ namespace meGaton.ViewModels {
             });
 
             //一応起動時もシャッフル
-            //panel_controller.Shuffle();
+            panel_controller.Shuffle();
 
             //PanelControllerの選択切り替えイベントを受け取る
             //最初の選択処理だけは実行する必要がある
             panel_controller.ChangeSelectedPanel.Subscribe(ChangeSeletedDisplay);
-            //ChangeSeletedDisplay(panel_controller.GetCurrentPanelsInfo);
+            ChangeSeletedDisplay(panel_controller.GetCurrentPanelsInfo);
         }
 
         //Viewから流れてくるマウスホイールイベントの処理
