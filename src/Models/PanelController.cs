@@ -50,7 +50,7 @@ namespace meGaton.Models {
             gameViewModels
                 .Select(n => n.OnClickEvent)
                 .Merge()
-                .Where(n => gameViewModels.Skip(START_POINT).Take(END_POINT - START_POINT).Contains(n))
+                .Where(n => gameViewModels.Skip(START_POINT).Take(END_POINT+1 - START_POINT).Contains(n))
                 .Subscribe(n =>{
                     UnFocusPanel();
                     focusIndex = gameViewModels.FindIndex(x=>x==n);
