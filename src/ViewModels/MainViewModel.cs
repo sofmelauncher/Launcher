@@ -27,6 +27,8 @@ namespace meGaton.ViewModels {
         public ReactiveProperty<string> GameDiscription { get; set; }
         public ReactiveCommand ListUpCommand { get; } = new ReactiveCommand();
         public ReactiveCommand ListDownCommand { get; } = new ReactiveCommand();
+        public ReactiveCommand ListSkipUpCommand { get; }=new ReactiveCommand();
+        public ReactiveCommand ListSkipDownCommand { get; } = new ReactiveCommand();
         public ReactiveCommand TimerResetCommand { get; } = new ReactiveCommand();
         public ReactiveCommand EnterKeyCommand { get; }=new ReactiveCommand();
         public ReactiveProperty<Brush>[] ControllerIconColors => controllerDisplay.ColorList.ToArray();
@@ -58,17 +60,21 @@ namespace meGaton.ViewModels {
             var customer_timer = new CustomerTimer(main_window);
             var mask_controll = new MaskControll(root_grid);
 
-            //キー入力はViewModelでバインドされている
+            //キー入力はViewにバインドされているので動作の定義だけする
+            //エンター
             EnterKeyCommand.Subscribe(n => gameLaunchStream.OnNext(Unit.Default));
+            //上下移動
             ListUpCommand.Subscribe(n => panelSlideStream.OnNext(1));
             ListDownCommand.Subscribe(n => panelSlideStream.OnNext(-1));
-
+            //スキップ入力
+            ListSkipUpCommand.Subscribe(n => panelSkipStream.OnNext(-1));
+            ListSkipDownCommand.Subscribe(n => panelSkipStream.OnNext(1));
+            //リセット
             TimerResetCommand.Subscribe(n => {
                 customer_timer.Stop();
                 panel_controller.Shuffle();
             });
-
-
+            
             //リスト移動入力の定義
             panelSlideStream
                 .Merge(GamePadObserver.GetInstance.VerticalStickEvent.Sample(TimeSpan.FromMilliseconds(200)))
@@ -97,14 +103,14 @@ namespace meGaton.ViewModels {
                     GameProcessControll.GetInstance.GameLaunch(panel_controller.GetCurrentPanelsInfo.MyGameInfo.BinPath);
                 });
 
-            //ゲーム起動時
+            //ゲーム起動時のイベント
             GameProcessControll.GetInstance.OnGameStart.Subscribe(n => {
                 customer_timer.StartRequest();
                 mask_controll.Run();
                 mediaDisplay.Pause();
             });
 
-            //ゲーム終了時
+            //ゲーム終了時のイベント
             GameProcessControll.GetInstance.OnGameEnd.Subscribe(n => {
                 mask_controll.Remove();
                 mediaDisplay.ReStart();
