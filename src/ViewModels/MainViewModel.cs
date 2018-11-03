@@ -33,6 +33,7 @@ namespace meGaton.ViewModels {
 
         private Subject<Unit> gameLaunchStream=new Subject<Unit>();
         private Subject<int> panelSlideStream=new Subject<int>();
+        private Subject<int> panelSkipStream=new Subject<int>();
 
         //Model
         private readonly MediaDisplay mediaDisplay;
@@ -70,9 +71,8 @@ namespace meGaton.ViewModels {
 
             //リスト移動入力の定義
             panelSlideStream
-                .Merge(GamePadObserver.GetInstance.VerticalStickStream)
+                .Merge(GamePadObserver.GetInstance.VerticalStickEvent.Sample(TimeSpan.FromMilliseconds(200)))
                 .Where(n=>!GameProcessControll.GetInstance.IsRunning)
-                .Sample(TimeSpan.FromMilliseconds(200))
                 .Where(n => n != 0)
                 .Subscribe(n => {
                     if (n == 1) {
@@ -82,7 +82,14 @@ namespace meGaton.ViewModels {
                     }
                 });
 
-            //ゲーム起動ストリーム
+            //スキップ入力の定義
+            panelSkipStream
+                .Merge(GamePadObserver.GetInstance.HorizontalStickEvent.Sample(TimeSpan.FromMilliseconds(150)))
+                .Where(n => !GameProcessControll.GetInstance.IsRunning)
+                .Where(n => n != 0)
+                .Subscribe(n => { panel_controller.Skip(n); });
+
+            //ゲーム起動入力の定義
             gameLaunchStream
                 .Merge(GamePadObserver.GetInstance.EnterKeyStream.Where(n => n).Select(n=>Unit.Default))
                 .Merge(panel_controller.PanelClickEvent)

@@ -27,13 +27,14 @@ namespace meGaton.Models {
 
         private int focusIndex;
         private readonly int START_POINT;
+        private const int ENABLE_PANEL=6;
         private readonly int END_POINT;
 
         public PanelController(Panel stack_panel) {
             panelParent = stack_panel;
             focusIndex = stack_panel.Children.Count > 2 ? 2 : 0;
             START_POINT = stack_panel.Children.Count > 1 ? 1 : 0;
-            END_POINT = START_POINT + 5;
+            END_POINT = START_POINT + ENABLE_PANEL-1;
 
             randomer = new Random((int)DateTime.Now.Ticks & 0x0000FFFF);
 
@@ -50,7 +51,7 @@ namespace meGaton.Models {
             gameViewModels
                 .Select(n => n.OnClickEvent)
                 .Merge()
-                .Where(n => gameViewModels.Skip(START_POINT).Take(END_POINT+1 - START_POINT).Contains(n))
+                .Where(n => gameViewModels.Skip(START_POINT).Take(ENABLE_PANEL).Contains(n))
                 .Subscribe(n =>{
                     UnFocusPanel();
                     focusIndex = gameViewModels.FindIndex(x=>x==n);
@@ -67,15 +68,19 @@ namespace meGaton.Models {
                 UnFocusPanel();
                 focusIndex--;
                 if (focusIndex < START_POINT){
-                    var end_point = panelParent.Children.Count - 1;
-                    var el = panelParent.Children[end_point];
-                    panelParent.Children.RemoveAt(end_point);
-                    panelParent.Children.Insert(0, el);
-                    gameViewModels.Slide(1);
+                    SlideUp();
                     focusIndex = START_POINT;
                 }
                 FocusPanel();
             }));
+        }
+
+        private void SlideUp() {
+            var end_point = panelParent.Children.Count - 1;
+            var el = panelParent.Children[end_point];
+            panelParent.Children.RemoveAt(end_point);
+            panelParent.Children.Insert(0, el);
+            gameViewModels.Slide(1);
         }
 
         public void MoveDown(){
@@ -83,29 +88,54 @@ namespace meGaton.Models {
                 UnFocusPanel();
                 focusIndex++;
                 if (focusIndex > END_POINT){
-                    var el = panelParent.Children[0];
-                    panelParent.Children.RemoveAt(0);
-                    panelParent.Children.Add(el);
-                    gameViewModels.Slide(-1);
+                    SlideDown();
                     focusIndex = END_POINT;
                 }
                 FocusPanel();
             }));
         }
 
+        private void SlideDown() {
+            var el = panelParent.Children[0];
+            panelParent.Children.RemoveAt(0);
+            panelParent.Children.Add(el);
+            gameViewModels.Slide(-1);
+        }
+
         public void Shuffle() {
             Action func;
             if (randomer.Next(0, 2) == 0) {
-                func = MoveDown;
+                func = SlideDown;
             } else {
-                func = MoveUp;
+                func = SlideUp;
             }
 
-            foreach (var nouse in Enumerable.Range(0, randomer.Next(panelParent.Children.Count)+1)) {
-                func.Invoke();
-            }
-
+            panelParent.Dispatcher.BeginInvoke(new Action(() => {
+                UnFocusPanel();
+                foreach (var nouse in Enumerable.Range(0, randomer.Next(panelParent.Children.Count) + 1)) {
+                    func.Invoke();
+                }
+                FocusPanel();
+            }));
         }
+
+        public void Skip(int vec) {
+            Action func=null;
+            if (vec>0) {
+                func = SlideDown;
+            } else if(vec<0){
+                func = SlideUp;
+            }
+            
+            panelParent.Dispatcher.BeginInvoke(new Action(() => {
+                UnFocusPanel();
+                foreach (var nouse in Enumerable.Range(0,ENABLE_PANEL)) {
+                func?.Invoke();
+                }
+                FocusPanel();
+            }));
+            
+            }
 
         private GamePanelViewModel GetViewModel(int index) {
             if (index > panelParent.Children.Count){
@@ -152,7 +182,5 @@ namespace meGaton.Models {
             }
             c.PanelSizes.Undo();
         }
-
-
     }
 }
