@@ -30,9 +30,11 @@ namespace meGaton.Models {
 
         public void GameLaunch(string path) {
             if (IsRunning) return;
+            
+            path= PathManage.GAMES_ROOT_PATH + "\\" + path;//受け取った相対パスを絶対パスに変換
 
             //ファイルがあるかチェック
-            if (path==""||!System.IO.File.Exists(PathManage.GAMES_ROOT_PATH+"\\"+path)) {
+            if (path==""||!System.IO.File.Exists(path)) {
                 Logger.Inst.Log("I didn't found binary file." + path, LogLevel.Error);
                 Logger.Inst.Log(new FileNotFoundException()+"bin not found",LogLevel.Error);
             }
