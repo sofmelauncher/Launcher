@@ -60,6 +60,9 @@ namespace meGaton.ViewModels {
             var customer_timer = new CustomerTimer(main_window);
             var mask_controll = new MaskControll(root_grid);
 
+            main_window.Closed+= (e, sender) =>{
+                customer_timer.Dispose();
+            };
             //キー入力はViewにバインドされているので動作の定義だけする
             //エンター
             EnterKeyCommand.Subscribe(n => gameLaunchStream.OnNext(Unit.Default));
