@@ -6,28 +6,32 @@ using System.Reactive.Subjects;
 using System.Windows;
 using System.Windows.Controls;
 using meGaton.DataResources;
-using meGaton.src.DataResources;
 using meGaton.Util;
 using meGaton.ViewModels;
 using meGaton.Views;
 
 namespace meGaton.Models{
     /// <summary>
-    /// パネルファクトリ、データベースに接続しGameInfoの数だけパネルを作成します
+    /// パネルファクトリ
     /// </summary>
-    class PanelCreater {
-
+    public class PanelCreator {
+  
         private readonly IGamesDataConnector iGamesDataConnector;//データベース
 
-        public PanelCreater() {
-            iGamesDataConnector=new GameInfoJsonReader();
+        
+        //DataConnectorへの依存は抽入する
+        public PanelCreator(IGamesDataConnector i_games_data_connector) {
+            iGamesDataConnector = i_games_data_connector;
         }
 
-        //パネルの作成。ViewModelもここで抽入する
+        /// <summary>
+        /// パネルを作成しViewModelを抽入します
+        /// </summary>
+        /// <param name="parent_panel"></param>
         public void Launch(Panel parent_panel){
             var counter = 1;
             var games_info = iGamesDataConnector.GetGamesInfo();
-            if (games_info.Count == 0){
+            if (games_info==null||games_info.Count == 0){
                 Logger.Inst.Log("GamesList is Empty.I don't create panels.",LogLevel.Warning);
                 throw new DataException();
             }

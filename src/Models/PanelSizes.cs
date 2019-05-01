@@ -4,38 +4,49 @@ using Reactive.Bindings.Extensions;
 
 namespace meGaton.Models {
     /// <summary>
-    /// スケールの変動を管理する
-    ///
+    /// パネルの拡大縮小を行う
     /// </summary>
     public class PanelSizes {
-        public ReactiveProperty<double> MyScale { get;}
-       
-        public float largeScale { private get;set; }
 
+        private readonly float largeScale;
         private bool isLarge;
 
+        
+        /// <summary>現在のスケール</summary>
+        public ReactiveProperty<double> MyScale { get;}
+        
+        
+        /// <param name="disposable">親ViewModelのDispose</param>
+        /// <param name="scale">拡大値</param>
         public PanelSizes(CompositeDisposable disposable ,float scale) {
-            this.MyScale = new ReactiveProperty<double>().AddTo(disposable);
+            MyScale = new ReactiveProperty<double>().AddTo(disposable);
             
             largeScale = scale;
             MyScale.Value = 1.0f;
         }
 
-        //ステートフル
+        /// <summary>
+        /// ステートフルな拡大
+        /// </summary>
         public void Enlarge() {
-            if(isLarge)return;
+            if(isLarge) return;
             MyScale.Value = largeScale;
             isLarge = true;
         }
 
+        /// <summary>
+        /// ステートフルな縮小
+        /// </summary>
         public void Undo() {
             if (!isLarge) return;
             MyScale.Value = 1;
             isLarge = false;
         }
 
-        //ステートレス
-        public void Submit(){
+        /// <summary>
+        /// ステートレスな可変
+        /// </summary>
+        public void Launch(){
             if (isLarge){
                 Undo();
             }else{

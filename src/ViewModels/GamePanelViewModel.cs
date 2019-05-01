@@ -16,7 +16,7 @@ namespace meGaton.ViewModels{
         private CompositeDisposable Disposable { get; } = new CompositeDisposable();
 
 
-        public GameInfo MyGameInfo { get; private set; }
+        public GameInfo MyGameInfo { get; }
         public PanelSizes PanelSizes { get; private set; }
 
         private readonly Subject<GamePanelViewModel> onClickStream=new Subject<GamePanelViewModel>();

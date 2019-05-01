@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 
 namespace meGaton.Util{
+    //ログのレベル
     public enum LogLevel{
         Log,Warning,Error
     }
@@ -14,8 +15,7 @@ namespace meGaton.Util{
 
         private StreamWriter streamWriter;
 
-        private  Logger(){
-            
+        private  Logger(){ 
         }
 
         public void Log(string str,LogLevel logLevel=LogLevel.Log){

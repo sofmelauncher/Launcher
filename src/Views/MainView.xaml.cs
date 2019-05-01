@@ -12,12 +12,12 @@ namespace meGaton.Views{
         public MainView() {
             InitializeComponent();
 
-            //MainnViewModelを経由して各Modelに各部品への参照を持たせる
+            //MainViewModelを経由して各Modelに各部品への参照を持たせる
             var view_model = new MainViewModel(
                 this,
                 FindName("PanelParent") as Panel
                 , FindName("DisplayVideo") as MediaElement
-                , FindName("ControllIconParent") as Panel
+                , FindName("ControlIconParent") as Panel
                 , this.FindName("RootGrid") as Grid);
             this.DataContext = view_model;
 
@@ -25,7 +25,7 @@ namespace meGaton.Views{
 
         //マウスホイールイベントがView層でしか拾えないためここにイベントがあるが処理はViewModelに委譲する
         protected override void OnMouseWheel(MouseWheelEventArgs e) {
-            (this.DataContext as MainViewModel).MouseWheel(e.Delta);
+            (this.DataContext as MainViewModel)?.MouseWheel(e.Delta);
         }
     }
 }

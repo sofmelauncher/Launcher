@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Systems{
+namespace meGaton.Util{
 	namespace Systems{
 		/// <summary>
 		/// http://baba-s.hatenablog.com/entry/2015/07/26/100000
 		/// </summary>
-		public static class ListExtensions
-		{
+		public static class ListExtensions{
 			/// <summary>
 			/// 先頭にあるオブジェクトを削除せずに返します
 			/// </summary>
