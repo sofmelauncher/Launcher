@@ -5,6 +5,8 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using meGaton.Models;
 using meGaton.ViewModels;
 using meGaton.Views;
 
@@ -13,14 +15,19 @@ namespace meGaton {
     /// App.xaml の相互作用ロジック
     /// </summary>
     public partial class App : Application {
+        //エントリポイント
         protected override void OnStartup(StartupEventArgs e) {
+            Logger.Inst.Log("------------meGaton launch------------");
             base.OnStartup(e);
 
             var window = new MainView();
-            var view_model = new MainViewModel();
 
-            window.DataContext = view_model;
             window.Show();
+        }
+
+        ~App()
+        {
+            Logger.Inst.Log("------------meGaton Finish------------");
         }
     }
 }
