@@ -2,19 +2,29 @@
 using System.Windows.Media;
 
 namespace meGaton.DataResources {
+    /// <summary>
+    /// ゲームで使用するコントローラ
+    /// </summary>
     public enum GameController {
         Xbox, Mouse, Keyboard
     }
 
+    /// <summary>
+    /// タグ名とカラーを紐づける
+    /// </summary>
     public struct Tag {
-        public string category;
-        public Color bgColor;
+        public string Category;
+        public Color BgColor;
 
-        public Tag(string category, Color bgColor) {
-            this.category = category;
-            this.bgColor = bgColor;
+        public Tag(string category, Color bg_color) {
+            this.Category = category;
+            this.BgColor = bg_color;
         }
     }
+
+    /// <summary>
+    /// ゲーム情報を格納する
+    /// </summary>
     [DataContract]
     public class GameInfo {
         [DataMember] public string GameName { get; private set; }

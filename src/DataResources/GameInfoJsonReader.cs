@@ -1,28 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using meGaton.DataResources;
 using meGaton.Util;
 using Newtonsoft.Json;
 
-namespace meGaton.src.DataResources {
-    class GameInfoJsonReader :IGamesDataConnector{
-        public List<GameInfo> GetGamesInfo() {
-            var data = "";
+namespace meGaton.DataResources {
+    /// <summary>
+    /// Jsonを読み込むDataConnector。meGaton v2.0ではJsonを使用する
+    /// </summary>
+    class GameInfoJsonReader :IGamesDataConnector {
+        private readonly List<GameInfo> gamesInfo;//デシリアライズのオーバーヘッドを避けるためコンストラクタでキャッシュしておく
+
+        public GameInfoJsonReader() {
+            var data="";
             try {
-                using (var sr=new StreamReader(PathManage.GAMES_ROOT_PATH + "\\gameinfo.json")) {
+                using (var sr = new StreamReader(PathManage.GAMES_ROOT_PATH + "\\gameinfo.json")) {
                     data = sr.ReadToEnd();
                 }
             } catch (NotFiniteNumberException e) {
                 Logger.Inst.Log("gameinfo.json is not found.");
-                return null;
+                gamesInfo = null;
             }
             try {
-                return JsonConvert.DeserializeObject<List<GameInfo>>(data);
+                gamesInfo=JsonConvert.DeserializeObject<List<GameInfo>>(data);
             } catch (Exception e) {
-                Logger.Inst.Log(e.ToString(),LogLevel.Error);
-                return null;
+                Logger.Inst.Log(e.ToString(), LogLevel.Error);
+                gamesInfo = null;
             }
+        }
+
+        public List<GameInfo> GetGamesInfo() {
+            return gamesInfo;
         }
     }
 }
