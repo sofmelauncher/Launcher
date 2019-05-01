@@ -9,7 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using meGaton.Models;
-using meGaton.src.Models;
+using meGaton.Util;
 using Reactive.Bindings.Extensions;
 
 namespace meGaton.ViewModels {

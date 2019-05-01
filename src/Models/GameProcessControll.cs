@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Reactive;
 using System.Reactive.Subjects;
-using meGaton.src.Models;
+using meGaton.Util;
 
 namespace meGaton.Models {
     /// <summary>

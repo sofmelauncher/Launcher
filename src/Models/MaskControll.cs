@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using meGaton.src.Views;
+using meGaton.Views;
 
 namespace meGaton.Models {
     public class MaskControll {

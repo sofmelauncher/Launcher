@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Controls;
-using meGaton.src.Models;
+using meGaton.Util;
 
 namespace meGaton.Models {
     /// <summary>

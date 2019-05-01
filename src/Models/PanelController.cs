@@ -7,10 +7,9 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Windows;
 using System.Windows.Controls;
-using Systems.Systems;
-using meGaton.DataResources;
+using meGaton.Util;
+using meGaton.Util.Systems;
 using meGaton.ViewModels;
-using Console = System.Console;
 
 namespace meGaton.Models {
     public class PanelController {

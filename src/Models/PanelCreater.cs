@@ -5,13 +5,11 @@ using System.Linq;
 using System.Reactive.Subjects;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using meGaton.DataResources;
 using meGaton.src.DataResources;
+using meGaton.Util;
 using meGaton.ViewModels;
 using meGaton.Views;
-using MaterialDesignThemes.Wpf;
-using Moq;
 
 namespace meGaton.Models{
     /// <summary>
@@ -22,12 +20,6 @@ namespace meGaton.Models{
         private readonly IGamesDataConnector iGamesDataConnector;//データベース
 
         public PanelCreater() {
-            //テスト用モックデータベースの作成
-           /* var moq = new Mock<IGamesDataConnector>();
-            moq.Setup(m => m.GetGamesInfo())
-                .Returns(new List<GameInfo>(){
-                   });
-            iGamesDataConnector =moq.Object;*/
             iGamesDataConnector=new GameInfoJsonReader();
         }
 

@@ -1,15 +1,13 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using meGaton.src.Models;
 
-namespace meGaton.Models{
+namespace meGaton.Util{
     public enum LogLevel{
         Log,Warning,Error
     }
     /// <summary>
     /// シンプルなロガー。
-    /// 超絶適当に作ったので色々とよろしくないと思う、毎回ストリーム開くのとか。インタフェースはそのままでいいから中身あとで直したい
     /// </summary>
     public class Logger{
         public static Logger Inst { get; }=new Logger();

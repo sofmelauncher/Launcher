@@ -1,6 +1,4 @@
-﻿using Reactive.Bindings;
-
-namespace meGaton.ViewModels {
+﻿namespace meGaton.ViewModels {
     class TimerWindowViewModel {
 
         //バインド用プロパティ

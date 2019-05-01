@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using Castle.Core.Internal;
 using meGaton.DataResources;
+using meGaton.Util;
 using MaterialDesignThemes.Wpf;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;

@@ -1,13 +1,9 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media.Animation;
 using meGaton.ViewModels;
-using System;
-using System.Windows.Media;
 using System.Windows.Input;
 
-namespace meGaton.Views
-{
+namespace meGaton.Views{
     /// <summary>
     /// GamePanel.xaml の相互作用ロジック
     /// </summary>

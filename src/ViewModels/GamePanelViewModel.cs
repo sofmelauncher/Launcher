@@ -1,14 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Reactive;
 using System.Reactive.Disposables;
-using System.Windows.Input;
-using Reactive;
-using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using meGaton.DataResources;
 using meGaton.Models;
-using meGaton.src.Models;
+using meGaton.Util;
 using Reactive.Bindings;
 
 namespace meGaton.ViewModels{

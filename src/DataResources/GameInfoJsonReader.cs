@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using meGaton.DataResources;
-using meGaton.Models;
-using meGaton.src.Models;
+using meGaton.Util;
 using Newtonsoft.Json;
 
 namespace meGaton.src.DataResources {
