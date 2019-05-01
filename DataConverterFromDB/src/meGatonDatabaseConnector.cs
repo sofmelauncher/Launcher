@@ -3,7 +3,7 @@ using meGaton.DataResources;
 using meGaton.src.DataResources;
 
 namespace meGatonDR{
-	public class meGatonDatabaseConnector:IGamesDataConnector{
+	public class meGatonDatabaseConnector{
 		public List<GameInfo> GetGamesInfo(){
 			var loader=new Loader();
 			

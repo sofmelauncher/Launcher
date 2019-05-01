@@ -17,7 +17,6 @@ namespace meGatonDR{
 				return "";
 			}
 			var res = files.First().Replace(GAMES_ROOT_PATH, "").Trim('\\');
-			//Console.WriteLine(res);
 			return res;
 		}
 	}

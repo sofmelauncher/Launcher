@@ -17,7 +17,7 @@ namespace meGatonDR{
 			var id = (int) ((long) sdr["game_id"]);
 			var info=new GameInfo(
 				game_name:sdr["name"].ToString(),
-				game_description:sdr["discription"].ToString(),
+				game_description:sdr["launcher_description"].ToString(),
 				game_id:id,
 				bin_path:binarySercher.Serch(id),
 				icon_path:sdr["panel"].ToString(),
@@ -29,6 +29,7 @@ namespace meGatonDR{
 					gamepad:(bool)sdr["is_gamepad"]),
 				tags:tagFactory.GetTags(id)
 			);
+            if(info.BinPath=="")return;
 			GameInfos.Add(info);
 		}
 	}

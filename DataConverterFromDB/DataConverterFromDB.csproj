@@ -67,9 +67,6 @@
     <Compile Include="..\src\DataResources\GameInfo.cs">
       <Link>src\GameInfo.cs</Link>
     </Compile>
-    <Compile Include="..\src\DataResources\IGamesDataConnector.cs">
-      <Link>src\IGamesDataConnector.cs</Link>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="src\BinarySercher.cs" />
     <Compile Include="src\ControllerDataFactory.cs" />
@@ -79,7 +76,6 @@
     <Compile Include="src\Loader.cs" />
     <Compile Include="src\meGatonDatabaseConnector.cs" />
     <Compile Include="src\Program.cs" />
-    <Compile Include="src\SQLiteConnector.cs" />
     <Compile Include="src\TagDataRecorder.cs" />
     <Compile Include="src\TagFactory.cs" />
     <Compile Include="src\TagRecorder.cs" />
