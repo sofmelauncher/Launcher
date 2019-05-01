@@ -83,6 +83,9 @@
       <HintPath>packages\Moq.4.10.0\lib\net45\Moq.dll</HintPath>
     </Reference>
     <Reference Include="netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="ReactiveProperty, Version=5.2.0.0, Culture=neutral, PublicKeyToken=910d1732782c71cb, processorArchitecture=MSIL">
       <HintPath>packages\ReactiveProperty.5.2.0\lib\net461\ReactiveProperty.dll</HintPath>
     </Reference>
@@ -143,19 +146,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="src\DataResources\BinarySercher.cs" />
-    <Compile Include="src\DataResources\ControllerDataFactory.cs" />
-    <Compile Include="src\DataResources\GameInfoRecorder.cs" />
-    <Compile Include="src\DataResources\ICalamFilter.cs" />
-    <Compile Include="src\DataResources\IDataRecorder.cs" />
+    <Compile Include="src\DataResources\GameInfoJsonReader.cs" />
     <Compile Include="src\DataResources\IGamesDataConnector.cs" />
-    <Compile Include="src\DataResources\Loader.cs" />
-    <Compile Include="src\DataResources\meGatonDatabaseConnector.cs" />
-    <Compile Include="src\DataResources\SQLiteConnector.cs" />
-    <Compile Include="src\DataResources\TagDataRecorder.cs" />
-    <Compile Include="src\DataResources\TagFactory.cs" />
-    <Compile Include="src\DataResources\TagRecorder.cs" />
-    <Compile Include="src\DataResources\WindowsFilter.cs" />
     <Compile Include="src\Models\ControllerDisplay.cs" />
     <Compile Include="src\Models\CustomerTimer.cs" />
     <Compile Include="src\Models\GamePadObserver.cs" />

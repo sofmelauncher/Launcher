@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using meGaton.DataResources;
+using meGaton.src.DataResources;
 using meGaton.ViewModels;
 using meGaton.Views;
 using MaterialDesignThemes.Wpf;
@@ -22,11 +23,12 @@ namespace meGaton.Models{
 
         public PanelCreater() {
             //テスト用モックデータベースの作成
-            var moq = new Mock<IGamesDataConnector>();
+           /* var moq = new Mock<IGamesDataConnector>();
             moq.Setup(m => m.GetGamesInfo())
                 .Returns(new List<GameInfo>(){
                    });
-            iGamesDataConnector =moq.Object;
+            iGamesDataConnector =moq.Object;*/
+            iGamesDataConnector=new GameInfoJsonReader();
         }
 
         //パネルの作成。ViewModelもここで抽入する
