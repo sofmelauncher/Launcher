@@ -22,7 +22,7 @@ namespace UnitTest {
 
         [TestMethod]
         public void DBTest(){
-            var db=new SQLiteConnector();
+    
 
         }
 
