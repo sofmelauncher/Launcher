@@ -10,9 +10,12 @@ using Newtonsoft.Json;
 namespace DataConverterFromDB.src {
     class GameInfoJsonWriter {
         public void Write(List<GameInfo> infos) {
-            var json_string = JsonConvert.SerializeObject(infos);
+            var json_string = JsonConvert.SerializeObject(infos, Formatting.Indented);
             var write_path = System.AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\')+"\\Games\\";
 
+            foreach (var item in JsonConvert.DeserializeObject<List<GameInfo>>(json_string)) {
+                Console.WriteLine("*"+item.GameName);
+            }
             //BOM無しUTF-8書き込みなのでエンコード指定をしない
             using (var sw=new StreamWriter(write_path+"gameinfo.json",false)) {
                 sw.Write(json_string);

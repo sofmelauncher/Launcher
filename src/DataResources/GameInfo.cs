@@ -1,4 +1,5 @@
-﻿using System.Windows.Media;
+﻿using System.Runtime.Serialization;
+using System.Windows.Media;
 
 namespace meGaton.DataResources {
     public enum GameController {
@@ -14,16 +15,17 @@ namespace meGaton.DataResources {
             this.bgColor = bgColor;
         }
     }
+    [DataContract]
     public class GameInfo {
-        public string GameName { get; private set; }
-        public string GameDescription { get; private set; }
-        public int GameId { get; private set; }
-        public string BinPath { get; private set; }
-        public string IconPath { get; private set; }
-        public string[] PanelsPath { get; private set; }
-        public string VideoPath { get; private set; }
-        public GameController[] UseControllers { get; set; }
-        public Tag[] Tags{get;set;}
+        [DataMember] public string GameName { get; private set; }
+        [DataMember] public string GameDescription { get; private set; }
+        [DataMember] public int GameId { get; private set; }
+        [DataMember] public string BinPath { get; private set; }
+        [DataMember] public string IconPath { get; private set; }
+        [DataMember] public string[] PanelsPath { get; private set; }
+        [DataMember] public string VideoPath { get; private set; }
+        [DataMember] public GameController[] UseControllers { get; set; }
+        [DataMember] public Tag[] Tags{get;set;}
 
         public GameInfo(string game_name, string game_description, int game_id,
             string bin_path,string icon_path,string[] panels_path,

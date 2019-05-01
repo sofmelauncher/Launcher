@@ -21,7 +21,6 @@ namespace meGaton.src.DataResources {
                 Logger.Inst.Log("gameinfo.json is not found.");
                 return null;
             }
-
             try {
                 return JsonConvert.DeserializeObject<List<GameInfo>>(data);
             } catch (Exception e) {
