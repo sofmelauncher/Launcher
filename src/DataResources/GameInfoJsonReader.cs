@@ -17,9 +17,10 @@ namespace meGaton.DataResources {
                 using (var sr = new StreamReader(PathManage.GAMES_ROOT_PATH + "\\gameinfo.json")) {
                     data = sr.ReadToEnd();
                 }
-            } catch (NotFiniteNumberException e) {
-                Logger.Inst.Log("gameinfo.json is not found.");
+            } catch (FileNotFoundException e) {
+                Logger.Inst.Log("gameinfo.json is not found.",LogLevel.Warning);
                 gamesInfo = null;
+                return;
             }
             try {
                 gamesInfo=JsonConvert.DeserializeObject<List<GameInfo>>(data);
