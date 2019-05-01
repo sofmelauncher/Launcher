@@ -18,7 +18,7 @@ namespace meGaton.Models {
         private int counter = 1;
 
 
-        private const int TIME_LIMIT_SECOND = 15;
+        private const int TIME_LIMIT_SECOND = 300;
 
         private Window mainWindow;
         private DispatcherTimer dispatcherTimer;
