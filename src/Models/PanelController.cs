@@ -7,36 +7,45 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Windows;
 using System.Windows.Controls;
-using Systems.Systems;
-using meGaton.DataResources;
+using meGaton.Util;
+using meGaton.Util.Systems;
 using meGaton.ViewModels;
-using Console = System.Console;
 
 namespace meGaton.Models {
     public class PanelController {
-        public GamePanelViewModel GetCurrentPanelsInfo => GetViewModel(focusIndex);
-        private readonly Panel panelParent;
-
-        private List<GamePanelViewModel> gameViewModels=new List<GamePanelViewModel>();
-        private readonly Subject<GamePanelViewModel> changeSelectedSubject = new Subject<GamePanelViewModel>();
-        public IObservable<GamePanelViewModel> ChangeSelectedPanel => changeSelectedSubject;
-        private readonly Subject<Unit> panelClickStream=new Subject<Unit>();
-        public IObservable<Unit> PanelClickEvent => panelClickStream;
-
-        private Random randomer;
-
+        
         private int focusIndex;
-        private readonly int START_POINT;
-        private const int ENABLE_PANEL=6;
-        private readonly int END_POINT;
+        
+        private readonly Panel panelParent;
+        private readonly List<GamePanelViewModel> gameViewModels=new List<GamePanelViewModel>();
+        private readonly Random random;
 
+        
+        /// <summary>現在選択しているパネル</summary>
+        public GamePanelViewModel GetCurrentPanelsInfo => GetViewModel(focusIndex);
+
+        private readonly Subject<GamePanelViewModel> onChangeSelected = new Subject<GamePanelViewModel>();
+        /// <summary>フォーカスしているパネルの変更 </summary>
+        public IObservable<GamePanelViewModel> OnChangeSelected => onChangeSelected;
+        private readonly Subject<Unit> onPanelClick=new Subject<Unit>();
+        /// <summary>パネルがクリックされた</summary>
+        public IObservable<Unit> OnPanelClick => onPanelClick;
+
+        
+        //始点終点インデックス番を可変にしないとゲーム数が表示数を下回ったときにバグる
+        private readonly int START_POINT;//始点のインデックス
+        private readonly int ENABLE_PANEL=6;//表示するパネルの枚数
+        private readonly int END_POINT;//終点のインデックス
+
+        
+        /// <param name="stack_panel">制御対象になるパネル群の親パネル</param>
         public PanelController(Panel stack_panel) {
             panelParent = stack_panel;
             focusIndex = stack_panel.Children.Count > 2 ? 2 : 0;
             START_POINT = stack_panel.Children.Count > 1 ? 1 : 0;
             END_POINT = START_POINT + ENABLE_PANEL-1;
 
-            randomer = new Random((int)DateTime.Now.Ticks & 0x0000FFFF);
+            random = new Random((int)DateTime.Now.Ticks & 0x0000FFFF);
 
             foreach (var item in stack_panel.Children){
                 try{
@@ -52,19 +61,24 @@ namespace meGaton.Models {
                 .Select(n => n.OnClickEvent)
                 .Merge()
                 .Where(n => gameViewModels.Skip(START_POINT).Take(ENABLE_PANEL).Contains(n))
-                .Subscribe(n =>{
-                    UnFocusPanel();
-                    focusIndex = gameViewModels.FindIndex(x=>x==n);
-                    FocusPanel();
-                    panelClickStream.OnNext(Unit.Default);
+                .Subscribe(n => {
+                    var clicked_index = gameViewModels.FindIndex(x => x == n);
+                    if (focusIndex != clicked_index) {
+                        UnFocusPanel();
+                        focusIndex = clicked_index;
+                        FocusPanel();
+                    }
+                    onPanelClick.OnNext(Unit.Default);
                 });
 
             FocusPanel();
         }
 
+        /// <summary>
+        /// 現在選択されているパネルの上のパネルにフォーカスを移します
+        /// </summary>
         public void MoveUp() {
-            panelParent.Dispatcher.BeginInvoke(new Action(() =>
-            {
+            panelParent.Dispatcher.BeginInvoke(new Action(() =>{
                 UnFocusPanel();
                 focusIndex--;
                 if (focusIndex < START_POINT){
@@ -75,14 +89,10 @@ namespace meGaton.Models {
             }));
         }
 
-        private void SlideUp() {
-            var end_point = panelParent.Children.Count - 1;
-            var el = panelParent.Children[end_point];
-            panelParent.Children.RemoveAt(end_point);
-            panelParent.Children.Insert(0, el);
-            gameViewModels.Slide(1);
-        }
 
+        /// <summary>
+        /// 現在選択されているパネルの下のパネルにフォーカスを移します
+        /// </summary>
         public void MoveDown(){
             panelParent.Dispatcher.BeginInvoke(new Action(() =>{
                 UnFocusPanel();
@@ -95,16 +105,12 @@ namespace meGaton.Models {
             }));
         }
 
-        private void SlideDown() {
-            var el = panelParent.Children[0];
-            panelParent.Children.RemoveAt(0);
-            panelParent.Children.Add(el);
-            gameViewModels.Slide(-1);
-        }
-
+        /// <summary>
+        /// ランダムにフォーカスを変更します
+        /// </summary>
         public void Shuffle() {
             Action func;
-            if (randomer.Next(0, 2) == 0) {
+            if (random.Next(0, 2) == 0) {
                 func = SlideDown;
             } else {
                 func = SlideUp;
@@ -112,13 +118,17 @@ namespace meGaton.Models {
 
             panelParent.Dispatcher.BeginInvoke(new Action(() => {
                 UnFocusPanel();
-                foreach (var nouse in Enumerable.Range(0, randomer.Next(panelParent.Children.Count) + 1)) {
+                foreach (var nouse in Enumerable.Range(0, random.Next(panelParent.Children.Count) + 1)) {
                     func.Invoke();
                 }
                 FocusPanel();
             }));
         }
 
+        /// <summary>
+        /// 現在選択されているページを切り替えます
+        /// </summary>
+        /// <param name="vec"></param>
         public void Skip(int vec) {
             Action func=null;
             if (vec>0) {
@@ -133,10 +143,27 @@ namespace meGaton.Models {
                 func?.Invoke();
                 }
                 FocusPanel();
-            }));
-            
-            }
+            }));    
+        }
+        
+        // 表示されているページの上のページに切り替える
+        private void SlideUp() {
+            var end_point = panelParent.Children.Count - 1;
+            var el = panelParent.Children[end_point];
+            panelParent.Children.RemoveAt(end_point);
+            panelParent.Children.Insert(0, el);
+            gameViewModels.Slide(1);
+        }
+        
+        // 現在表示されているページの上のページに切り替える
+        private void SlideDown() {
+            var el = panelParent.Children[0];
+            panelParent.Children.RemoveAt(0);
+            panelParent.Children.Add(el);
+            gameViewModels.Slide(-1);
+        }
 
+        //全パネル内での指定インデックスのViewModelを返す
         private GamePanelViewModel GetViewModel(int index) {
             if (index > panelParent.Children.Count){
                 Logger.Inst.Log("Argument is more than GamePanels number",LogLevel.Error);
@@ -164,8 +191,7 @@ namespace meGaton.Models {
                 }
             }
             c.PanelSizes.Enlarge();
-            changeSelectedSubject.OnNext(c);
-
+            onChangeSelected.OnNext(c);
         }
 
         private void UnFocusPanel() {

@@ -9,7 +9,7 @@
              >
     <materialDesign:Chip
             materialDesign:ShadowAssist.ShadowDepth="Depth2" 
-            Height="30" Width="100" Margin="2,2,2,2" Background="{Binding MyColor.Value}">
+            Height="40" Width="100" Margin="2,2,2,2" Background="{Binding MyColor.Value}">
         <TextBlock Text="{Binding MyCategory.Value}" FontSize="16"  HorizontalAlignment="Center" Margin="0,0,0,2" TextWrapping="Wrap" VerticalAlignment="Center"/>
     </materialDesign:Chip>
 

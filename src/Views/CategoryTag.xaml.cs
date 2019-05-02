@@ -1,10 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using meGaton.ViewModels;
 
-namespace meGaton.Views
-{
+namespace meGaton.Views{
     /// <summary>
     /// CategoryTag.xaml の相互作用ロジック
     /// </summary>

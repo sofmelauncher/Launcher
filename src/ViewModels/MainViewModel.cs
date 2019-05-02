@@ -8,15 +8,16 @@ using System.Reactive.Subjects;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using meGaton.DataResources;
 using meGaton.Models;
-using meGaton.src.Models;
+using meGaton.Util;
 using Reactive.Bindings.Extensions;
 
 namespace meGaton.ViewModels {
     /// <summary>
     /// MainViewModel.xaml の相互作用ロジック
     /// UI要素を必要とするModel全ての生成責任を持つ
-    ///　ウィンドウ1枚のアプリなのもあって肥大化しがち
+    /// 依存関係の抽入は全てここで行う
     /// </summary>
     public partial class MainViewModel : INotifyPropertyChanged, IDisposable {
         public event PropertyChangedEventHandler PropertyChanged;//no use
@@ -24,7 +25,7 @@ namespace meGaton.ViewModels {
 
 
         //バインド用プロパティ
-        public ReactiveProperty<string> GameDiscription { get; set; }
+        public ReactiveProperty<string> GameDescription { get; set; }
         public ReactiveCommand ListUpCommand { get; } = new ReactiveCommand();
         public ReactiveCommand ListDownCommand { get; } = new ReactiveCommand();
         public ReactiveCommand ListSkipUpCommand { get; }=new ReactiveCommand();
@@ -33,9 +34,10 @@ namespace meGaton.ViewModels {
         public ReactiveCommand EnterKeyCommand { get; }=new ReactiveCommand();
         public ReactiveProperty<Brush>[] ControllerIconColors => controllerDisplay.ColorList.ToArray();
 
-        private Subject<Unit> gameLaunchStream=new Subject<Unit>();
-        private Subject<int> panelSlideStream=new Subject<int>();
-        private Subject<int> panelSkipStream=new Subject<int>();
+        
+        private readonly Subject<Unit> gameLaunchStream=new Subject<Unit>();
+        private readonly Subject<int> panelSlideStream=new Subject<int>();
+        private readonly Subject<int> panelSkipStream=new Subject<int>();
 
         //Model
         private readonly MediaDisplay mediaDisplay;
@@ -43,22 +45,22 @@ namespace meGaton.ViewModels {
 
         public MainViewModel(Window main_window,Panel panel_parent,MediaElement media_display,Panel controller_icon_parent,Panel root_grid) {
 
-            GameDiscription = new ReactiveProperty<string>().AddTo(this.Disposable);
+            GameDescription = new ReactiveProperty<string>().AddTo(this.Disposable);
 
             mediaDisplay = new MediaDisplay(media_display);
             controllerDisplay = new ControllerDisplay(controller_icon_parent);
 
             //ここでパネル生成できなかった場合各種プロセスは動作させない
             try {
-                new PanelCreater().Launch(panel_parent);
+                new PanelCreator(new GameInfoJsonReader()).Launch(panel_parent);
             } catch (Exception e){
                 Logger.Inst.Log("I wanna stop my process bc GamePanels was didn't create.",LogLevel.Warning);
                 return;
             }
 
             var panel_controller = new PanelController(panel_parent);
-            var customer_timer = new CustomerTimer(main_window);
-            var mask_controll = new MaskControll(root_grid);
+            var customer_timer = new CustomerTimer();
+            var mask_control = new MaskControl(root_grid);
 
             main_window.Closed+= (e, sender) =>{
                 customer_timer.Dispose();
@@ -80,8 +82,8 @@ namespace meGaton.ViewModels {
             
             //リスト移動入力の定義
             panelSlideStream
-                .Merge(GamePadObserver.GetInstance.VerticalStickEvent.Sample(TimeSpan.FromMilliseconds(200)))
-                .Where(n=>!GameProcessControll.GetInstance.IsRunning)
+                .Merge(GamePadObserver.Inst.InVerticalStickEvent.Sample(TimeSpan.FromMilliseconds(200)))
+                .Where(n=>!GameProcessControl.Inst.IsRunning)
                 .Where(n => n != 0)
                 .Subscribe(n => {
                     if (n == 1) {
@@ -93,39 +95,38 @@ namespace meGaton.ViewModels {
 
             //スキップ入力の定義
             panelSkipStream
-                .Merge(GamePadObserver.GetInstance.HorizontalStickEvent.Sample(TimeSpan.FromMilliseconds(150)))
-                .Where(n => !GameProcessControll.GetInstance.IsRunning)
+                .Merge(GamePadObserver.Inst.InHorizontalStickEvent.Sample(TimeSpan.FromMilliseconds(150)))
+                .Where(n => !GameProcessControl.Inst.IsRunning)
                 .Where(n => n != 0)
                 .Subscribe(n => { panel_controller.Skip(n); });
 
             //ゲーム起動入力の定義
             gameLaunchStream
-                .Merge(GamePadObserver.GetInstance.EnterKeyStream.Where(n => n).Select(n=>Unit.Default))
-                .Merge(panel_controller.PanelClickEvent)
+                .Merge(GamePadObserver.Inst.OnEnterKeyDown.Where(n => n).Select(n=>Unit.Default))
+                .Merge(panel_controller.OnPanelClick)
                 .Subscribe(n => {
-                    GameProcessControll.GetInstance.GameLaunch(panel_controller.GetCurrentPanelsInfo.MyGameInfo.BinPath);
+                    GameProcessControl.Inst.GameLaunch(panel_controller.GetCurrentPanelsInfo.MyGameInfo.BinPath, panel_controller.GetCurrentPanelsInfo.MyGameInfo.GameId.ToString());
                 });
 
             //ゲーム起動時のイベント
-            GameProcessControll.GetInstance.OnGameStart.Subscribe(n => {
+            GameProcessControl.Inst.OnGameStart.Subscribe(n => {
                 customer_timer.StartRequest();
-                mask_controll.Run();
+                mask_control.Run();
                 mediaDisplay.Pause();
             });
 
             //ゲーム終了時のイベント
-            GameProcessControll.GetInstance.OnGameEnd.Subscribe(n => {
-                mask_controll.Remove();
+            GameProcessControl.Inst.OnGameEnd.Subscribe(n => {
+                mask_control.Remove();
                 mediaDisplay.ReStart();
             });
 
             //一応起動時もシャッフル
+       
+            //PanelControllerの選択切り替えイベントを受け取る
+            panel_controller.OnChangeSelected.Subscribe(ChangeSelectedDisplay);
             panel_controller.Shuffle();
 
-            //PanelControllerの選択切り替えイベントを受け取る
-            //最初の選択処理だけは実行する必要がある
-            panel_controller.ChangeSelectedPanel.Subscribe(ChangeSeletedDisplay);
-            ChangeSeletedDisplay(panel_controller.GetCurrentPanelsInfo);
         }
 
         //Viewから流れてくるマウスホイールイベントの処理
@@ -138,7 +139,7 @@ namespace meGaton.ViewModels {
         }
 
         //選択中のパネルからGameInfoを取り出して各UIに表示する
-        public void ChangeSeletedDisplay(GamePanelViewModel game_panel_view_model){
+        private void ChangeSelectedDisplay(GamePanelViewModel game_panel_view_model){
             var game_info = game_panel_view_model.MyGameInfo;
             if (game_info == null){
                 Logger.Inst.Log(new ArgumentException()+"Can't select bc GameInfo is empty.");
@@ -146,9 +147,9 @@ namespace meGaton.ViewModels {
             }
 
             try {
-                GameDiscription.Value = game_info.GameDescription.ReplaceNewLineCode();
-                mediaDisplay.SetMedia(game_info.PanelsPath, game_info.VideoPath);
-                controllerDisplay.ChangeIcon(game_info.UseControllers);
+                GameDescription.Value = game_info.GameDescription.ReplaceNewLineCode();
+                mediaDisplay.SetMedia(game_info.VideoPath,game_info.PanelsPath);
+                controllerDisplay.ChangeIconActive(game_info.UseControllers);
             } catch (NullReferenceException e){
                 Logger.Inst.Log(e+"GameInfo include null property.");
             }

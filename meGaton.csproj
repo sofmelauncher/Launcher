@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="packages\Costura.Fody.3.3.3\build\Costura.Fody.props" Condition="Exists('packages\Costura.Fody.3.3.3\build\Costura.Fody.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -51,6 +52,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>meGaton.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <HintPath>packages\Castle.Core.4.3.1\lib\net45\Castle.Core.dll</HintPath>
@@ -58,11 +62,8 @@
     <Reference Include="CommonServiceLocator, Version=2.0.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>packages\CommonServiceLocator.2.0.2\lib\net45\CommonServiceLocator.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    <Reference Include="Costura, Version=3.3.3.0, Culture=neutral, PublicKeyToken=9919ef960d84173d, processorArchitecture=MSIL">
+      <HintPath>packages\Costura.Fody.3.3.3\lib\net40\Costura.dll</HintPath>
     </Reference>
     <Reference Include="GalaSoft.MvvmLight, Version=5.4.1.0, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
       <HintPath>packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
@@ -79,10 +80,10 @@
     <Reference Include="MaterialDesignThemes.Wpf, Version=2.4.1.1101, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\MaterialDesignThemes.2.4.1.1101\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
     </Reference>
-    <Reference Include="Moq, Version=4.10.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
-      <HintPath>packages\Moq.4.10.0\lib\net45\Moq.dll</HintPath>
-    </Reference>
     <Reference Include="netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="ReactiveProperty, Version=5.2.0.0, Culture=neutral, PublicKeyToken=910d1732782c71cb, processorArchitecture=MSIL">
       <HintPath>packages\ReactiveProperty.5.2.0\lib\net461\ReactiveProperty.dll</HintPath>
     </Reference>
@@ -98,12 +99,6 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Linq" />
-    <Reference Include="System.Data.SQLite, Version=1.0.109.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>packages\System.Data.SQLite.Core.1.0.109.2\lib\net46\System.Data.SQLite.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Data.SQLite.EF6, Version=1.0.109.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>packages\System.Data.SQLite.EF6.1.0.109.0\lib\net46\System.Data.SQLite.EF6.dll</HintPath>
-    </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Reactive, Version=4.1.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
       <HintPath>packages\System.Reactive.4.1.0\lib\net46\System.Reactive.dll</HintPath>
@@ -111,6 +106,7 @@
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\System.Runtime.CompilerServices.Unsafe.4.5.0\lib\netstandard1.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Threading.Tasks.Extensions.4.5.1\lib\portable-net45+win8+wp8+wpa81\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
@@ -143,31 +139,22 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="src\DataResources\BinarySercher.cs" />
-    <Compile Include="src\DataResources\ControllerDataFactory.cs" />
-    <Compile Include="src\DataResources\GameInfoRecorder.cs" />
-    <Compile Include="src\DataResources\ICalamFilter.cs" />
-    <Compile Include="src\DataResources\IDataRecorder.cs" />
+    <Compile Include="src\DataResources\GameInfoJsonReader.cs" />
     <Compile Include="src\DataResources\IGamesDataConnector.cs" />
-    <Compile Include="src\DataResources\Loader.cs" />
-    <Compile Include="src\DataResources\meGatonDatabaseConnector.cs" />
-    <Compile Include="src\DataResources\SQLiteConnector.cs" />
-    <Compile Include="src\DataResources\TagDataRecorder.cs" />
-    <Compile Include="src\DataResources\TagFactory.cs" />
-    <Compile Include="src\DataResources\TagRecorder.cs" />
-    <Compile Include="src\DataResources\WindowsFilter.cs" />
     <Compile Include="src\Models\ControllerDisplay.cs" />
     <Compile Include="src\Models\CustomerTimer.cs" />
     <Compile Include="src\Models\GamePadObserver.cs" />
-    <Compile Include="src\Models\InstantTimer.cs" />
-    <Compile Include="src\Models\ListExtensions.cs" />
-    <Compile Include="src\Models\Logger.cs" />
-    <Compile Include="src\Models\MaskControll.cs" />
+    <Compile Include="src\Util\HardWareObserver.cs" />
+    <Compile Include="src\Util\InstantTimer.cs" />
+    <Compile Include="src\Util\ListExtensions.cs" />
+    <Compile Include="src\Util\Logger.cs" />
+    <Compile Include="src\Models\MaskControl.cs" />
     <Compile Include="src\Models\MediaDisplay.cs" />
-    <Compile Include="src\Models\GameProcessControll.cs" />
+    <Compile Include="src\Models\GameProcessControl.cs" />
     <Compile Include="src\Models\PanelController.cs" />
-    <Compile Include="src\Models\PathManage.cs" />
-    <Compile Include="src\Models\StringExpander.cs" />
+    <Compile Include="src\Util\ServerConnector.cs" />
+    <Compile Include="src\Util\PathManage.cs" />
+    <Compile Include="src\Util\StringExpander.cs" />
     <Compile Include="src\ViewModels\CategoryTagViewModel.cs" />
     <Compile Include="src\ViewModels\GamePanelViewModel.cs" />
     <Compile Include="src\Models\PanelSizes.cs" />
@@ -179,7 +166,7 @@
       <DependentUpon>GamePanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="src\DataResources\GameInfo.cs" />
-    <Compile Include="src\Models\PanelCreater.cs" />
+    <Compile Include="src\Models\PanelCreator.cs" />
     <Compile Include="src\ViewModels\MainViewModel.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
@@ -259,13 +246,16 @@
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="meGaton.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="packages\System.Data.SQLite.Core.1.0.109.2\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('packages\System.Data.SQLite.Core.1.0.109.2\build\net46\System.Data.SQLite.Core.targets')" />
+  <Import Project="packages\Fody.4.2.1\build\Fody.targets" Condition="Exists('packages\Fody.4.2.1\build\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>このプロジェクトは、このコンピューター上にない NuGet パッケージを参照しています。それらのパッケージをダウンロードするには、[NuGet パッケージの復元] を使用します。詳細については、http://go.microsoft.com/fwlink/?LinkID=322105 を参照してください。見つからないファイルは {0} です。</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('packages\System.Data.SQLite.Core.1.0.109.2\build\net46\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\System.Data.SQLite.Core.1.0.109.2\build\net46\System.Data.SQLite.Core.targets'))" />
+    <Error Condition="!Exists('packages\Fody.4.2.1\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Fody.4.2.1\build\Fody.targets'))" />
+    <Error Condition="!Exists('packages\Costura.Fody.3.3.3\build\Costura.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Costura.Fody.3.3.3\build\Costura.Fody.props'))" />
   </Target>
 </Project>

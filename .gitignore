@@ -1,6 +1,7 @@
 bin/
 obj/
-/.vs/
-/packages/
+.vs/
+packages/
 /meGaton.csproj.user
 /.log/
+/.idea/

@@ -1,14 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Reactive;
 using System.Reactive.Disposables;
-using System.Windows.Input;
-using Reactive;
-using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using meGaton.DataResources;
 using meGaton.Models;
-using meGaton.src.Models;
+using meGaton.Util;
 using Reactive.Bindings;
 
 namespace meGaton.ViewModels{
@@ -20,7 +16,7 @@ namespace meGaton.ViewModels{
         private CompositeDisposable Disposable { get; } = new CompositeDisposable();
 
 
-        public GameInfo MyGameInfo { get; private set; }
+        public GameInfo MyGameInfo { get; }
         public PanelSizes PanelSizes { get; private set; }
 
         private readonly Subject<GamePanelViewModel> onClickStream=new Subject<GamePanelViewModel>();
@@ -34,9 +30,9 @@ namespace meGaton.ViewModels{
 
 
         //index_numberは展示用IDと同義
-        public GamePanelViewModel(GameInfo game_info,int index_number) {
+        public GamePanelViewModel(GameInfo game_info) {
             MyGameInfo=game_info;
-            GameID = (index_number.ToString()).PadLeft(2,'0');
+            GameID = (game_info.DisplayId.ToString()).PadLeft(2,'0');
         }
 
         //見た目のプロパティのためここはViewにセットしてもらう必要がある

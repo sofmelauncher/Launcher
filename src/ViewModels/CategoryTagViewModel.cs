@@ -14,7 +14,8 @@ namespace meGaton.ViewModels{
         public ReactiveProperty<string> MyCategory { get; set;}
         public ReactiveProperty<Brush> MyColor{ get; set; }
 
-        //受け取った文字列とカラーをバインドにセットするだけ
+        /// <param name="category">タグ名</param>
+        /// <param name="color">タグカラー</param>
         public CategoryTagViewModel(string category, Color color) {
             this.MyCategory = new ReactiveProperty<string>().AddTo(Disposable);
             this.MyColor = new ReactiveProperty<Brush>().AddTo(Disposable);

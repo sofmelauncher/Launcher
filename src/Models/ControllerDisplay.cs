@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using Castle.Core.Internal;
 using meGaton.DataResources;
+using meGaton.Util;
 using MaterialDesignThemes.Wpf;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
@@ -17,27 +18,30 @@ namespace meGaton.Models{
     /// 使用するゲームのコントローラを明暗で表示する
     /// </summary>
     public class ControllerDisplay :INotifyPropertyChanged, IDisposable {
+        
         public event PropertyChangedEventHandler PropertyChanged;//no use
         private CompositeDisposable Disposable { get; } = new CompositeDisposable();
 
         private readonly IconInfo[] iconInfos;
 
+        
         //各アイコンにバインドされる
         public List<ReactiveProperty<Brush>> ColorList { get; private set; }
 
+        
         //使用可否のカラー
         private readonly Brush ACTIVE_COLOR = new SolidColorBrush(Colors.Black);
         private readonly Brush NON_ACTIVE_COLOR = new SolidColorBrush(Color.FromArgb(30,0,0,0));
 
 
+        /// <param name="root">アイコンを表示する親パネル</param>
         public ControllerDisplay(Panel root) {
-            //IconInfoを作成
             iconInfos = new IconInfo[] {
                 new IconInfo(GameController.Xbox,"GoogleController"),
                 new IconInfo(GameController.Mouse,"Mouse"),
                 new IconInfo(GameController.Keyboard,"Keyboard"),
             };
-            //アイコンrootに配置されているコントローラアイコンの数だけバインド用プロパティを用意
+            
             ColorList = Enumerable
                 .Range(0, root.Children.OfType<UIElement>().Count(n => n is PackIcon))
                 .Select(_ => new ReactiveProperty<Brush>().AddTo(Disposable))
@@ -72,8 +76,12 @@ namespace meGaton.Models{
             }
         }
 
-        //アイコンの色を切り替える
-        public void ChangeIcon(GameController[] game_controllers) {
+        /// <summary>
+        /// アイコンのアクティブを変更します
+        /// </summary>
+        /// <param name="game_controllers">アクティブにするコントローラ</param>
+        /// <exception cref="ArgumentException">引数がnull</exception>
+        public void ChangeIconActive(GameController[] game_controllers) {
             if (game_controllers == null){
                 throw new ArgumentException();
             }

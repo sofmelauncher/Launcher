@@ -1,13 +1,9 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media.Animation;
 using meGaton.ViewModels;
-using System;
-using System.Windows.Media;
 using System.Windows.Input;
 
-namespace meGaton.Views
-{
+namespace meGaton.Views{
     /// <summary>
     /// GamePanel.xaml の相互作用ロジック
     /// </summary>
@@ -25,7 +21,7 @@ namespace meGaton.Views
 
         //View全域に対するクリックイベントはViewでしか拾えないため、処理はViewModelに委譲
         private void MouseClick(object sender,MouseButtonEventArgs e) {
-            (((FrameworkElement)this.Content).DataContext as GamePanelViewModel).MouseClickSubmit();
+            (((FrameworkElement)this.Content).DataContext as GamePanelViewModel)?.MouseClickSubmit();
         }
 
         //タグ生成
@@ -35,7 +31,7 @@ namespace meGaton.Views
             var root = this.FindName("TagParent") as Panel;
             if (tags==null||root == null) return;
             foreach (var item in tags) {
-                var temp = new CategoryTag(new CategoryTagViewModel(item.category, item.bgColor));//ViewModelは抽入する
+                var temp = new CategoryTag(new CategoryTagViewModel(item.Category, item.BgColor));//ViewModelは抽入する
                 root.Children.Add(temp);
             }
         }

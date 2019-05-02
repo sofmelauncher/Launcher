@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using meGaton.Models;
+using meGaton.Util;
 
 namespace meGaton.Views {
     /// <summary>
