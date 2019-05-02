@@ -10,11 +10,11 @@
         <Grid>
             <Rectangle Width="1920" Height="1080" Fill="Black" Opacity="0.5"/>
             <ProgressBar
-                Orientation="Horizontal"
-                Height="50"
-                Foreground="CornflowerBlue"
-                Background="White"
-                Opacity="0.5"
+                Style="{StaticResource MaterialDesignCircularProgressBar}"
+                Value="35"
+                Height="300"
+                Width="300"
+                
                 IsIndeterminate="True" />
         </Grid>
     </Viewbox>
