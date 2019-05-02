@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using meGaton.DataResources;
 using meGaton.Models;
+using meGaton.Util;
 using meGaton.ViewModels;
 using meGaton.Views;
 using MaterialDesignThemes.Wpf;

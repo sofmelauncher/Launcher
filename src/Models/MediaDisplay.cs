@@ -73,7 +73,7 @@ namespace meGaton.Models {
                 try {
                     temp = new Uri(PathManage.GAMES_ROOT_PATH + "\\" + item, UriKind.Relative);
                 } catch (FileNotFoundException e) {
-                    Logger.Inst.Log(e+"Panel not found.");
+                    Logger.Inst.Log(e+"Panel not found.",LogLevel.Error);
                     continue;
                 }
                 currentContents.Add(new Content(temp,ContentType.Image));
@@ -99,7 +99,7 @@ namespace meGaton.Models {
             if (current.contentType == ContentType.Video) {
                 displayMediaElement.Dispatcher.BeginInvoke(new Action(() => { displayMediaElement.Play(); }));
             } else {
-                PlayContent();
+                //PlayContent();
             }
         }
 

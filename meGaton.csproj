@@ -152,15 +152,16 @@
     <Compile Include="src\Models\ControllerDisplay.cs" />
     <Compile Include="src\Models\CustomerTimer.cs" />
     <Compile Include="src\Models\GamePadObserver.cs" />
-    <Compile Include="src\Models\InstantTimer.cs" />
-    <Compile Include="src\Models\ListExtensions.cs" />
-    <Compile Include="src\Models\Logger.cs" />
-    <Compile Include="src\Models\MaskControll.cs" />
+    <Compile Include="src\Util\HardWareObserver.cs" />
+    <Compile Include="src\Util\InstantTimer.cs" />
+    <Compile Include="src\Util\ListExtensions.cs" />
+    <Compile Include="src\Util\Logger.cs" />
+    <Compile Include="src\Models\MaskControl.cs" />
     <Compile Include="src\Models\MediaDisplay.cs" />
-    <Compile Include="src\Models\GameProcessControll.cs" />
+    <Compile Include="src\Models\GameProcessControl.cs" />
     <Compile Include="src\Models\PanelController.cs" />
-    <Compile Include="src\Models\PathManage.cs" />
-    <Compile Include="src\Models\StringExpander.cs" />
+    <Compile Include="src\Util\PathManage.cs" />
+    <Compile Include="src\Util\StringExpander.cs" />
     <Compile Include="src\ViewModels\CategoryTagViewModel.cs" />
     <Compile Include="src\ViewModels\GamePanelViewModel.cs" />
     <Compile Include="src\Models\PanelSizes.cs" />
@@ -172,7 +173,7 @@
       <DependentUpon>GamePanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="src\DataResources\GameInfo.cs" />
-    <Compile Include="src\Models\PanelCreater.cs" />
+    <Compile Include="src\Models\PanelCreator.cs" />
     <Compile Include="src\ViewModels\MainViewModel.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>

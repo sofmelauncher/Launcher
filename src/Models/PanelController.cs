@@ -61,10 +61,13 @@ namespace meGaton.Models {
                 .Select(n => n.OnClickEvent)
                 .Merge()
                 .Where(n => gameViewModels.Skip(START_POINT).Take(ENABLE_PANEL).Contains(n))
-                .Subscribe(n =>{
-                    UnFocusPanel();
-                    focusIndex = gameViewModels.FindIndex(x=>x==n);
-                    FocusPanel();
+                .Subscribe(n => {
+                    var clicked_index = gameViewModels.FindIndex(x => x == n);
+                    if (focusIndex != clicked_index) {
+                        UnFocusPanel();
+                        focusIndex = clicked_index;
+                        FocusPanel();
+                    }
                     onPanelClick.OnNext(Unit.Default);
                 });
 

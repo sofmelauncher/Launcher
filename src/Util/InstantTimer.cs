@@ -26,7 +26,7 @@ namespace meGaton.Util {
                 };
                 dispatcherTimer.Start();
             }catch (Exception e){
-                Logger.Inst.Log("InstantTimer Clashed");
+                Logger.Inst.Log("InstantTimer Clashed",LogLevel.Error);
                 throw;
             }
         }
@@ -35,7 +35,7 @@ namespace meGaton.Util {
         /// 処理の予約実行を停止します
         /// </summary>
         public void Close() {
-            dispatcherTimer.Stop();
+            dispatcherTimer?.Stop();
         }
     }
 }

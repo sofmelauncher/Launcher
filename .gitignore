@@ -4,3 +4,4 @@ obj/
 packages/
 /meGaton.csproj.user
 /.log/
+/.idea/

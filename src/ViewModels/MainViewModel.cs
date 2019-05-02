@@ -122,12 +122,11 @@ namespace meGaton.ViewModels {
             });
 
             //一応起動時もシャッフル
+       
+            //PanelControllerの選択切り替えイベントを受け取る
+            panel_controller.OnChangeSelected.Subscribe(ChangeSelectedDisplay);
             panel_controller.Shuffle();
 
-            //PanelControllerの選択切り替えイベントを受け取る
-            //最初の選択処理だけは実行する必要がある
-            panel_controller.OnChangeSelected.Subscribe(ChangeSelectedDisplay);
-            ChangeSelectedDisplay(panel_controller.GetCurrentPanelsInfo);
         }
 
         //Viewから流れてくるマウスホイールイベントの処理
