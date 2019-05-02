@@ -160,6 +160,7 @@
     <Compile Include="src\Models\MediaDisplay.cs" />
     <Compile Include="src\Models\GameProcessControl.cs" />
     <Compile Include="src\Models\PanelController.cs" />
+    <Compile Include="src\Util\ServerConnector.cs" />
     <Compile Include="src\Util\PathManage.cs" />
     <Compile Include="src\Util\StringExpander.cs" />
     <Compile Include="src\ViewModels\CategoryTagViewModel.cs" />

@@ -69,9 +69,14 @@ namespace meGaton.Models {
                 currentProcess.Exited += (sender, e) =>{//プロセス終了イベントに終了処理登録
                     onGameEnd.OnNext(Unit.Default);
                     hardWareObserver.ObserveEnd();
+
+                    var running_seconds = (DateTime.Now - startTime).TotalSeconds;
                     Logger.Inst.Log("-FinishGame- ID:" + game_id + ",ProcessName:" + currentProcess.ProcessName +
-                                    ",RunningTime:"+ (DateTime.Now - startTime).TotalSeconds+" sec"+
+                                    ",RunningTime:"+ running_seconds +" sec"+
                                     ",AverageCpuUsage:"+hardWareObserver.CpuUsageAverage+ "%,AverageMemoryUsage:"+hardWareObserver.MemoryUsageAverage+"MB");
+                    var post=game_id+","+currentProcess.ProcessName+","+startTime+","+ DateTime.Now + "," +running_seconds+","+ hardWareObserver.CpuUsageAverage+","+ hardWareObserver.MemoryUsageAverage;
+                    ServerConnector.Inst.Post(post);
+
                     currentProcess = null;
                     ReturnCurrentDirectory();
                 };
