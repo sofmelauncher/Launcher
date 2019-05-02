@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DataConverterFromDB.src;
-using meGatonDR;
-using Newtonsoft.Json;
 
-namespace meGatonDataConverter {
-    class Program {
+namespace DataConverterFromDB {
+    public class Program {
+        
         static void Main(string[] args) {
-            var data = new meGatonDatabaseConnector().GetGamesInfo();
+            Console.WriteLine("Convert Start.");
+            var data = new DatabaseConnector().GetGamesInfo();
             foreach (var item in data) {
                 Console.WriteLine("["+item.GameId+","+item.BinPath+"]");
             }

@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using meGaton.DataResources;
 
-namespace meGatonDR{
+namespace DataConverterFromDB.DataFactory{
 	public class ControllerDataFactory{
-		public GameController[] GetContollerEnable(bool mouse,bool keyborad,bool gamepad){
+		
+		public GameController[] GetControllerEnable(bool mouse,bool keyborad,bool gamepad){
 			var res = new List<GameController>();
 			if(mouse)res.Add(GameController.Mouse);
 			if(keyborad)res.Add(GameController.Keyboard);

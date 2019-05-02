@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
+using DataConverterFromDB.CalamFilter;
+using DataConverterFromDB.DataFactory;
+using DataConverterFromDB.DataRecorder;
 using meGaton.DataResources;
-using meGaton.src.DataResources;
 
-namespace meGatonDR{
-	public class meGatonDatabaseConnector{
+namespace DataConverterFromDB{
+	public class DatabaseConnector{
+		
 		public List<GameInfo> GetGamesInfo(){
 			var loader=new Loader();
 			
@@ -15,7 +18,7 @@ namespace meGatonDR{
 			
 			var game_recorder=new GameInfoRecorder(new TagFactory(tag_recorder,tag_data_recorder));
 			loader.Load("gameregister_gameinfo", game_recorder,new WindowsFilter());
-			return game_recorder.GameInfos;
+			return game_recorder.gameInfos;
 		}
 	}
 }

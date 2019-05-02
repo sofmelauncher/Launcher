@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\ke\.Rider2018.3\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\ke\.Rider2018.3\system\resharper-host\local\Transient\ReSharperHost\v183\SolutionCaches\_DataConverterFromDB.1554614855.00" t="ExcludeRecursive" />
+    <e p="C:\Users\ke\Desktop\Launcher\DataConverterFromDB" t="IncludeRecursive">
+      <e p="App.config" t="Include" />
+      <e p="bin" t="ExcludeRecursive" />
+      <e p="DataConverterFromDB.csproj" t="IncludeRecursive" />
+      <e p="DataConverterFromDB.sln" t="IncludeFlat" />
+      <e p="obj" t="ExcludeRecursive" />
+      <e p="packages" t="ExcludeRecursive" />
+      <e p="packages.config" t="Include" />
+      <e p="Properties" t="Include">
+        <e p="AssemblyInfo.cs" t="Include" />
+      </e>
+      <e p="src" t="Include">
+        <e p="BinarySearcher.cs" t="Include" />
+        <e p="CalamFilter" t="Include">
+          <e p="ICalamFilter.cs" t="Include" />
+          <e p="WindowsFilter.cs" t="Include" />
+        </e>
+        <e p="DatabaseConnector.cs" t="Include" />
+        <e p="DataFactory" t="Include">
+          <e p="ControllerDataFactory.cs" t="Include" />
+          <e p="TagFactory.cs" t="Include" />
+        </e>
+        <e p="DataRecorder" t="Include">
+          <e p="GameInfoRecorder.cs" t="Include" />
+          <e p="IDataRecorder.cs" t="Include" />
+          <e p="TagDataRecorder.cs" t="Include" />
+          <e p="TagRecorder.cs" t="Include" />
+        </e>
+        <e p="GameInfoJsonWriter.cs" t="Include" />
+        <e p="Loader.cs" t="Include" />
+        <e p="Program.cs" t="Include" />
+      </e>
+    </e>
+    <e p="C:\Users\ke\Desktop\Launcher\src\DataResources\GameInfo.cs" t="Include" />
+  </component>
+</project>

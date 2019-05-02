@@ -1,17 +1,16 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 
-namespace meGatonDR{
-	public class BinarySercher{
+namespace DataConverterFromDB{
+	public class BinarySearcher{
 
 		private readonly string GAMES_ROOT_PATH;
 
-		public BinarySercher(){
+		public BinarySearcher(){
 			GAMES_ROOT_PATH = System.AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\') + "\\Games";
 		}
 
-		public string Serch(int game_id){
+		public string Search(int game_id){
 			var files = System.IO.Directory.GetFiles(GAMES_ROOT_PATH + "\\" + game_id,"*.exe",SearchOption.AllDirectories);
 			if (files.Length == 0){
 				return "";

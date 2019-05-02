@@ -1,6 +1,6 @@
 ﻿using System.Data.SQLite;
 
-namespace meGatonDR{
+namespace DataConverterFromDB.DataRecorder{
 	public interface IDataRecorder{
 		void AddMember(SQLiteDataReader sdr);
 	}
