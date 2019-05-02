@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Reactive.Subjects;
-using System.Windows;
+﻿using System.Data;
 using System.Windows.Controls;
 using meGaton.DataResources;
 using meGaton.Util;

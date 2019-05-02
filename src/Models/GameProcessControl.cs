@@ -34,7 +34,7 @@ namespace meGaton.Models {
         /// ゲームを起動します
         /// </summary>
         /// <param name="path">実行ファイルのGamesRootからの相対パス</param>
-        public void GameLaunch(string path) {
+        public void GameLaunch(string path,string game_id) {
             if (IsRunning) return;
             
             path= PathManage.GAMES_ROOT_PATH + "\\" + path;//受け取った相対パスを絶対パスに変換
@@ -63,15 +63,15 @@ namespace meGaton.Models {
                 };
                 currentProcess.Exited += (sender, e) =>{//プロセス終了イベントに終了処理登録
                     onGameEnd.OnNext(Unit.Default);
-                    Logger.Inst.Log("-Finish- " + currentProcess.ProcessName +" -Running Time- "+ 
-                                    (DateTime.Now - startTime).TotalSeconds+"seconds");
+                    Logger.Inst.Log("-FinishGame- ID:" + game_id + ",ProcessName:" + currentProcess.ProcessName +
+                                    ",FinishTime:"+ DateTime.Now + ",RunningTime:"+ (DateTime.Now - startTime).TotalSeconds+" sec");
                     currentProcess = null;
                     ReturnCurrentDirectory();
                 };
                 currentProcess.Start();
                 onGameStart.OnNext(Unit.Default);
                 startTime = DateTime.Now;
-                Logger.Inst.Log("-Launch- "+currentProcess.ProcessName);
+                Logger.Inst.Log("-LaunchGame- ID:"+game_id+",ProcessName:"+currentProcess.ProcessName+",StartTime:"+startTime);
             }catch (Exception e){
                 currentProcess = null;
                 ReturnCurrentDirectory();

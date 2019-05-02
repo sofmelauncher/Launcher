@@ -105,7 +105,7 @@ namespace meGaton.ViewModels {
                 .Merge(GamePadObserver.Inst.OnEnterKeyDown.Where(n => n).Select(n=>Unit.Default))
                 .Merge(panel_controller.OnPanelClick)
                 .Subscribe(n => {
-                    GameProcessControl.Inst.GameLaunch(panel_controller.GetCurrentPanelsInfo.MyGameInfo.BinPath);
+                    GameProcessControl.Inst.GameLaunch(panel_controller.GetCurrentPanelsInfo.MyGameInfo.BinPath, panel_controller.GetCurrentPanelsInfo.MyGameInfo.GameId.ToString());
                 });
 
             //ゲーム起動時のイベント
