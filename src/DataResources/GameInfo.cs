@@ -30,6 +30,7 @@ namespace meGaton.DataResources {
         [DataMember] public string GameName { get; private set; }
         [DataMember] public string GameDescription { get; private set; }
         [DataMember] public int GameId { get; private set; }
+        [DataMember] public int DisplayId { get; private set; }
         [DataMember] public string BinPath { get; private set; }
         [DataMember] public string IconPath { get; private set; }
         [DataMember] public string[] PanelsPath { get; private set; }
@@ -37,13 +38,14 @@ namespace meGaton.DataResources {
         [DataMember] public GameController[] UseControllers { get; set; }
         [DataMember] public Tag[] Tags{get;set;}
 
-        public GameInfo(string game_name, string game_description, int game_id,
+        public GameInfo(string game_name, string game_description, int game_id,int display_id,
             string bin_path,string icon_path,string[] panels_path,
             string video_path,GameController[]use_controllers,Tag[]tags
             ) {
             GameName = game_name;
             GameDescription = game_description;
             GameId = game_id;
+            DisplayId = display_id;
             BinPath = bin_path;
             IconPath = icon_path;
             PanelsPath = panels_path;

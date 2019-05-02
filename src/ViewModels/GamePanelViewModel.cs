@@ -30,9 +30,9 @@ namespace meGaton.ViewModels{
 
 
         //index_numberは展示用IDと同義
-        public GamePanelViewModel(GameInfo game_info,int index_number) {
+        public GamePanelViewModel(GameInfo game_info) {
             MyGameInfo=game_info;
-            GameID = (index_number.ToString()).PadLeft(2,'0');
+            GameID = (game_info.DisplayId.ToString()).PadLeft(2,'0');
         }
 
         //見た目のプロパティのためここはViewにセットしてもらう必要がある

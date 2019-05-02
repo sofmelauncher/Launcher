@@ -29,7 +29,6 @@ namespace meGaton.Models{
         /// </summary>
         /// <param name="parent_panel"></param>
         public void Launch(Panel parent_panel){
-            var counter = 1;
             var games_info = iGamesDataConnector.GetGamesInfo();
             if (games_info==null||games_info.Count == 0){
                 Logger.Inst.Log("GamesList is Empty.I don't create panels.",LogLevel.Warning);
@@ -37,8 +36,7 @@ namespace meGaton.Models{
             }
 
             foreach (var item in games_info){
-                parent_panel.Children.Add(new GamePanel(new GamePanelViewModel(item,counter)));
-                counter++;
+                parent_panel.Children.Add(new GamePanel(new GamePanelViewModel(item)));
             }
         }
     }
