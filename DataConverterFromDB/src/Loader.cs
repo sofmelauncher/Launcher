@@ -22,7 +22,7 @@ namespace DataConverterFromDB{
 					sdr.Close();
 					con.Close();
 				}
-			}catch (FileNotFoundException e){
+			}catch (Exception e){
 				Console.WriteLine("Database not found");
 			}
 			

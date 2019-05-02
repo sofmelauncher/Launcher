@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using meGaton.DataResources;
 using Newtonsoft.Json;
@@ -11,8 +12,12 @@ namespace DataConverterFromDB {
             var write_path = System.AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\')+"\\Games\\";
 
             //BOM無しUTF-8書き込みなのでエンコード指定をしない
-            using (var sw=new StreamWriter(write_path+"gameinfo.json",false)) {
-                sw.Write(json_string);
+            try {
+                using (var sw = new StreamWriter(write_path + "gameinfo.json", false)) {
+                    sw.Write(json_string);
+                }
+            }catch (Exception exception) {
+                Console.WriteLine(exception);
             }
         }
     }
