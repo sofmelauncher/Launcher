@@ -15,6 +15,8 @@ namespace meGaton.Models {
         private DateTime startTime;//起動時間計測用
         private Process currentProcess;
 
+        private HardWareObserver hardWareObserver;
+
         
         public static GameProcessControl Inst { get; } = new GameProcessControl();
         public bool IsRunning => currentProcess != null;//実行中かどうか以外のプロセスの情報は公開しない
@@ -28,6 +30,8 @@ namespace meGaton.Models {
 
 
         private GameProcessControl() {
+            hardWareObserver=new HardWareObserver();
+            hardWareObserver.Init();
         }
 
         /// <summary>
@@ -61,20 +65,25 @@ namespace meGaton.Models {
                     StartInfo = {FileName = path}, 
                     EnableRaisingEvents = true
                 };
+               
                 currentProcess.Exited += (sender, e) =>{//プロセス終了イベントに終了処理登録
                     onGameEnd.OnNext(Unit.Default);
+                    hardWareObserver.ObserveEnd();
                     Logger.Inst.Log("-FinishGame- ID:" + game_id + ",ProcessName:" + currentProcess.ProcessName +
-                                    ",FinishTime:"+ DateTime.Now + ",RunningTime:"+ (DateTime.Now - startTime).TotalSeconds+" sec");
+                                    ",RunningTime:"+ (DateTime.Now - startTime).TotalSeconds+" sec"+
+                                    ",AverageCpuUsage:"+hardWareObserver.CpuUsageAverage+ "%,AverageMemoryUsage:"+hardWareObserver.MemoryUsageAverage+"MB");
                     currentProcess = null;
                     ReturnCurrentDirectory();
                 };
                 currentProcess.Start();
-                onGameStart.OnNext(Unit.Default);
+                hardWareObserver.ObserveStart();
                 startTime = DateTime.Now;
-                Logger.Inst.Log("-LaunchGame- ID:"+game_id+",ProcessName:"+currentProcess.ProcessName+",StartTime:"+startTime);
+                Logger.Inst.Log("-LaunchGame- ID:" + game_id + ",ProcessName:" + currentProcess.ProcessName);
+                onGameStart.OnNext(Unit.Default);
             }catch (Exception e){
                 currentProcess = null;
                 ReturnCurrentDirectory();
+                Logger.Inst.Log(e.ToString());
                 throw;
             }
         }
