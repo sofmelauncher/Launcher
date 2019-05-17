@@ -39,6 +39,11 @@ namespace meGaton.Util
                 this.canPost = false;
                 Logger.Inst.Log(ex.ToString(), LogLevel.Error);
             }
+
+            if(this.SERVER_URL == null || this.SERVER_URL == "")
+            {
+                this.canPost = false;
+            }
         }
 
         /// <summary>
