@@ -40,18 +40,30 @@ namespace meGaton.Util
                 Logger.Inst.Log(ex.ToString(), LogLevel.Error);
             }
         }
-        
+
+        /// <summary>
+        /// 外部から呼ばれるPostメソッド。
+        /// 設定読み込みに失敗した場合は、オンライン送信はしない。
+        /// </summary>
+        /// <param name="post">送信される文字列</param>
         public async void Post(string post)
         {
             if (this.canPost)
             {
-                await Task.Run(() =>
+                var t = await Task.Run(() =>
                 {
                     return this.OnlinePost(post);
                 });
+
             }
+
         }
 
+        /// <summary>
+        /// サーバーにデータを送信するメソッド。
+        /// </summary>
+        /// <param name="post">送信される文字列</param>
+        /// <returns>サーバーから返ってきた値。</returns>
         private async Task<string> OnlinePost(string post)
         {
             Dictionary<string, string> data = new Dictionary<string, string>
