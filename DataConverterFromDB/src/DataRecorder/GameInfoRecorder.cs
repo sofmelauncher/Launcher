@@ -26,7 +26,7 @@ namespace DataConverterFromDB.DataRecorder{
 		            game_name:sdr["name"].ToString(),
 		            game_description:sdr["launcher_description"].ToString(),
 		            game_id:id,
-		            display_id: (int)((sdr["display_id"] == DBNull.Value ? 0 : sdr["display_id"])),
+		            display_id: (int)((sdr["display_id"] == DBNull.Value ? 0 : (long) sdr["display_id"])),
 		            bin_path:binarySearcher.Search(id),
 		            icon_path:sdr["panel"].ToString(),
 		            panels_path:new string[]{sdr["picture_1"]as string,sdr["picture_2"]as string,sdr["picture_3"]as string,}, 
