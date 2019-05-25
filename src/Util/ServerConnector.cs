@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Configuration;
+using System.Net.Http;
 using System.Threading.Tasks;
+using System;
 
 namespace meGaton.Util
 {
@@ -55,10 +57,48 @@ namespace meGaton.Util
         {
             if (this.canPost)
             {
-                var t = await Task.Run(() =>
+                try
                 {
-                    return this.OnlinePost(post);
-                });
+                    var t = await Task.Run(() =>
+                    {
+                        return this.OnlinePost(post);
+                    });
+                }
+                catch (AggregateException ex)
+                {
+                    foreach (Exception e in ex.Flatten().InnerExceptions)
+                    {
+                        Exception exNestedInnerException = e;
+                        {
+                            if (!String.IsNullOrEmpty(exNestedInnerException.Message))
+                            {
+                                Logger.Inst.Log(exNestedInnerException.Message, LogLevel.Warning);
+                            }
+                            exNestedInnerException = exNestedInnerException.InnerException;
+                        }
+                        while (exNestedInnerException != null);
+                    }
+                }
+                catch (HttpRequestException ex)
+                {
+                    Logger.Inst.Log(ex.Message,LogLevel.Warning);
+                 }
+                catch (System.Net.WebException ex)
+                {
+                    Logger.Inst.Log(ex.Message, LogLevel.Warning);
+                }
+                catch (System.Net.Sockets.SocketException ex)
+                {
+                    Logger.Inst.Log(ex.Message, LogLevel.Warning);
+                }
+                catch (ArgumentException ex)
+                {
+                    Logger.Inst.Log(ex.Message, LogLevel.Warning);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Inst.Log(ex.Message, LogLevel.Warning);
+                }
 
             }
 
