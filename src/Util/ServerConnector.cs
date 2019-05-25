@@ -69,7 +69,7 @@ namespace meGaton.Util
                     foreach (Exception e in ex.Flatten().InnerExceptions)
                     {
                         Exception exNestedInnerException = e;
-                        {
+                        do{
                             if (!String.IsNullOrEmpty(exNestedInnerException.Message))
                             {
                                 Logger.Inst.Log(exNestedInnerException.Message, LogLevel.Warning);
