@@ -109,7 +109,8 @@ namespace meGaton.Models {
             contentCounter = contentCounter == currentContents.Count - 1 ? 0 : contentCounter + 1;
             displayMediaElement.Dispatcher.BeginInvoke(new Action(() => {
                 displayMediaElement.Source = current.uri;
-                displayMediaElement.Play();
+                if(!GameProcessControl.Inst.IsRunning)
+                    displayMediaElement.Play();
             }));
             
             if (current.contentType == ContentType.Image) {
