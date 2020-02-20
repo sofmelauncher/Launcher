@@ -26,6 +26,7 @@ namespace meGaton.ViewModels {
 
         //バインド用プロパティ
         public ReactiveProperty<string> GameDescription { get; set; }
+        public ReactiveProperty<string> VerticalAlignment { get; set; }
         public ReactiveCommand ListUpCommand { get; } = new ReactiveCommand();
         public ReactiveCommand ListDownCommand { get; } = new ReactiveCommand();
         public ReactiveCommand ListSkipUpCommand { get; }=new ReactiveCommand();
@@ -43,6 +44,9 @@ namespace meGaton.ViewModels {
         private readonly MediaDisplay mediaDisplay;
         private readonly ControllerDisplay controllerDisplay;
 
+        // パネルの最大数
+        private const int MaxEnablePanelCount = 6;
+
         public MainViewModel(Window main_window,Panel panel_parent,MediaElement media_display,Panel controller_icon_parent,Panel root_grid) {
 
             GameDescription = new ReactiveProperty<string>().AddTo(this.Disposable);
@@ -57,6 +61,10 @@ namespace meGaton.ViewModels {
                 Logger.Inst.Log("I wanna stop my process bc GamePanels was didn't create.",LogLevel.Warning);
                 return;
             }
+
+            // ゲーム数が少ない場合は、すべて表示できるように
+            var alignmentString = panel_parent.Children.Count > MaxEnablePanelCount ? "Center" : "Top";
+            VerticalAlignment = new ReactiveProperty<string>(alignmentString);
 
             var panel_controller = new PanelController(panel_parent);
             var customer_timer = new CustomerTimer();

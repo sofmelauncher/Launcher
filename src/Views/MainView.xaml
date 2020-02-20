@@ -55,7 +55,7 @@
                         </materialDesign:Card>
                     </StackPanel>
                 </StackPanel>
-                <StackPanel Grid.Column="1" Name="PanelParent"  Height="1310" VerticalAlignment="Center"  Margin="0,0,0,0"/>
+                <StackPanel Grid.Column="1" Name="PanelParent"  Height="1310" VerticalAlignment="{Binding VerticalAlignment}"  Margin="0,0,0,0"/>
             </Grid>
         </Grid>
     </Viewbox>
