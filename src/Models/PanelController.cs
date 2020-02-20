@@ -37,13 +37,28 @@ namespace meGaton.Models {
         private readonly int ENABLE_PANEL=6;//表示するパネルの枚数
         private readonly int END_POINT;//終点のインデックス
 
+        // パネルの最大数
+        private const int MaxEnablePanelCount = 6;
+
         
         /// <param name="stack_panel">制御対象になるパネル群の親パネル</param>
         public PanelController(Panel stack_panel) {
             panelParent = stack_panel;
-            focusIndex = stack_panel.Children.Count > 2 ? 2 : 0;
-            START_POINT = stack_panel.Children.Count > 1 ? 1 : 0;
-            END_POINT = START_POINT + ENABLE_PANEL-1;
+            // ゲーム数が少ない場合は表示が変わるため、インデックス番号の計算を分ける
+            if (stack_panel.Children.Count > MaxEnablePanelCount)
+            {
+                focusIndex = stack_panel.Children.Count > 2 ? 2 : 0;
+                START_POINT = stack_panel.Children.Count > 1 ? 1 : 0;
+                END_POINT = START_POINT + ENABLE_PANEL - 1;
+
+            }
+            else
+            {
+                focusIndex = 0;
+                START_POINT = 0;
+                END_POINT = stack_panel.Children.Count - 1;
+
+            }
 
             random = new Random((int)DateTime.Now.Ticks & 0x0000FFFF);
 
