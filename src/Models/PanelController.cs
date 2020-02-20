@@ -47,8 +47,8 @@ namespace meGaton.Models {
             // ゲーム数が少ない場合は表示が変わるため、インデックス番号の計算を分ける
             if (stack_panel.Children.Count > MaxEnablePanelCount)
             {
-                focusIndex = stack_panel.Children.Count > 2 ? 2 : 0;
-                START_POINT = stack_panel.Children.Count > 1 ? 1 : 0;
+                focusIndex = 2;
+                START_POINT = 1;
                 END_POINT = START_POINT + ENABLE_PANEL - 1;
 
             }
